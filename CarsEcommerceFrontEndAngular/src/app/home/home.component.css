@@ -59,7 +59,7 @@ section{
 .btn{
     display: inline-block;
     margin-top: 1rem;
-    padding:.4rem 2rem;
+    padding:.5rem 2rem;
     background:var(--light-red);
     color:var(--black);
     cursor: pointer;
@@ -323,7 +323,7 @@ section{
 }
 
 .vehicles .vehicles-slider .box .content p{
-    font-size: 1.6rem;
+    font-size: 1rem;
     color:var(--light-color);
     padding: 1rem 0;
     padding-top: 1.5rem;
