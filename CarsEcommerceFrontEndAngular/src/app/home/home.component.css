@@ -34,7 +34,7 @@ section{
 }
 
 .heading{
-    padding-bottom: 2rem;
+    padding-bottom: 1rem;
     text-align: center;
     font-size: 3rem;
     color:var(--black);
@@ -342,7 +342,7 @@ section{
 
 .services .box-container{
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(40rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
     gap:1.5rem;
 }
 
@@ -355,25 +355,25 @@ section{
 }
 
 .services .box-container .box i{
-    height:6rem;
-    width:6rem;
-    line-height: 6rem;
+    height:5rem;
+    width:5rem;
+    line-height: 5rem;
     border-radius: 50%;
-    font-size: 2.5rem;
+    font-size: 2rem;
     margin-bottom: 1rem;
     background:var(--yellow);
     color:var(--black);
 }
 
 .services .box-container .box h3{
-    font-size: 2.2rem;
+    font-size: 1.8rem;
     color:var(--black);
 }
 
 .services .box-container .box p{
     line-height: 1.8;
     padding:1rem 0;
-    font-size: 1.4rem;
+    font-size: 1rem;
     color:var(--light-color);
 }
 
@@ -404,7 +404,7 @@ section{
 }
 
 .featured .featured-slider .box img{
-    height: 15rem;
+    height: 8rem;
 }
 
 .featured .featured-slider .box:hover img{
@@ -412,7 +412,7 @@ section{
 }
 
 .featured .featured-slider .box .content h3{
-    font-size: 2.2rem;
+    font-size: 1.8rem;
     color:var(--black);
 }
 
@@ -421,12 +421,12 @@ section{
 }
 
 .featured .featured-slider .box .content .stars i{
-    font-size: 1.7rem;
+    font-size: 1.4rem;
     color:var(--yellow);
 }
 
 .featured .featured-slider .box .content .price{
-    font-size: 2.5rem;
+    font-size: 2rem;
     color:var(--black);
 }
 
@@ -440,19 +440,19 @@ section{
 }
 
 .newsletter h3{
-    font-size: 3rem;
+    font-size: 2rem;
     color:var(--black);
 }
 
 .newsletter p{
-    font-size: 1.5rem;
+    font-size: 1rem;
     color:var(--light-color);
     padding:1rem 0;
 }
 
 .newsletter form{
-    max-width: 60rem;
-    height:5rem;
+    max-width: 40rem;
+    height:3rem;
     background:#fff;
     border-radius: 5rem;
     overflow:hidden;
@@ -465,7 +465,7 @@ section{
     height: 100%;
     width:100%;
     padding:0 2rem;
-    font-size: 1.6rem;
+    font-size: 1rem;
     color:var(--black);
     text-transform: none;
 }
@@ -473,7 +473,7 @@ section{
 .newsletter form input[type="submit"]{
     height: 100%;
     width:17rem;
-    font-size: 1.7rem;
+    font-size: 1.1rem;
     color:var(--black);
     background: var(--light-red);
     cursor: pointer;
@@ -513,19 +513,19 @@ section{
 
 .reviews .review-slider .box .content p{
     color:var(--light-color);
-    font-size: 1.4rem;
+    font-size: 1rem;
     padding:1rem 0;
 }
 
 .reviews .review-slider .box .content h3{
     color:var(--black);
-    font-size: 2.2rem;
+    font-size: 1.7rem;
     padding-bottom: .5rem;
 }
 
 .reviews .review-slider .box .content .stars i{
     color:var(--yellow);
-    font-size: 1.7rem;
+    font-size: 1.5rem;
 }
 
 .contact .row{
@@ -553,7 +553,7 @@ section{
 }
 
 .contact .row form h3{
-    font-size: 3rem;
+    font-size: 2rem;
     color:var(--black);
     padding-bottom: 1rem;
 }
@@ -562,7 +562,7 @@ section{
     width:100%;
     border-radius: .5rem;
     padding:1rem 1.2rem;
-    font-size: 1.6rem;
+    font-size: 1rem;
     text-transform: none;
     border:var(--border);
     margin:.7rem 0;
@@ -581,19 +581,19 @@ section{
 
 .footer .box-container{
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
     gap:1.5rem;
 }
 
 .footer .box-container .box h3{
-    font-size: 2.2rem;
+    font-size: 1.7rem;
     padding:1rem 0;
     color:white;
 }
 
 .footer .box-container .box a{
     display: block;
-    font-size: 1.4rem;
+    font-size: 1rem;
     padding:1rem 0;
     color:white;
 }
@@ -613,7 +613,7 @@ section{
     padding-top: 2.5rem;
     margin-top: 2rem;
     border-top: var(--border);
-    font-size: 2rem;
+    font-size: 1.3rem;
     color:white;
 }
 
