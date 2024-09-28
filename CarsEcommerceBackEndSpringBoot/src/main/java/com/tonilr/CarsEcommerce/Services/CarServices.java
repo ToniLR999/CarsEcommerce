@@ -7,15 +7,15 @@ import org.springframework.stereotype.Service;
 
 import com.tonilr.CarsEcommerce.Entities.Product;
 import com.tonilr.CarsEcommerce.Exceptions.NotFoundException;
-import com.tonilr.CarsEcommerce.Repos.ProductRepo;
+import com.tonilr.CarsEcommerce.Repos.CarRepo;
 
 @Service
-public class ProductServices {
+public class CarServices {
 
 	@Autowired
-	private final ProductRepo productRepo;
+	private final CarRepo productRepo;
 
-	public ProductServices(ProductRepo productRepo) {
+	public CarServices(CarRepo productRepo) {
 		this.productRepo = productRepo;
 	}
 

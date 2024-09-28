@@ -1,15 +1,15 @@
 package com.tonilr.CarsEcommerce.Entities;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -19,28 +19,23 @@ import jakarta.persistence.Table;
 public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long cart_id;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JoinColumn(name = "user_id", nullable = true)    
     private User user;
 
-    @ManyToMany
-    @JoinTable(
-        name = "cart_products",
-        joinColumns = @JoinColumn(name = "cart_id"),
-        inverseJoinColumns = @JoinColumn(name = "product_id")
-    )
-    private List<Product> products;
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private Set<Car> cars = new HashSet<Car>();
 
     // Getters and Setters
 
     public Long getId() {
-        return id;
+        return cart_id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(Long cart_id) {
+        this.cart_id = cart_id;
     }
 
     public User getUser() {
@@ -51,12 +46,12 @@ public class Cart {
         this.user = user;
     }
 
-    public List<Product> getProducts() {
-        return products;
+    public Set<Car> getCars() {
+        return cars;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
+    public void setCars(Set<Car> cars) {
+        this.cars = cars;
     }
 
 }

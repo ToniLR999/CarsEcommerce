@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.tonilr.CarsEcommerce.Entities.Product;
 
 @Repository
-public interface ProductRepo extends JpaRepository<Product,Long>{
+public interface CarRepo extends JpaRepository<Product,Long>{
 
 }

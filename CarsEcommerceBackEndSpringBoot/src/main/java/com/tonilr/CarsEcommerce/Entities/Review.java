@@ -2,9 +2,10 @@ package com.tonilr.CarsEcommerce.Entities;
 
 import java.util.Date;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,24 +22,24 @@ public class Review {
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	    private Long id;
 
-	    @ManyToOne
-	    @JoinColumn(name = "user_id")
-	    private User user;
-
-	    @ManyToOne
-	    @JoinColumn(name = "product_id")
-	    private Product product;
-
-	    @Column(nullable = false)
-	    private String comment;
-
 	    @Column(nullable = false)
 	    private Integer rating;  // Rating from 1 to 5
+	    
+	    @Column(nullable = false)
+	    private String comment;
 
 	    @Temporal(TemporalType.TIMESTAMP)
 	    @Column(nullable = false)
 	    private Date createdAt;
 
+	    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+	    @JoinColumn(name = "user_id", nullable = false)
+	    private User user;
+	    
+	    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+	    @JoinColumn(name = "car_id", nullable = false)
+	    private Car car;
+	    
 	    // Getters and Setters
 
 	    public Long getId() {
@@ -57,12 +58,12 @@ public class Review {
 	        this.user = user;
 	    }
 
-	    public Product getProduct() {
-	        return product;
+	    public Car getCar() {
+	        return car;
 	    }
 
-	    public void setProduct(Product product) {
-	        this.product = product;
+	    public void setCar(Car car) {
+	        this.car = car;
 	    }
 
 	    public String getComment() {

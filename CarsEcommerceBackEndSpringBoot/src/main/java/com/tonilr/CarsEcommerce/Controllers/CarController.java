@@ -15,17 +15,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.tonilr.CarsEcommerce.Entities.Product;
-import com.tonilr.CarsEcommerce.Services.ProductServices;
+import com.tonilr.CarsEcommerce.Services.CarServices;
 
 @Controller
 //@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/product")
-public class ProductController {
+public class CarController {
 
 	@Autowired
-	private final ProductServices productService;
+	private final CarServices productService;
 	
-	public ProductController(ProductServices productService) {
+	public CarController(CarServices productService) {
 		this.productService = productService;
 	}
 
