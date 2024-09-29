@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.tonilr.CarsEcommerce.Entities.Product;
+import com.tonilr.CarsEcommerce.Entities.Car;
 import com.tonilr.CarsEcommerce.Exceptions.NotFoundException;
 import com.tonilr.CarsEcommerce.Repos.CarRepo;
 
@@ -13,31 +13,31 @@ import com.tonilr.CarsEcommerce.Repos.CarRepo;
 public class CarServices {
 
 	@Autowired
-	private final CarRepo productRepo;
+	private final CarRepo carRepo;
 
-	public CarServices(CarRepo productRepo) {
-		this.productRepo = productRepo;
+	public CarServices(CarRepo carRepo) {
+		this.carRepo = carRepo;
 	}
 
-	public Product addProduct(Product product) {
-		return productRepo.save(product);
+	public Car addCar(Car car) {
+		return carRepo.save(car);
 	}
 
-	public List<Product> findAllProducts() {
-		return productRepo.findAll();
+	public List<Car> findAllCars() {
+		return carRepo.findAll();
 	}
 
-	public Product updateProduct(Product product) {
-		return productRepo.save(product);
+	public Car updateCar(Car car) {
+		return carRepo.save(car);
 	}
 
-	public Product findProductById(Long id) {
-		return productRepo.findById(id)
-				.orElseThrow(() -> new NotFoundException("Product by id " + id + " was not found"));
+	public Car findCarById(Long id) {
+		return carRepo.findById(id)
+				.orElseThrow(() -> new NotFoundException("Car by id " + id + " was not found"));
 
 	}
 
-	public void deleteProduct(Long id) {
-		productRepo.deleteById(id);
+	public void deleteCar(Long id) {
+		carRepo.deleteById(id);
 	}
 }

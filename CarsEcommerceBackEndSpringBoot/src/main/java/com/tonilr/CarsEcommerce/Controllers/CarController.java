@@ -14,48 +14,48 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.tonilr.CarsEcommerce.Entities.Product;
+import com.tonilr.CarsEcommerce.Entities.Car;
 import com.tonilr.CarsEcommerce.Services.CarServices;
 
 @Controller
 //@CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("/product")
+@RequestMapping("/car")
 public class CarController {
 
 	@Autowired
-	private final CarServices productService;
+	private final CarServices carService;
 	
-	public CarController(CarServices productService) {
-		this.productService = productService;
+	public CarController(CarServices carService) {
+		this.carService = carService;
 	}
 
 	@GetMapping("/all")
-	public ResponseEntity<List<Product>> getAllProducts() {
-		List<Product> products = productService.findAllProducts();
-		return new ResponseEntity<>(products, HttpStatus.OK);
+	public ResponseEntity<List<Car>> getAllCars() {
+		List<Car> cars = carService.findAllCars();
+		return new ResponseEntity<>(cars, HttpStatus.OK);
 	}
 
 	@GetMapping("/find/{id}")
-	public ResponseEntity<Product> getProductById(@PathVariable("id") Long id) {
-		Product product = productService.findProductById(id);
-		return new ResponseEntity<>(product, HttpStatus.OK);
+	public ResponseEntity<Car> getCarById(@PathVariable("id") Long id) {
+		Car car = carService.findCarById(id);
+		return new ResponseEntity<>(car, HttpStatus.OK);
 	}
 
 	@PostMapping("/add")
-	public ResponseEntity<Product> addProduct(@RequestBody Product product) {
-		Product newProduct = productService.addProduct(product);
-		return new ResponseEntity<>(newProduct, HttpStatus.CREATED);
+	public ResponseEntity<Car> addCar(@RequestBody Car car) {
+		Car newCar = carService.addCar(car);
+		return new ResponseEntity<>(newCar, HttpStatus.CREATED);
 	}
 
 	@PutMapping("/update")
-	public ResponseEntity<Product> updateProduct(@RequestBody Product product) {
-		Product updateProduct = productService.updateProduct(product);
-		return new ResponseEntity<>(updateProduct, HttpStatus.OK);
+	public ResponseEntity<Car> updateCar(@RequestBody Car car) {
+		Car updateCar = carService.updateCar(car);
+		return new ResponseEntity<>(updateCar, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<?> deleteProduct(@PathVariable("id") Long id) {
-		productService.deleteProduct(id);
+	public ResponseEntity<?> deleteCar(@PathVariable("id") Long id) {
+		carService.deleteCar(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }
