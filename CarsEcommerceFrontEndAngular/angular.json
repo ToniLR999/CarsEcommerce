@@ -110,5 +110,8 @@
       }
     }
   },
-  "defaultProject": "CarsEcommerce"
+  "defaultProject": "CarsEcommerce",
+  "cli": {
+    "analytics": false
+  }
 }

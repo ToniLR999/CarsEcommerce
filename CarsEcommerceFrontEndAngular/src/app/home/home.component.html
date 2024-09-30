@@ -37,7 +37,9 @@
             <form action="">
                 <h3>user login</h3>
                 <input type="email" placeholder="Email" class="box">
+                <div class="submitErrorMessages">Unknown User</div>
                 <input type="password" placeholder="Password" class="box">
+                <div class="submitErrorMessages">Password Not Match</div>
                 <p> forget your password <a href="#">click here</a> </p>
                 <input type="submit" value="login" class="btn">
                 <p>or login with</p>
@@ -56,8 +58,28 @@
 
             <form action="">
                 <h3>user signup</h3>
-                <input type="email" placeholder="Email" class="box">
+                <input type="text" placeholder="Username" class="box">
+                <div *ngIf="usernameEmpty==true || usernameRepeated==true " class="alert alert-danger">
+                    <div *ngIf="usernameEmpty==true" class="submitErrorMessages">Username is required.</div>
+                    <div *ngIf="usernameRepeated==true" class="submitErrorMessages">Username is repeated. </div>
+                  </div>
                 <input type="password" placeholder="Password" class="box">
+                <div *ngIf="passwordEmpty==true" class="alert alert-danger">
+                    <div class="submitErrorMessages">Password is required</div>
+                  </div>
+                <input type="password" placeholder="Repeat Password" class="box">
+                <div *ngIf="passwordsNotMatch==true ||  confirmPasswordEmpty==true" class="alert alert-danger">
+                    <div *ngIf="confirmPasswordEmpty==true" class="submitErrorMessages">Confirm Password is required.</div>
+                    <div *ngIf="passwordsNotMatch==true && confirmPasswordEmpty==false && passwordEmpty==false" class="submitErrorMessages">Passsword and
+                      Confirm Password didn't match. </div>
+                  </div>
+                <input type="email" placeholder="Email" class="box">
+                <div *ngIf="emailRepeated==true || emailInvalid==true || emailEmpty == true" class="alert alert-danger">
+                    <div *ngIf="emailEmpty == true" class="submitErrorMessages">Email is required.</div>
+                    <div *ngIf="emailRepeated==true" class="submitErrorMessages">Email is repeated. </div>
+                    <div *ngIf="emailInvalid==true" class="submitErrorMessages">Please provide a valid email address. </div>
+        
+                  </div>
                 <p> forget your password <a href="#">click here</a> </p>
                 <input type="submit" value="login" class="btn">
                 <p>or signup with</p>

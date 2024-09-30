@@ -11,6 +11,18 @@ import Swiper from 'swiper';
 export class HomeComponent {
   title = 'CarsEcommerce';
 
+  user!: User;
+  userForm!: UntypedFormGroup;
+  usernameRepeated: boolean = false;
+  usernameEmpty: boolean = false;
+  emailEmpty: boolean = false;
+  passwordsNotMatch: boolean = false;
+  emailRepeated: boolean = false;
+  emailInvalid: boolean = false;
+  passwordEmpty: boolean = false;
+  confirmPasswordEmpty: boolean = false;
+  emailPattern =  new RegExp (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/);
+
   @ViewChild('menuBtn') menuBtn!: ElementRef;
   @ViewChild('navbar') navbar!: ElementRef;
   @ViewChild('loginFormContainer') loginFormContainer!: ElementRef;

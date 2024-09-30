@@ -130,7 +130,7 @@ section{
     top:-105%; left:0;
     height:100%;
     width:100%;
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     background:rgba(255, 255, 255, 0.93);
@@ -139,6 +139,7 @@ section{
 
 .login-form-container.active , .signup-form-container.active {
     top:0;
+    display: flex;
 }
 
 .login-form-container form, .signup-form-container form{
@@ -693,3 +694,11 @@ section{
     }
 
 }
+
+.submitErrorMessages{
+    margin-left: 3px;
+    float: left;
+    color: red;
+    font-size: 1.2rem;
+  }
+  

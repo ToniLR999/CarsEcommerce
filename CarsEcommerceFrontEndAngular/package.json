@@ -19,6 +19,7 @@
     "@angular/platform-browser-dynamic": "~18.2.4",
     "@angular/router": "~18.2.4",
     "@fortawesome/fontawesome-free": "^6.6.0",
+    "cars-ecommerce": "file:",
     "rxjs": "~7.5.0",
     "swiper": "^11.1.14",
     "tslib": "^2.3.0",
