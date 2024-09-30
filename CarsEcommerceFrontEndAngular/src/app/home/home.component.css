@@ -125,7 +125,7 @@ section{
     display: none;
 }
 
-.login-form-container{
+.login-form-container, .signup-form-container{
     position: fixed;
     top:-105%; left:0;
     height:100%;
@@ -137,11 +137,11 @@ section{
     z-index: 10000;
 }
 
-.login-form-container.active{
+.login-form-container.active , .signup-form-container.active {
     top:0;
 }
 
-.login-form-container form{
+.login-form-container form, .signup-form-container form{
     margin:2rem;
     text-align: center;
     padding:2rem;
@@ -152,19 +152,19 @@ section{
     background: #fff;
 }
 
-.login-form-container form .buttons{
+.login-form-container form .buttons, .signup-form-container form .buttons{
     display: flex;
     gap:1rem;
     align-items: center;
 }
 
-.login-form-container form .btn{
+.login-form-container form .btn, .signup-form-container form .btn{
     display: block;
     width:100%;
     margin:.5rem 0;
 }
 
-.login-form-container form .box{
+.login-form-container form .box, .signup-form-container form .box{
     margin:.7rem 0;
     width: 100%;
     font-size: 1.6rem;
@@ -175,25 +175,32 @@ section{
     border-radius: .5rem;
 }
 
-.login-form-container form p{
+.login-form-container form p, .signup-form-container form p{
     padding:1rem 0;
     font-size: 1.5rem;
     color:var(--light-color);
 }
 
-.login-form-container form p a{
+.login-form-container form p a, .signup-form-container form p a{
     color:var(--yellow);
     text-decoration: underline;
+    cursor: pointer;
 }
 
-.login-form-container form h3{
+.login-form-container form p span, .signup-form-container form p span{
+    color:var(--yellow);
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.login-form-container form h3, .signup-form-container form h3{
     padding-bottom:1rem;
     font-size: 2.5rem;
     color:var(--black);
     text-transform: uppercase;
 }
 
-.login-form-container #close-login-form{
+.login-form-container #close-login-form, .signup-form-container #close-signup-form{
     position: absolute;
     top:1.5rem; right:2.5rem;
     font-size: 5rem;

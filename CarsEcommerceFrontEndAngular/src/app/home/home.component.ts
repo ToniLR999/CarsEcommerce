@@ -14,6 +14,7 @@ export class HomeComponent {
   @ViewChild('menuBtn') menuBtn!: ElementRef;
   @ViewChild('navbar') navbar!: ElementRef;
   @ViewChild('loginFormContainer') loginFormContainer!: ElementRef;
+  @ViewChild('signupFormContainer') singupFormContainer!: ElementRef;
   @ViewChild('header') header!: ElementRef;
   @ViewChild('home') home!: ElementRef;
   constructor(private renderer: Renderer2) {}
@@ -32,11 +33,36 @@ export class HomeComponent {
         this.loginFormContainer.nativeElement.classList.toggle('active');
       });
     }
-
     const closeLoginForm = document.querySelector('#close-login-form');
     if (closeLoginForm) {
       this.renderer.listen(closeLoginForm, 'click', () => {
         this.loginFormContainer.nativeElement.classList.remove('active');
+      });
+    }
+
+
+    // SingUp form toggle
+    const SignUpBtn = document.getElementById('CreateOne-btn');
+    if (SignUpBtn) {
+      this.renderer.listen(SignUpBtn, 'click', () => {
+        console.log("He clickado");
+        this.singupFormContainer.nativeElement.classList.toggle('active');
+        this.loginFormContainer.nativeElement.classList.remove('active');
+      });
+    }
+
+    const alreadyMemberBtn = document.querySelector('#AlreadyMember-btn');
+    if (alreadyMemberBtn) {
+      this.renderer.listen(alreadyMemberBtn, 'click', () => {
+        this.loginFormContainer.nativeElement.classList.toggle('active');
+        this.singupFormContainer.nativeElement.classList.remove('active');
+      });
+    }
+    
+    const closeSignUpForm = document.querySelector('#close-signup-form');
+    if (closeSignUpForm) {
+      this.renderer.listen(closeSignUpForm, 'click', () => {
+        this.singupFormContainer.nativeElement.classList.remove('active');
       });
     }
 
