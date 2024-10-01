@@ -1,1 +1,5 @@
-export class Cart {}
+export class Cart {
+
+    cart_id!: number;
+
+}
