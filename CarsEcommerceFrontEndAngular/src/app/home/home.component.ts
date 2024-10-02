@@ -1,25 +1,38 @@
 import { Component, ElementRef, HostListener, Renderer2, ViewChild } from '@angular/core';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import Swiper from 'swiper';
+import { User } from '../services/user/user';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UserService } from '../services/user/user.service';
+import { AuthenticationService } from '../services/authentication/authentication.service';
 
 @Component({
   selector: 'app-home',
-  standalone: true,
-  imports: [],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
   title = 'CarsEcommerce';
 
+
+
+  users: User[] = [];
+  signinForm: UntypedFormGroup;
+  passwordKnown: boolean = false;
+  KnownUser: boolean = true;
+  invalidLogin = false;
+  passwordEmpty: boolean = true;
+  usernameEmpty: boolean = false;
+
+
+
   user!: User;
   userForm!: UntypedFormGroup;
   usernameRepeated: boolean = false;
-  usernameEmpty: boolean = false;
   emailEmpty: boolean = false;
   passwordsNotMatch: boolean = false;
   emailRepeated: boolean = false;
   emailInvalid: boolean = false;
-  passwordEmpty: boolean = false;
   confirmPasswordEmpty: boolean = false;
   emailPattern =  new RegExp (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/);
 
@@ -29,7 +42,54 @@ export class HomeComponent {
   @ViewChild('signupFormContainer') singupFormContainer!: ElementRef;
   @ViewChild('header') header!: ElementRef;
   @ViewChild('home') home!: ElementRef;
-  constructor(private renderer: Renderer2) {}
+
+
+  constructor(private renderer: Renderer2,private router: Router,private route: ActivatedRoute,private fb: UntypedFormBuilder,private userService: UserService, private loginservice: AuthenticationService) {
+    this.user = new User();
+
+    this.signinForm= this.fb.group({
+      username: this.fb.control(this.user.username,[]),
+      password: this.fb.control(this.user.password,[])
+    })
+    this.userService.getUsers().subscribe(data => {
+      this.users = data;
+    });
+  }
+
+
+  SignIn(){
+    this.usernameEmpty = false;
+    this.passwordEmpty = false;
+    this.passwordKnown = false;
+    this.KnownUser = false;
+
+    if(this.signinForm.controls['username'].value == null || this.signinForm.controls['username'].value == ""){
+      this.usernameEmpty = true;
+
+    }
+
+    if(this.signinForm.controls['password'].value == null || this.signinForm.controls['password'].value == ""){
+      this.passwordEmpty = true;
+
+    }
+    if(this.usernameEmpty == false && this.passwordEmpty == false)
+      for (let user of this.users) {
+        if(user.username == this.signinForm.controls['username'].value){
+          console.log("Este soy");
+          console.log(user);
+              this.KnownUser = true;
+
+            if(user.password == this.signinForm.controls['password'].value){
+              console.log("LogIn Successful");
+              this.router.navigate(['/', 'home']);
+              this.passwordKnown = true;
+            }
+        }
+      }
+
+}
+    
+
 
   ngAfterViewInit(): void {
     // Menu button toggle
