@@ -46,10 +46,10 @@ public class User {
     private Role role;  // Example: ADMIN, USER
 	
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private Set<Order> order  = new HashSet<Order>();
+    private Set<Order> orders  = new HashSet<Order>();
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private Set<Review> review = new HashSet<Review>();
+    private Set<Review> reviews = new HashSet<Review>();
     
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private Cart cart;
@@ -120,21 +120,21 @@ public class User {
         this.role = role;
     }
 
-    public Set<Order> getOrder() {
-        return order;
+    public Set<Order> getOrders() {
+        return orders;
     }
 
-    public void setOrder(Set<Order> order) {
-        this.order = order;
+    public void setOrders(Set<Order> order) {
+        this.orders = order;
     }
     
 
-    public Set<Review> getReview() {
-        return review;
+    public Set<Review> getReviews() {
+        return reviews;
     }
 
-    public void setReview(Set<Review> review) {
-        this.review = review;
+    public void setReviews(Set<Review> reviews) {
+        this.reviews = reviews;
     }
     
 
