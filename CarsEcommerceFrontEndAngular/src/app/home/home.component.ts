@@ -29,6 +29,9 @@ export class HomeComponent implements OnInit{
   passwordNotMatch: boolean = false;
   unknownUser: boolean = false;
   invalidLogin = false;
+  passwordKnown: boolean = true;
+  KnownUser: boolean = true;
+
 
   userForm!: UntypedFormGroup;
   usernameRepeated: boolean = false;
@@ -37,9 +40,13 @@ export class HomeComponent implements OnInit{
   passwordsNotMatch: boolean = false;
   emailRepeated: boolean = false;
   emailInvalid: boolean = false;
+  phoneInvalid: boolean = false;
+  phoneRepeated: boolean = false;
   passwordEmpty: boolean = false;
   confirmPasswordEmpty: boolean = false;
   emailPattern =  new RegExp (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/);
+  phonePattern = new RegExp(/^\d{3}-\d{3}-\d{4}$/);
+
 
   data = {
     username: "",
@@ -54,20 +61,22 @@ export class HomeComponent implements OnInit{
     this.user = new User();
 
     this.signinForm= this.fb.group({
-      username: this.fb.control(this.user.username,[]),
-      password: this.fb.control(this.user.password,[])
+      username: this.fb.control(this.user.username,[Validators.required]),
+      password: this.fb.control(this.user.password,[Validators.required])
     })
     this.userService.getUsers().subscribe(data => {
       this.users = data;
     });
 
     this.userForm = this.fb.group({
-      username: this.fb.control(this.user.username,[]),
-      email: this.fb.control(this.user.email,[]),
-      password: this.fb.control(this.user.password,[]),
-      confirmPassword: this.fb.control(null,[])
+      username: this.fb.control(this.user.username,[Validators.required]),
+      email: this.fb.control(this.user.email,[Validators.required,Validators.email]),
+      phoneNumber: this.fb.control(this.user.phoneNumber,[Validators.required,Validators.pattern('[0-9]{3}-[0-9]{3}-[0-9]{4}')]),
+      password: this.fb.control(this.user.password,[Validators.required]),
+      confirmPassword: this.fb.control(null,[Validators.required])
     })
   }
+
   ngOnInit(): void {
     this.user = new User();
 
@@ -81,10 +90,11 @@ export class HomeComponent implements OnInit{
     });
 
     this.userForm= this.fb.group({
-      username: this.fb.control(this.user.username,[]),
-      email: this.fb.control(this.user.email,[]),
-      password: this.fb.control(this.user.password,[]),
-      confirmPassword: this.fb.control(null,[])
+      username: this.fb.control(this.user.username,[Validators.required]),
+      email: this.fb.control(this.user.email,[Validators.required,Validators.email]),
+      phoneNumber: this.fb.control(this.user.phoneNumber,[Validators.required,Validators.pattern('[0-9]{3}-[0-9]{3}-[0-9]{4}')]),
+      password: this.fb.control(this.user.password,[Validators.required]),
+      confirmPassword: this.fb.control(null,[Validators.required])
     });
   }
 
@@ -116,7 +126,6 @@ export class HomeComponent implements OnInit{
     const SignUpBtn = document.getElementById('CreateOne-btn');
     if (SignUpBtn) {
       this.renderer.listen(SignUpBtn, 'click', () => {
-        console.log("He clickado");
         this.singupFormContainer.nativeElement.classList.toggle('active');
         this.loginFormContainer.nativeElement.classList.remove('active');
       });
@@ -142,18 +151,137 @@ export class HomeComponent implements OnInit{
   }
 
   SignIn(){
-    for (let user of this.users) {
-    if (this.loginservice.authenticate(this.signinForm.controls['username'].value,
-    this.signinForm.controls['password'].value,user)
-    ) {
-      this.router.navigate(['/','Home']);
-      this.invalidLogin = false
-    } else{
-      this.invalidLogin = true
+    this.usernameEmpty = false;
+    this.passwordEmpty = false;
+    this.passwordKnown = false;
+    this.KnownUser = false;
+
+    if(this.signinForm.controls['username'].value == null || this.signinForm.controls['username'].value == ""){
+      this.usernameEmpty = true;
+
     }
-    console.log(this.invalidLogin);
+
+    if(this.signinForm.controls['password'].value == null || this.signinForm.controls['password'].value == ""){
+      this.passwordEmpty = true;
+
+    }
+    if(this.usernameEmpty == false && this.passwordEmpty == false)
+      for (let user of this.users) {
+        if(user.username == this.signinForm.controls['username'].value){
+          console.log(user);
+              this.KnownUser = true;
+
+            if(user.password == this.signinForm.controls['password'].value){
+              console.log("LogIn Successful");
+              this.loginFormContainer.nativeElement.classList.remove('active');        
+              this.passwordKnown = true;
+            }
+        }
+      }
+
   }
-}
+
+  SignUp(){
+    this.usernameRepeated = false;
+    this.usernameEmpty = false;
+    this.emailEmpty = false;
+    this.passwordEmpty = false;
+    this.confirmPasswordEmpty = false;
+    this.passwordsNotMatch = false;
+    this.emailRepeated = false;
+    this.emailInvalid = false;
+    this.phoneInvalid = false;
+    this.phoneRepeated = false;
+
+    this.emailPattern =  new RegExp (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/);
+    this.phonePattern = new RegExp(/^\d{3}-\d{3}-\d{4}$/);
+
+
+    if(this.userForm.controls['username'].value == null || this.userForm.controls['username'].value == ""){
+      this.usernameEmpty = true;
+      
+    }
+
+    if(this.userForm.controls['email'].value == null || this.userForm.controls['email'].value == ""){
+      this.emailEmpty = true;
+
+    }
+
+    if(this.userForm.controls['password'].value == null || this.userForm.controls['password'].value == ""){
+      this.passwordEmpty = true;
+
+    }
+    if(this.userForm.controls['confirmPassword'].value == null || this.userForm.controls['confirmPassword'].value == ""){
+      this.confirmPasswordEmpty = true;
+    }
+    if (!this.phonePattern.test(this.userForm.controls['phoneNumber'].value) && (this.userForm.controls['phoneNumber'].value != "" && this.userForm.controls['phoneNumber'].value != null)) {
+      this.phoneInvalid = true;
+      console.log("El número de teléfono no tiene el formato correcto");
+    }
+
+    if(this.usernameEmpty == false){
+      this.userService.getUsers().subscribe(data => {
+      
+        data.forEach(user => {
+          console.log(user);  
+        if(this.userForm.controls['username'].value == user.username){
+          console.log("User repeated "+this.userForm.controls['username'].value+"  "+user.username);
+          this.usernameRepeated = true;
+        }
+        });
+
+      })
+
+    }
+
+    if(this.emailEmpty == false){
+      
+    if(this.emailPattern.test(this.userForm.controls['email'].value)){
+      console.log("cuadra con el patron "+this.userForm.controls['email'].value + "  : "+this.emailPattern);
+      this.emailInvalid = false;
+    }else{
+      console.log("no cuadra con el patron "+this.userForm.controls['email'].value+ "  : "+this.emailPattern);
+      this.emailInvalid = true;
+    }
+
+    if(this.emailInvalid == false){
+      this.userService.getUsers().subscribe(data => {
+      
+        data.forEach(user => {
+          console.log(user);  
+        if(this.userForm.controls['email'].value == user.email){
+          this.emailRepeated = true;
+        }
+        });
+
+      })
+    }
+  }
+
+
+      if(this.userForm.controls['password'].value == this.userForm.controls['confirmPassword'].value && this.userForm.controls['password'].value != null){
+
+        this.passwordsNotMatch = false;
+        this.userService.addUser(this.user).subscribe(data => {
+          this.singupFormContainer.nativeElement.classList.remove('active');
+          this.loginFormContainer.nativeElement.classList.toggle('active');        
+        })
+      }else{
+        if(this.userForm.controls['password'].value == null || this.userForm.controls['password'].value == ""){
+          this.passwordEmpty = true;
+
+        }
+        if(this.userForm.controls['confirmPassword'].value == null || this.userForm.controls['confirmPassword'].value == ""){
+          this.confirmPasswordEmpty = true;
+        }
+
+          this.passwordsNotMatch = true;
+
+      }
+    
+
+
+  }
 
   // Handle window scroll
   @HostListener('window:scroll', [])
@@ -247,93 +375,6 @@ export class HomeComponent implements OnInit{
         1024: { slidesPerView: 3 },
       },
     });
-  }
-
-
-  SignUp(){
-    this.usernameRepeated = false;
-    this.usernameEmpty = false;
-    this.emailEmpty = false;
-    this.passwordEmpty = false;
-    this.confirmPasswordEmpty = false;
-    this.passwordsNotMatch = false;
-    this.emailRepeated = false;
-    this.emailInvalid = false;
-    this.emailPattern =  new RegExp (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/);
-
-    console.log(this.userForm.controls['username'].value);
-
-    if(this.userForm.controls['username'].value == null || this.userForm.controls['username'].value == ""){
-      this.usernameEmpty = true;
-      
-    }
-
-    if(this.userForm.controls['email'].value == null || this.userForm.controls['email'].value == ""){
-      this.emailEmpty = true;
-  
-    }
-
-    if(this.usernameEmpty == false){
-      this.userService.getUsers().subscribe(data => {
-      
-        data.forEach(user => {
-          console.log(user);  
-        if(this.userForm.controls['username'].value == user.username){
-          console.log("User repeated "+this.userForm.controls['username'].value+"  "+user.username);
-          this.usernameRepeated = true;
-        }
-        });
-  
-      })
-
-    }
-
-    if(this.emailEmpty == false){
-      
-    if(this.emailPattern.test(this.userForm.controls['email'].value)){
-      console.log("cuadra con el patron "+this.userForm.controls['email'].value + "  : "+this.emailPattern);
-      this.emailInvalid = false;
-    }else{
-      console.log("no cuadra con el patron "+this.userForm.controls['email'].value+ "  : "+this.emailPattern);
-      this.emailInvalid = true;
-    }
-
-    if(this.emailInvalid == false){
-      this.userService.getUsers().subscribe(data => {
-      
-        data.forEach(user => {
-          console.log(user);  
-        if(this.userForm.controls['email'].value == user.email){
-          this.emailRepeated = true;
-        }
-        });
-  
-      })
-    }
-  }
-
-
-      if(this.userForm.controls['password'].value == this.userForm.controls['confirmPassword'].value && this.userForm.controls['password'].value != null){
-
-        this.passwordsNotMatch = false;
-        this.userService.addUser(this.user).subscribe(data => {
-          this.router.navigateByUrl('/LogIn');
-        })
-      }else{
-        if(this.userForm.controls['password'].value == null || this.userForm.controls['password'].value == ""){
-          this.passwordEmpty = true;
-  
-        }
-        if(this.userForm.controls['confirmPassword'].value == null || this.userForm.controls['confirmPassword'].value == ""){
-          this.confirmPasswordEmpty = true;
-        }
-  
-          this.passwordsNotMatch = true;
-  
-      }
-    
-
-
   }
 
   

@@ -141,6 +141,11 @@ section{
     top:0;
     display: flex;
 }
+.alert-danger{
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
 
 .login-form-container form, .signup-form-container form{
     margin:2rem;
