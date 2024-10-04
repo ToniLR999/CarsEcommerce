@@ -1,5 +1,5 @@
-import { Component, ElementRef, HostListener, Renderer2, ViewChild } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import Swiper from 'swiper';
 import { User } from '../services/user/user';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,37 +11,43 @@ import { AuthenticationService } from '../services/authentication/authentication
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit{
   title = 'CarsEcommerce';
 
 
-
-  users: User[] = [];
-  signinForm: UntypedFormGroup;
-  passwordKnown: boolean = false;
-  KnownUser: boolean = true;
-  invalidLogin = false;
-  passwordEmpty: boolean = true;
-  usernameEmpty: boolean = false;
-
-
-
-  user!: User;
-  userForm!: UntypedFormGroup;
-  usernameRepeated: boolean = false;
-  emailEmpty: boolean = false;
-  passwordsNotMatch: boolean = false;
-  emailRepeated: boolean = false;
-  emailInvalid: boolean = false;
-  confirmPasswordEmpty: boolean = false;
-  emailPattern =  new RegExp (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/);
-
+  
   @ViewChild('menuBtn') menuBtn!: ElementRef;
   @ViewChild('navbar') navbar!: ElementRef;
   @ViewChild('loginFormContainer') loginFormContainer!: ElementRef;
   @ViewChild('signupFormContainer') singupFormContainer!: ElementRef;
   @ViewChild('header') header!: ElementRef;
   @ViewChild('home') home!: ElementRef;
+
+  users: User[] = [];
+  user: User;
+  signinForm: UntypedFormGroup;
+  passwordNotMatch: boolean = false;
+  unknownUser: boolean = false;
+  invalidLogin = false;
+
+  userForm!: UntypedFormGroup;
+  usernameRepeated: boolean = false;
+  usernameEmpty: boolean = false;
+  emailEmpty: boolean = false;
+  passwordsNotMatch: boolean = false;
+  emailRepeated: boolean = false;
+  emailInvalid: boolean = false;
+  passwordEmpty: boolean = false;
+  confirmPasswordEmpty: boolean = false;
+  emailPattern =  new RegExp (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/);
+
+  data = {
+    username: "",
+    email: "",
+    password: "",
+
+  }
+
 
 
   constructor(private renderer: Renderer2,private router: Router,private route: ActivatedRoute,private fb: UntypedFormBuilder,private userService: UserService, private loginservice: AuthenticationService) {
@@ -54,41 +60,34 @@ export class HomeComponent {
     this.userService.getUsers().subscribe(data => {
       this.users = data;
     });
+
+    this.userForm = this.fb.group({
+      username: this.fb.control(this.user.username,[]),
+      email: this.fb.control(this.user.email,[]),
+      password: this.fb.control(this.user.password,[]),
+      confirmPassword: this.fb.control(null,[])
+    })
+  }
+  ngOnInit(): void {
+    this.user = new User();
+
+    this.signinForm= this.fb.group({
+      username: this.fb.control(this.user.username,[Validators.required]),
+      password: this.fb.control(this.user.password,[Validators.required])
+    })
+
+    this.userService.getUsers().subscribe(data => {
+      this.users = data;
+    });
+
+    this.userForm= this.fb.group({
+      username: this.fb.control(this.user.username,[]),
+      email: this.fb.control(this.user.email,[]),
+      password: this.fb.control(this.user.password,[]),
+      confirmPassword: this.fb.control(null,[])
+    });
   }
 
-
-  SignIn(){
-    this.usernameEmpty = false;
-    this.passwordEmpty = false;
-    this.passwordKnown = false;
-    this.KnownUser = false;
-
-    if(this.signinForm.controls['username'].value == null || this.signinForm.controls['username'].value == ""){
-      this.usernameEmpty = true;
-
-    }
-
-    if(this.signinForm.controls['password'].value == null || this.signinForm.controls['password'].value == ""){
-      this.passwordEmpty = true;
-
-    }
-    if(this.usernameEmpty == false && this.passwordEmpty == false)
-      for (let user of this.users) {
-        if(user.username == this.signinForm.controls['username'].value){
-          console.log("Este soy");
-          console.log(user);
-              this.KnownUser = true;
-
-            if(user.password == this.signinForm.controls['password'].value){
-              console.log("LogIn Successful");
-              this.router.navigate(['/', 'home']);
-              this.passwordKnown = true;
-            }
-        }
-      }
-
-}
-    
 
 
   ngAfterViewInit(): void {
@@ -141,6 +140,20 @@ export class HomeComponent {
     // Swiper initialization
     this.initSwiper();
   }
+
+  SignIn(){
+    for (let user of this.users) {
+    if (this.loginservice.authenticate(this.signinForm.controls['username'].value,
+    this.signinForm.controls['password'].value,user)
+    ) {
+      this.router.navigate(['/','Home']);
+      this.invalidLogin = false
+    } else{
+      this.invalidLogin = true
+    }
+    console.log(this.invalidLogin);
+  }
+}
 
   // Handle window scroll
   @HostListener('window:scroll', [])
@@ -234,5 +247,99 @@ export class HomeComponent {
         1024: { slidesPerView: 3 },
       },
     });
+  }
+
+
+  SignUp(){
+    this.usernameRepeated = false;
+    this.usernameEmpty = false;
+    this.emailEmpty = false;
+    this.passwordEmpty = false;
+    this.confirmPasswordEmpty = false;
+    this.passwordsNotMatch = false;
+    this.emailRepeated = false;
+    this.emailInvalid = false;
+    this.emailPattern =  new RegExp (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/);
+
+    console.log(this.userForm.controls['username'].value);
+
+    if(this.userForm.controls['username'].value == null || this.userForm.controls['username'].value == ""){
+      this.usernameEmpty = true;
+      
+    }
+
+    if(this.userForm.controls['email'].value == null || this.userForm.controls['email'].value == ""){
+      this.emailEmpty = true;
+  
+    }
+
+    if(this.usernameEmpty == false){
+      this.userService.getUsers().subscribe(data => {
+      
+        data.forEach(user => {
+          console.log(user);  
+        if(this.userForm.controls['username'].value == user.username){
+          console.log("User repeated "+this.userForm.controls['username'].value+"  "+user.username);
+          this.usernameRepeated = true;
+        }
+        });
+  
+      })
+
+    }
+
+    if(this.emailEmpty == false){
+      
+    if(this.emailPattern.test(this.userForm.controls['email'].value)){
+      console.log("cuadra con el patron "+this.userForm.controls['email'].value + "  : "+this.emailPattern);
+      this.emailInvalid = false;
+    }else{
+      console.log("no cuadra con el patron "+this.userForm.controls['email'].value+ "  : "+this.emailPattern);
+      this.emailInvalid = true;
+    }
+
+    if(this.emailInvalid == false){
+      this.userService.getUsers().subscribe(data => {
+      
+        data.forEach(user => {
+          console.log(user);  
+        if(this.userForm.controls['email'].value == user.email){
+          this.emailRepeated = true;
+        }
+        });
+  
+      })
+    }
+  }
+
+
+      if(this.userForm.controls['password'].value == this.userForm.controls['confirmPassword'].value && this.userForm.controls['password'].value != null){
+
+        this.passwordsNotMatch = false;
+        this.userService.addUser(this.user).subscribe(data => {
+          this.router.navigateByUrl('/LogIn');
+        })
+      }else{
+        if(this.userForm.controls['password'].value == null || this.userForm.controls['password'].value == ""){
+          this.passwordEmpty = true;
+  
+        }
+        if(this.userForm.controls['confirmPassword'].value == null || this.userForm.controls['confirmPassword'].value == ""){
+          this.confirmPasswordEmpty = true;
+        }
+  
+          this.passwordsNotMatch = true;
+  
+      }
+    
+
+
+  }
+
+  
+  getEmail(){
+    console.log(this.userForm.controls['email'].value);
+    return this.userForm.controls['email'].value;
+
   }
 }

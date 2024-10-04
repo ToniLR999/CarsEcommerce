@@ -37,14 +37,12 @@
             <form [formGroup]="signinForm" (ngSubmit)="SignIn()" #f="ngForm">
                 <h3>user login</h3>
                 <input type="email" placeholder="Email" class="box" formControlName="username"   [(ngModel)]="user.username">
-                <div *ngIf="KnownUser==false || usernameEmpty==true">
-                    <div  *ngIf="KnownUser==false" class="submitErrorMessages">Unknown User</div>
-                    <div *ngIf="usernameEmpty==true" class="submitErrorMessages">Username is required.</div>
-                </div>
+                <div *ngIf="unknownUser==true" class="alert alert-danger">
+                    <div class="submitErrorMessages">Unknown User</div>
+                  </div>
                 <input type="password" placeholder="Password" class="box" formControlName="password"   [(ngModel)]="user.password">
-                <div *ngIf="passwordKnown==false || passwordEmpty==true">
-                    <div *ngIf="passwordKnown==false" class="submitErrorMessages">Password Not Match</div>
-                    <div *ngIf="passwordEmpty==true" class="submitErrorMessages">Password is required</div>
+                <div *ngIf="passwordNotMatch==true" class="alert alert-danger">
+                    <div class="submitErrorMessages">Password Not Match</div>
                 </div>
                 <p> forget your password <a href="#">click here</a> </p>
                 <input type="submit" value="login" class="btn">
