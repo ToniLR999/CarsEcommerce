@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { User  } from './user';
+import { Cart } from '../cart/cart';
 
 
 @Injectable({
@@ -18,11 +19,20 @@ export class UserService {
     return this.http.get<User[]>(`${this.apiServerUrl}/user/all`);
 
   }
+
+  public  loginUser(user: User): Observable<User> {
+    return this.http.post<User>(`${this.apiServerUrl}/user/login`,user);
+	}
+
   
   public getUserbyId(id: number): Observable<User>{
     return this.http.get<User>(`${this.apiServerUrl}/user/find/${id}`);
 
   }
+
+  public  getUserByUsername(username: String): Observable<User> {
+    return this.http.get<User>(`${this.apiServerUrl}/user/findByUsername/${username}`);
+	}
 
 
   public addUser(user: User): Observable<User>{

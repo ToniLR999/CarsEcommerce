@@ -46,7 +46,7 @@
                 <div *ngIf="passwordKnown==false || passwordEmpty==true" class="alert-danger">
                     <div *ngIf="passwordKnown==false" class="submitErrorMessages">Password Not Match</div>
                     <div *ngIf="passwordEmpty==true" class="submitErrorMessages">Password is required</div>
-                  </div>
+                </div>
                 <p> forget your password <a href="#">click here</a> </p>
                 <input type="submit" value="login" class="btn">
                 <p>or login with</p>
@@ -63,7 +63,7 @@
 
             <span id="close-signup-form" class="fas fa-times"></span>
 
-            <form [formGroup]="userForm" (ngSubmit)="SignUp()" #f="ngForm">
+            <form [formGroup]="signUpForm" (ngSubmit)="SignUp()" #f="ngForm">
                 <h3>user signup</h3>
                 <input type="text" placeholder="Username" class="box"  name="username" formControlName="username"   [(ngModel)]="user.username">
                 <div *ngIf="usernameEmpty==true || usernameRepeated==true " class="alert-danger">
