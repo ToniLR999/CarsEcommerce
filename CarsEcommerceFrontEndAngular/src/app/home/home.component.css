@@ -136,6 +136,9 @@ section{
     background:rgba(255, 255, 255, 0.93);
     z-index: 10000;
 }
+.dropdown{
+    float: right;
+}
 
 .login-form-container.active , .signup-form-container.active {
     top:0;

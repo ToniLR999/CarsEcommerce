@@ -7,7 +7,7 @@
             
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    
+        <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sidebars/">
     </head>
     <body>
         <header #header class="header">
@@ -27,6 +27,19 @@
             <div id="login-btn">
                 <button class="btn">login</button>
                 <i class="far fa-user"></i>
+            </div>
+            <div class="dropdown">
+                <a href="#" class="d-flex align-items-center text-black text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+                <strong>mdo</strong>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                    <li><a class="dropdown-item" href="#">New project...</a></li>
+                    <li><a class="dropdown-item" href="#">Settings</a></li>
+                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a routerLink="/LogIn" class="dropdown-item" href="#">Sign out</a></li>
+                </ul>
             </div>
         </header>
 
