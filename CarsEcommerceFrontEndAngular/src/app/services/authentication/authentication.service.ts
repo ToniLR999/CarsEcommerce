@@ -1,10 +1,19 @@
 import { Injectable } from '@angular/core';
 import { User } from '../user/user';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
+
+  private isLoggedInSubject = new BehaviorSubject<boolean>(this.isUserLoggedIn());
+
+
+    // Getter para obtener el estado del usuario logueado
+    get isLoggedIn() {
+      return this.isLoggedInSubject.asObservable();
+    }
 
   result: boolean = false;
 
@@ -13,10 +22,11 @@ export class AuthenticationService {
 
     if (username === user.username && password === user.password) {
       sessionStorage.setItem('username', username)
-
+      this.isLoggedInSubject.next(true);  // Notificar que el usuario está logueado
       this.result = true;
       return this.result;
     } else {
+      this.isLoggedInSubject.next(false); // Notificar que el login falló
       this.result = false;
       return this.result;
     }
@@ -31,5 +41,11 @@ export class AuthenticationService {
   }
 
   logOut() {
+    console.log("LogOut: "+sessionStorage.getItem('username'));
     sessionStorage.removeItem('username')
-  }}
+  }
+
+  getUserName(): string {
+    return sessionStorage.getItem('username') || '';
+  }
+}

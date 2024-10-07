@@ -5,6 +5,7 @@ import { User } from '../services/user/user';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../services/user/user.service';
 import { AuthenticationService } from '../services/authentication/authentication.service';
+import { Role } from '../services/role/role';
 
 @Component({
   selector: 'app-home',
@@ -14,6 +15,7 @@ import { AuthenticationService } from '../services/authentication/authentication
 export class HomeComponent implements OnInit{
   title = 'CarsEcommerce';
 
+  isUserLoggedIn: boolean = false;
 
   
   @ViewChild('menuBtn') menuBtn!: ElementRef;
@@ -57,7 +59,7 @@ export class HomeComponent implements OnInit{
 
 
 
-  constructor(private renderer: Renderer2,private router: Router,private route: ActivatedRoute,private fb: UntypedFormBuilder,private userService: UserService, private loginservice: AuthenticationService) {
+  constructor(private renderer: Renderer2,private router: Router,private route: ActivatedRoute,private fb: UntypedFormBuilder,private userService: UserService, public loginService: AuthenticationService) {
     this.user = new User();
 
     this.signinForm= this.fb.group({
@@ -96,9 +98,17 @@ export class HomeComponent implements OnInit{
       password: this.fb.control(this.user.password,[Validators.required]),
       confirmPassword: this.fb.control(null,[Validators.required])
     });
+
+    this.loginService.isLoggedIn.subscribe((loggedIn) => {
+      this.isUserLoggedIn = loggedIn;
+      console.log("OnInit isUserLoggedIn: "+this.isUserLoggedIn);
+    });
   }
 
-
+  SignOut() {
+    this.loginService.logOut();
+    this.isUserLoggedIn = false;
+  }
 
   ngAfterViewInit(): void {
     // Menu button toggle
@@ -174,7 +184,24 @@ export class HomeComponent implements OnInit{
           console.log('LogIn Successful:', response);
           // Cerrar el formulario o redirigir
           this.loginFormContainer.nativeElement.classList.remove('active');
+          this.userService.getUserByUsername(this.user.username).subscribe(
+            (user: User) => {  
+              // Comprobar el rol del usuario
+              console.log("User role:", user.role);
+console.log("Role.ADMIN value:", Role.ADMIN);
+              if (user.role === Role.ADMIN) {
+                this.router.navigate(['/', 'admin']);
+              console.log("Soy admin");
+              }
+            },
+            (error) => {
+              console.error('Error fetching user details:', error);
+              // Manejo de errores si no se puede obtener el usuario
+            }
+          );          
+
           this.passwordKnown = true;
+          this.isUserLoggedIn=true;
         },
         error: (error) => {
           if (error.status === 401) {
@@ -407,4 +434,5 @@ export class HomeComponent implements OnInit{
     return this.signUpForm.controls['email'].value;
 
   }
+
 }
