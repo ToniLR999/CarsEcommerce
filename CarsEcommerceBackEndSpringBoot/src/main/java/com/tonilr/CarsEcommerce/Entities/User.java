@@ -1,6 +1,7 @@
 package com.tonilr.CarsEcommerce.Entities;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -34,7 +35,7 @@ public class User {
     private String email;
     
 	@Column(nullable = false, updatable = true)
-	private Date register_date;
+	private LocalDateTime register_date;
 	
 	@Column(nullable = true, updatable = true)
     private String phoneNumber;
@@ -88,11 +89,11 @@ public class User {
         this.email = email;
     }
     
-	public Date getRegisterDate() {
+	public LocalDateTime getRegisterDate() {
 		return register_date;
 	}
 
-	public void setRegisterDate(Date register_date) {
+	public void setRegisterDate(LocalDateTime register_date) {
 		this.register_date = register_date;
 	}
 

@@ -1,17 +1,24 @@
 package com.tonilr.CarsEcommerce.Services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tonilr.CarsEcommerce.Entities.Role;
 import com.tonilr.CarsEcommerce.Entities.User;
 import com.tonilr.CarsEcommerce.Exceptions.NotFoundException;
 import com.tonilr.CarsEcommerce.Repos.UserRepo;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 
 @Service
 public class UserServices {
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+	
 	@Autowired
 	private final UserRepo userRepo;
 
@@ -20,8 +27,19 @@ public class UserServices {
 	}
 
 	public User addUser(User usuario) {
+        String encodedPassword = passwordEncoder.encode(usuario.getPassword());
+
+		usuario.setPassword(encodedPassword);
+		usuario.setIsActive(true);
+		usuario.setRegisterDate(LocalDateTime.now());
+		usuario.setRole(Role.USER);
 		return userRepo.save(usuario);
 	}
+	
+    public boolean verifyPassword(String rawPassword, String encodedPassword) {
+        // Verificar si la contraseña ingresada coincide con la almacenada
+        return passwordEncoder.matches(rawPassword, encodedPassword);
+    }
 
 	public List<User> findAllUsers() {
 		return userRepo.findAll();
@@ -34,6 +52,12 @@ public class UserServices {
 	public User findUserById(Long id) {
 		return userRepo.findById(id)
 				.orElseThrow(() -> new NotFoundException("User by id " + id + " was not found"));
+
+	}
+	
+	public User findUserByUsername(String username) {
+		return userRepo.findByUsername(username)
+				.orElseThrow(() -> new NotFoundException("User by username " + username + " was not found"));
 
 	}
 

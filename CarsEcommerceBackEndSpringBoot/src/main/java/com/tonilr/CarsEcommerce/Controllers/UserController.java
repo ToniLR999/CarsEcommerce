@@ -1,11 +1,13 @@
 package com.tonilr.CarsEcommerce.Controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +21,7 @@ import com.tonilr.CarsEcommerce.Services.UserServices;
 
 
 @Controller
-//@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/user")
 public class UserController {
 
@@ -35,10 +37,33 @@ public class UserController {
 		List<User> users = userService.findAllUsers();
 		return new ResponseEntity<>(users, HttpStatus.OK);
 	}
+	
+	 @PostMapping("/login")
+	  public ResponseEntity<?> loginUser(@RequestBody User user) {
+	        User existingUser = userService.findUserByUsername(user.getUsername());
+	        if (existingUser != null) {
+	            // Verificamos la contraseña con bcrypt
+	            boolean passwordMatches = userService.verifyPassword(user.getPassword(), existingUser.getPassword());
+	            if (passwordMatches) {
+	                // Si la contraseña es correcta, podrías generar un token JWT o enviar una respuesta positiva
+	                return ResponseEntity.ok(Map.of("message", "Login successful")); // Envía una respuesta JSON
+	            } else {
+	                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid password");
+	            }
+	        } else {
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+	        }
+	    }
 
 	@GetMapping("/find/{id}")
 	public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
 		User user = userService.findUserById(id);
+		return new ResponseEntity<>(user, HttpStatus.OK);
+	}
+	
+	@GetMapping("/findByUsername/{username}")
+	public ResponseEntity<User> getUserByUsername(@PathVariable("username") String username) {
+		User user = userService.findUserByUsername(username);
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
