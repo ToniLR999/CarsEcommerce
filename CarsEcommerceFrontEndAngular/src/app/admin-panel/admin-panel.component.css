@@ -1,0 +1,48 @@
+/* Estilos para el sidebar */
+.sidebar {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    padding-top: 20px;
+    overflow-x: hidden;
+    transition: 0.3s;
+  }
+  
+  /* Estilo para los links dentro del sidebar */
+  .sidebar a {
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 18px;
+    color: white;
+    display: block;
+    transition: 0.3s;
+  }
+  
+  .sidebar a:hover {
+    background-color: #575757;
+  }
+  
+  /* Estilo del título del menú */
+  .sidebar h2 {
+    color: white;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  /* Estilo del contenido que está fuera del sidebar */
+  .content {
+    margin-left: 260px;
+    padding: 20px;
+  }
+  
+  /* Ajustar el contenido en pantallas pequeñas */
+  @media screen and (max-height: 450px) {
+    .sidebar { padding-top: 15px; }
+    .sidebar a { font-size: 16px; }
+  }
+  
