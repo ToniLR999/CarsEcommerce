@@ -1,16 +1,121 @@
-<!-- sidebar.component.html -->
 <div class="sidebar">
-    <h2>Menú</h2>
-    <ul>
-      <li><a href="#">Inicio</a></li>
-      <li><a href="#">Perfil</a></li>
-      <li><a href="#">Configuración</a></li>
-      <li><a href="#">Ayuda</a></li>
-      <li><a href="#">Cerrar Sesión</a></li>
-    </ul>
+  <h2>Menú</h2>
+  <ul>
+    <li><a  (click)="mostrarSeccion('inicio')">Inicio</a></li>
+    <li><a  (click)="mostrarSeccion('perfil')">Perfil</a></li>
+    <li><a  (click)="mostrarSeccion('configuracion')">Configuración</a></li>
+    <li><a  (click)="mostrarSeccion('ayuda')">Ayuda</a></li>
+    <li><a  (click)="mostrarSeccion('cerrarSesion')">Cerrar Sesión</a></li>
+  </ul>
+</div>
+
+<div class="content">
+  <div id="inicio" class="seccion">
+    <h1>Página de Inicio</h1>
+    <p>Esta es la tabla de ejemplo para la sección de Inicio:</p>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Descripción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Artículo 1</td>
+          <td>Descripción del artículo 1</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Artículo 2</td>
+          <td>Descripción del artículo 2</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-  
-  <div class="content">
-    <!-- Aquí va el contenido principal de la página -->
-    <router-outlet></router-outlet>
+
+  <div id="perfil" class="seccion" style="display:none">
+    <h1>Página de Perfil</h1>
+    <p>Esta es la tabla de ejemplo para la sección de Perfil:</p>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre de Usuario</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>usuario1</td>
+          <td>usuario1arrobaejemplo.com</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>usuario2</td>
+          <td>usuario2arrobaejemplo.com</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
+
+  <div id="configuracion" class="seccion" style="display:none">
+    <h1>Página de Configuración</h1>
+    <p>Esta es la tabla de ejemplo para la sección de Configuración:</p>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Opción</th>
+          <th>Valor</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Opción 1</td>
+          <td>Activado</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Opción 2</td>
+          <td>Desactivado</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div id="ayuda" class="seccion" style="display:none">
+    <h1>Página de Ayuda</h1>
+    <p>Esta es la tabla de ejemplo para la sección de Ayuda:</p>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Pregunta</th>
+          <th>Respuesta</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>¿Cómo puedo registrarme?</td>
+          <td>Dirígete a la página de registro.</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>¿Cómo cambio mi contraseña?</td>
+          <td>Ve a la configuración de tu cuenta.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div id="cerrarSesion" class="seccion" style="display:none">
+    <h1>Cerrar Sesión</h1>
+    <p>Estás a punto de cerrar sesión.</p>
+  </div>
+</div>
