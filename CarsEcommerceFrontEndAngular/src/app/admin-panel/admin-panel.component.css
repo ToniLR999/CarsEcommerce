@@ -1,3 +1,15 @@
+
+:root{
+  --red:#E82127;
+  --light-red:#ed4d52;
+  --yellow:#f9d806;
+  --light-yellow:#ffee80;
+  --black:#130f40;
+  --light-color:#666;
+  --box-shadow:0 .5rem 1rem rgba(0,0,0,.1);
+  --border:.1rem solid rgba(0,0,0,.1);
+}
+
 .seccion {
   display: none;
 }
@@ -6,7 +18,88 @@
   display: block;
 }
 
+  /* Estilo del título del menú */
+  .sidebar h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color:white;
 
+  }
+  
+.sidebar .logo{
+  font-size: 1.8rem;
+  color:white;
+  font-weight: bold;
+}
+
+.sidebar .logo span{
+  color:#E82127 !important;
+}
+.dropdown{
+  float: right;
+}
+
+.heading{
+  padding-bottom: 1rem;
+  text-align: center;
+  font-size: 3rem;
+  color: #130f40;
+}
+
+.heading span{
+  position: relative;
+  z-index: 0;
+}
+
+.heading span::before{
+  content: '';
+  position: absolute;
+  bottom:1rem; left:0;
+  height: 100%;
+  width: 100%;
+  background: #ffee80;
+  z-index: -1;
+  clip-path: polygon(0 90%, 100% 80%, 100% 100%, 0% 100%);
+}
+  /* Table Styles */
+  .table-data{
+    flex: 1; /* Permite que el contenedor de la tabla se expanda */
+    display: flex; /* Flex para alinear la tabla */
+    align-items: stretch; /* Asegura que la tabla ocupe todo el espacio vertical */
+
+
+    flex-direction: column; /* Cambiado para alinear tabla y paginación verticalmente */
+    max-width: 100%; /* Limita el ancho máximo al tamaño del contenedor */
+
+  }
+.pagination {
+  margin-top: 10px;
+  text-align: center;
+  display: flex; /* Alinea los botones de manera flexible */
+  justify-content: center; /* Centra los botones */
+  flex-wrap: wrap; /* Permite que los botones se envuelvan si son demasiados */
+  width: 100%; /* Asegura que el contenedor de la paginación ocupe el ancho completo */
+  padding: 10px 0; /* Añadir algo de espacio alrededor */
+  box-sizing: border-box; /* Incluye el padding en el tamaño del elemento */
+}
+
+.pagination button {
+  padding: 5px 10px;
+  margin: 0 2px;
+  cursor: pointer;
+  border: 1px solid #ddd;
+}
+
+.pagination button.active {
+  background-color: #E82127;
+  color: white;
+  border-color: #E82127;
+}
+.pagination button:disabled {
+cursor: not-allowed;
+opacity: 0.5;
+}
 /* Estilos para el sidebar */
 .sidebar {
     height: 100%;
@@ -32,15 +125,41 @@
   
   .sidebar a:hover {
     background-color: #575757;
+    color: #ffee80;
   }
   
-  /* Estilo del título del menú */
-  .sidebar h2 {
-    color: white;
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 24px;
-    font-weight: bold;
+  .add-button {
+    /* Tamaño y forma */
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    
+    /* Posicionamiento */
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+  
+    /* Estilos visuales */
+    background-color: #E82127; /* Puedes cambiar por cualquier color */
+    color: black;
+    font-size: 2rem;
+    border: none;
+    cursor: pointer;
+    
+    /* Sombra para darle profundidad */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    
+    /* Transición para el hover */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .add-button:hover {
+    background-color: #ed4d52; /* Un color diferente al hacer hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  }
+  
+  .add-button:focus {
+    outline: none; /* Elimina el borde de enfoque en algunos navegadores */
   }
   
   /* Estilo del contenido que está fuera del sidebar */
@@ -54,4 +173,109 @@
     .sidebar { padding-top: 15px; }
     .sidebar a { font-size: 16px; }
   }
+
+
+  
+.create-form-container{
+  position: fixed;
+  top:-105%; left:0;
+  height:100%;
+  width:100%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background:rgba(255, 255, 255, 0.93);
+  z-index: 10000;
+}
+
+.create-form-container.active {
+  top:0;
+  display: flex;
+}
+
+
+.create-form-container form{
+  margin:2rem;
+  text-align: center;
+  padding:2rem;
+  width:40rem;
+  border-radius: .5rem;
+  box-shadow: 0 .5rem 1rem rgba(0,0,0,.1);
+  border: .1rem solid rgba(0,0,0,.1);
+  background: #fff;
+}
+
+.create-form-container form .buttons{
+  display: flex;
+  gap:1rem;
+  align-items: center;
+}
+
+.create-form-container form .btn{
+  display: block;
+  width:100%;
+  margin:.5rem 0;
+}
+
+.create-form-container form .box{
+  margin:.7rem 0;
+  width: 100%;
+  font-size: 1.6rem;
+  color: #130f40;
+  text-transform: none;
+  border: .1rem solid rgba(0,0,0,.1);
+  padding:1rem 1.2rem;
+  border-radius: .5rem;
+}
+
+.create-form-container form p{
+  padding:1rem 0;
+  font-size: 1.5rem;
+  color:#666;;
+}
+
+.create-form-container form p a{
+  color: #f9d806;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.create-form-container form p span{
+  color: #f9d806;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.create-form-container form h3{
+  padding-bottom:1rem;
+  font-size: 2.5rem;
+  color: #130f40;
+  text-transform: uppercase;
+}
+
+.create-form-container #close-signup-form{
+  position: absolute;
+  top:1.5rem; right:2.5rem;
+  font-size: 5rem;
+  color: #130f40;
+  cursor: pointer;
+}
+
+
+.btn{
+  display: inline-block;
+  margin-top: 1rem;
+  padding:.5rem 2rem;
+  background:#ed4d52;
+  color:#130f40;
+  cursor: pointer;
+  font-size: 1.2rem;
+  border-radius: .5rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.btn:hover{
+  background:#E82127;
+}
   
