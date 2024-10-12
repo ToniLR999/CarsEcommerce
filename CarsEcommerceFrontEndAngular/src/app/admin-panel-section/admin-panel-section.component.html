@@ -1,0 +1,85 @@
+<h1 class="heading">Tabla de <span>Cars</span> </h1>
+
+<button class="add-button" id="createCar-btn">
+  +
+</button>
+<div class="table-data text-black">
+  <table class="fl-table">
+      <thead>
+      <tr>
+          <th>Header 1</th>
+          <th>Header 2</th>
+          <th>Header 3</th>
+          <th>Header 4</th>
+          <th>Header 5</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let row of paginatedRows">
+          <td>{{ row[0] }}</td>
+          <td>{{ row[1] }}</td>
+          <td>{{ row[2] }}</td>
+          <td>{{ row[3] }}</td>
+          <td>{{ row[4] }}</td>
+      </tr>
+      <tbody>
+  </table>
+  <div class="pagination">
+    <button (click)="previousPage()" [disabled]="currentPage === 1">Anterior</button>
+    
+    <!-- Mostrar siempre el primer número de página -->
+    <button *ngIf="pages[0] !== getVisiblePages()[0]" (click)="changePage(1)" [class.active]="currentPage === 1">1</button>
+    
+    <!-- Mostrar '...' si hay un salto de páginas antes de las páginas visibles -->
+    <span *ngIf="getVisiblePages()[0] > 2">...</span>
+    
+    <!-- Páginas visibles -->
+    <button *ngFor="let page of getVisiblePages()" (click)="changePage(page)" [class.active]="page === currentPage">
+      {{ page }}
+    </button>
+    
+    <!-- Mostrar '...' si hay un salto de páginas después de las páginas visibles -->
+    <span *ngIf="getVisiblePages().slice(-1)[0] < pages.length - 1">...</span>
+    
+    <!-- Mostrar siempre el último número de página -->
+    <button *ngIf="pages[pages.length - 1] !== getVisiblePages()[getVisiblePages().length - 1]" (click)="changePage(pages.length)" [class.active]="currentPage === pages.length">{{ pages.length }}</button>
+    
+    <button (click)="nextPage()" [disabled]="currentPage === pages.length">Siguiente</button>
+  </div>
+</div>
+
+<div #createCarFormContainer class="create-form-container">
+
+  <span id="close-create-form" class="fas fa-times"></span>
+
+  <form [formGroup]="createCarForm" (ngSubmit)="createCar()" #f="ngForm">
+      <h3>user signup</h3>
+      <input type="text" placeholder="Username" class="box"  name="username" >
+
+
+      <input type="email" placeholder="Email" class="box" name="email">
+
+
+      <input type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"   minlength="14"
+      maxlength="14" placeholder="Phone Number" class="box" name="phoneNumber">
+
+
+
+      <input type="password" placeholder="Password" class="box" data-type="password" name="password"
+      >
+
+      <input type="password" placeholder="Confirm Password" class="box" data-type="password" name="confirmPassword"
+      >
+
+
+      <p> forget your password <a href="#">click here</a> </p>
+      <input type="submit" value="Sign Up" class="btn">
+      <p>or signup with</p>
+      <div class="buttons">
+          <a href="#" class="btn">google</a>
+          <a href="#" class="btn">facebook</a>
+      </div>
+      <p><span id="AlreadyMember-btn">Already Member?</span></p>
+  </form>
+
+</div>
