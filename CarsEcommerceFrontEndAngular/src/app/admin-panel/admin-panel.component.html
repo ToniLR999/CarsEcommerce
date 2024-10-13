@@ -156,7 +156,9 @@
         
         <button (click)="nextPage()" [disabled]="currentPage === pages.length">Siguiente</button>
       </div>
+
     </div>
+    <app-admin-panel-section *ngIf="isCreateCarFormVisible" (formSubmit)="handleFormSubmit($event)" (closeForm)="handleFormClose()"></app-admin-panel-section>
 
   </div>
 

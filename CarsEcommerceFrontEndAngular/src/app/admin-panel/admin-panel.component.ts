@@ -14,6 +14,7 @@ export class AdminPanelComponent implements OnInit{
 
   @ViewChild('createCarFormContainer') addCarFormContainer!: ElementRef;
   createCarForm!: UntypedFormGroup;
+  isCreateCarFormVisible: boolean = false; // Controla la visibilidad del formulario
 
 
   paginatedRows: string[][] = []; // Filas mostradas en la página actual
@@ -139,7 +140,18 @@ getVisiblePages(): number[] {
 
   return this.pages.slice(start - 1, end);
 }
+toggleCreateCarForm(): void {
+  this.isCreateCarFormVisible = !this.isCreateCarFormVisible; // Alterna la visibilidad
+}
 
+handleFormSubmit(formValue: any): void {
+  console.log('Formulario recibido:', formValue);
+  this.toggleCreateCarForm(); // Cierra el formulario después de enviarlo
+}
+
+handleFormClose(): void {
+  this.toggleCreateCarForm(); // Cierra el formulario cuando se pulsa el botón de cierre
+}
 
 SignOut() {
   this.loginService.logOut();

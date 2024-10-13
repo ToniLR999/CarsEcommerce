@@ -1,0 +1,8 @@
+.seccion {
+    display: none;
+  }
+  
+  .seccion.active {
+    display: block;
+  }
+  
