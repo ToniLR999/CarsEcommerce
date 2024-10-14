@@ -47,7 +47,6 @@ export class AdminPanelComponent implements OnInit{
         // Login form toggle
         const createCarBtn = document.querySelector('#createCar-btn');
         if (createCarBtn) {
-          console.log("estoy aqui");
           this.renderer.listen(createCarBtn, 'click', () => {
             this.addCarFormContainer.nativeElement.classList.toggle('active');
           });

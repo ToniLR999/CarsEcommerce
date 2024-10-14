@@ -1,6 +1,6 @@
 <div #createCarFormContainer class="create-form-container">
 
-  <span id="close-create-form" class="fas fa-times"></span>
+  <span (click)="onClose()" id="close-create-form" class="fas fa-times"></span>
 
   <form [formGroup]="createCarForm" (ngSubmit)="onSubmit()" #f="ngForm">
       <h3>user signup</h3>

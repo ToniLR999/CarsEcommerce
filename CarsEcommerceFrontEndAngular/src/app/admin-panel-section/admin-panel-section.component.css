@@ -6,3 +6,87 @@
     display: block;
   }
   
+
+    
+  .create-form-container{
+    height:100%;
+    width:100%;
+    align-items: center;
+    justify-content: center;
+    background:rgba(255, 255, 255, 0.93);
+    z-index: 10000;
+  }
+  
+  .create-form-container.active {
+    top:0;
+    display: flex;
+  }
+  
+  
+  .create-form-container form{
+    margin:2rem;
+    text-align: center;
+    padding:2rem;
+    width:40rem;
+    border-radius: .5rem;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.1);
+    border: .1rem solid rgba(0,0,0,.1);
+    background: #fff;
+  }
+  
+  .create-form-container form .buttons{
+    display: flex;
+    gap:1rem;
+    align-items: center;
+  }
+  
+  .create-form-container form .btn{
+    display: block;
+    width:100%;
+    margin:.5rem 0;
+  }
+  
+  .create-form-container form .box{
+    margin:.7rem 0;
+    width: 100%;
+    font-size: 1.6rem;
+    color: #130f40;
+    text-transform: none;
+    border: .1rem solid rgba(0,0,0,.1);
+    padding:1rem 1.2rem;
+    border-radius: .5rem;
+  }
+  
+  .create-form-container form p{
+    padding:1rem 0;
+    font-size: 1.5rem;
+    color:#666;;
+  }
+  
+  .create-form-container form p a{
+    color: #f9d806;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  
+  .create-form-container form p span{
+    color: #f9d806;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  
+  .create-form-container form h3{
+    padding-bottom:1rem;
+    font-size: 2.5rem;
+    color: #130f40;
+    text-transform: uppercase;
+  }
+  
+  .create-form-container #close-signup-form{
+    position: absolute;
+    top:1.5rem; right:2.5rem;
+    font-size: 5rem;
+    color: #130f40;
+    cursor: pointer;
+  }
+  
