@@ -9,10 +9,14 @@
 
     
   .create-form-container{
+    position: fixed; /* Se asegura de que esté fijo sobre el contenido */
+    top: 0;
+    left: 0;
     height:100%;
     width:100%;
     align-items: center;
     justify-content: center;
+    display: flex;  /* Asegura que se usa flexbox */
     background:rgba(255, 255, 255, 0.93);
     z-index: 10000;
   }
@@ -28,6 +32,9 @@
     text-align: center;
     padding:2rem;
     width:40rem;
+    max-width: 40rem;  /* Limita el tamaño máximo del formulario */
+    margin: 0 auto;  /* Asegura que esté centrado horizontalmente */
+
     border-radius: .5rem;
     box-shadow: 0 .5rem 1rem rgba(0,0,0,.1);
     border: .1rem solid rgba(0,0,0,.1);
