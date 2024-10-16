@@ -21,7 +21,7 @@
   <div id="cars" class="seccion" style="display:none">
     <h1 class="heading">Tabla de <span>Cars</span> </h1>
 
-    <button class="add-button" id="createCar-btn" (click)="toggleCreateCarForm()">
+    <button class="add-button" id="createCar-btn" (click)="openCreateForm('Cars')">
       +
     </button>
     <div class="table-data text-black">
@@ -69,48 +69,15 @@
       </div>
     </div>
 
-    <div #createCarFormContainer class="create-form-container">
+    <app-admin-panel-section *ngIf="isCreateFormVisible" [entity]="'Cars'" (formSubmit)="handleFormSubmit($event)" (closeForm)="handleFormClose()"></app-admin-panel-section>
 
-      <span id="close-create-form" class="fas fa-times"></span>
-
-      <form [formGroup]="createCarForm" (ngSubmit)="createCar()" #f="ngForm">
-          <h3>user signup</h3>
-          <input type="text" placeholder="Username" class="box"  name="username" >
-
-
-          <input type="email" placeholder="Email" class="box" name="email">
-
-
-          <input type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"   minlength="14"
-          maxlength="14" placeholder="Phone Number" class="box" name="phoneNumber">
-
-
-
-          <input type="password" placeholder="Password" class="box" data-type="password" name="password"
-          >
-
-          <input type="password" placeholder="Confirm Password" class="box" data-type="password" name="confirmPassword"
-          >
-
-
-          <p> forget your password <a href="#">click here</a> </p>
-          <input type="submit" value="Sign Up" class="btn">
-          <p>or signup with</p>
-          <div class="buttons">
-              <a href="#" class="btn">google</a>
-              <a href="#" class="btn">facebook</a>
-          </div>
-          <p><span id="AlreadyMember-btn">Already Member?</span></p>
-      </form>
-
-  </div>
 
 </div>
 
 
   <div id="users" class="seccion" style="display:none">
     <h1 class="heading">Tabla de <span>Users</span> </h1>
-    <button class="add-button" id="createCar-btn" (click)="toggleCreateCarForm()">
+    <button class="add-button" id="createCar-btn" (click)="openCreateForm('Users')">
       +
     </button>
     <div class="table-data text-black">
@@ -158,13 +125,13 @@
       </div>
 
     </div>
-    <app-admin-panel-section *ngIf="isCreateCarFormVisible" (formSubmit)="handleFormSubmit($event)" (closeForm)="handleFormClose()"></app-admin-panel-section>
+    <app-admin-panel-section *ngIf="isCreateFormVisible" [entity]="'Users'" (formSubmit)="handleFormSubmit($event)" (closeForm)="handleFormClose()"></app-admin-panel-section>
 
   </div>
 
   <div id="orders" class="seccion" style="display:none">
     <h1 class="heading">Tabla de <span>Orders</span> </h1>
-    <button class="add-button" id="createCar-btn" (click)="toggleCreateCarForm()">
+    <button class="add-button" id="createCar-btn" (click)="openCreateForm('Orders')">
       +
     </button>
     <div class="table-data text-black">
@@ -212,13 +179,13 @@
       </div>
     </div>
 
-    <app-admin-panel-section *ngIf="isCreateCarFormVisible" (formSubmit)="handleFormSubmit($event)" (closeForm)="handleFormClose()"></app-admin-panel-section>
+    <app-admin-panel-section *ngIf="isCreateFormVisible" [entity]="'Orders'" (formSubmit)="handleFormSubmit($event)" (closeForm)="handleFormClose()"></app-admin-panel-section>
 
   </div>
 
   <div id="reviews" class="seccion" style="display:none">
     <h1 class="heading">Tabla de <span>Reviews</span> </h1>
-    <button class="add-button" id="createCar-btn" (click)="toggleCreateCarForm()">
+    <button class="add-button" id="createCar-btn" (click)="openCreateForm('Reviews')">
       +
     </button>
     <div class="table-data text-black">
@@ -265,14 +232,14 @@
         <button (click)="nextPage()" [disabled]="currentPage === pages.length">Siguiente</button>
       </div>
     </div>
-    <app-admin-panel-section *ngIf="isCreateCarFormVisible" (formSubmit)="handleFormSubmit($event)" (closeForm)="handleFormClose()"></app-admin-panel-section>
+    <app-admin-panel-section *ngIf="isCreateFormVisible" [entity]="'Reviews'" (formSubmit)="handleFormSubmit($event)" (closeForm)="handleFormClose()"></app-admin-panel-section>
 
     
   </div>
 
   <div id="carts" class="seccion" style="display:none">
     <h1 class="heading">Tabla de <span>Carts</span> </h1>
-    <button class="add-button" id="createCar-btn" (click)="toggleCreateCarForm()">
+    <button class="add-button" id="createCar-btn" (click)="openCreateForm('Carts')">
       +
     </button>
     <div class="table-data text-black">
@@ -320,7 +287,7 @@
       </div>
     </div>
 
-    <app-admin-panel-section *ngIf="isCreateCarFormVisible" (formSubmit)="handleFormSubmit($event)" (closeForm)="handleFormClose()"></app-admin-panel-section>
+    <app-admin-panel-section *ngIf="isCreateFormVisible" [entity]="'Carts'" (formSubmit)="handleFormSubmit($event)" (closeForm)="handleFormClose()"></app-admin-panel-section>
 
   </div>
 </div>

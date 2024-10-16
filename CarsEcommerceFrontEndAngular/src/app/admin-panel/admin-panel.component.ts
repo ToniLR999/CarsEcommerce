@@ -11,10 +11,13 @@ import { UntypedFormGroup } from '@angular/forms';
 export class AdminPanelComponent implements OnInit{
   isUserLoggedIn: boolean = false;
   user: User;
+  isCreateFormVisible: boolean = false; // Controla la visibilidad del formulario
+  currentEntity: string = '';
+
 
   @ViewChild('createCarFormContainer') addCarFormContainer!: ElementRef;
   createCarForm!: UntypedFormGroup;
-  isCreateCarFormVisible: boolean = false; // Controla la visibilidad del formulario
+
 
 
   paginatedRows: string[][] = []; // Filas mostradas en la página actual
@@ -80,10 +83,31 @@ export class AdminPanelComponent implements OnInit{
   const selectedSection = document.getElementById(seccion);
   if (selectedSection) {
     selectedSection.style.display = 'block';
-    console.log(seccion + " Clickada");
   }
 }
 
+
+
+openCreateForm(entity: string) {
+  this.currentEntity = entity; // Almacenar la entidad
+  this.isCreateFormVisible = true; // Mostrar el formulario
+}
+
+
+handleFormSubmit(formValue: any): void {
+  console.log('Formulario recibido:', formValue);
+  this.toggleCreateCarForm(); // Cierra el formulario después de enviarlo
+}
+
+handleFormClose(): void {
+  this.toggleCreateCarForm(); // Cierra el formulario cuando se pulsa el botón de cierre
+}
+
+
+SignOut() {
+  this.loginService.logOut();
+  this.isUserLoggedIn = false;
+}
 
 
 getTableData(): string[][] {
@@ -140,21 +164,15 @@ getVisiblePages(): number[] {
   return this.pages.slice(start - 1, end);
 }
 toggleCreateCarForm(): void {
-  this.isCreateCarFormVisible = !this.isCreateCarFormVisible; // Alterna la visibilidad
+  this.isCreateFormVisible = !this.isCreateFormVisible; // Alterna la visibilidad
 }
 
-handleFormSubmit(formValue: any): void {
-  console.log('Formulario recibido:', formValue);
-  this.toggleCreateCarForm(); // Cierra el formulario después de enviarlo
+closeCreateForm() {
+  this.isCreateFormVisible = false; // Cerrar el formulario
 }
 
-handleFormClose(): void {
-  this.toggleCreateCarForm(); // Cierra el formulario cuando se pulsa el botón de cierre
-}
 
-SignOut() {
-  this.loginService.logOut();
-  this.isUserLoggedIn = false;
-}
+
+
 
 }

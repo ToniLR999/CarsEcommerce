@@ -260,6 +260,13 @@ opacity: 0.5;
   color: #130f40;
   cursor: pointer;
 }
+.create-form-container #close-create-form{
+  position: absolute;
+  top:1.5rem; right:2.5rem;
+  font-size: 5rem;
+  color:var(--black);
+  cursor: pointer;
+}
 
 
 .btn{
