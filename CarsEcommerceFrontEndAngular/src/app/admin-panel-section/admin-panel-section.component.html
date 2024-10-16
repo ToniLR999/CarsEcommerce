@@ -50,37 +50,62 @@
           <div *ngIf="passwordsNotMatch==true && confirmPasswordEmpty==false && passwordEmpty==false" class="submitErrorMessages">Passsword and
           Confirm Password didn't match. </div>
       </div>
+    </div>
 
-      <p> forget your password <a href="#">click here</a> </p>
-      <input type="submit" value="Sign Up" class="btn">
-      <p>or signup with</p>
-      <div class="buttons">
-          <a href="#" class="btn">google</a>
-          <a href="#" class="btn">facebook</a>
-      </div>
+    <div *ngIf="entity === 'Orders'">
+      <input  type="text" placeholder="Total Price" class="box"  name="totalPrice" formControlName="totalPrice">
+
+      <select placeholder="Status" class="box" name="status" formControlName="status">
+        <option value="" disabled selected>Select a Status</option>
+        <option *ngFor="let brand of carBrands" [value]="brand">{{ brand }}</option>
+      </select>
+
+      <select placeholder="Cars" class="box" name="cars" formControlName="cars">
+        <option value="" disabled selected>Select Cars</option>
+        <option *ngFor="let brand of carBrands" [value]="brand">{{ brand }}</option>
+      </select>
+
+      <select placeholder="User" class="box" name="user" formControlName="user">
+        <option value="" disabled selected>Select a User</option>
+        <option *ngFor="let brand of carBrands" [value]="brand">{{ brand }}</option>
+      </select>
+  
+    </div>
+
+    <div *ngIf="entity === 'Reviews'">
+      <input  type="number" placeholder="Rating" class="box"  name="rating" formControlName="rating">
+
+
+      <input type="text" placeholder="Comment" class="box" name="comment" formControlName="comment">
+
+      <select placeholder="User" class="box" name="user" formControlName="user">
+        <option value="" disabled selected>Select a User</option>
+        <option *ngFor="let brand of carBrands" [value]="brand">{{ brand }}</option>
+      </select>
+
+      <select placeholder="Cars" class="box" name="cars" formControlName="cars">
+        <option value="" disabled selected>Select Cars</option>
+        <option *ngFor="let brand of carBrands" [value]="brand">{{ brand }}</option>
+      </select>
+ 
     </div>
       
-      <input *ngIf="entity === 'Cars'" type="text" placeholder="Name" class="box"  name="name" formControlName="name">
+
+    <div *ngIf="entity === 'Carts'">
+
+      <select placeholder="User" class="box" name="user" formControlName="user">
+        <option value="" disabled selected>Select a User</option>
+        <option *ngFor="let brand of carBrands" [value]="brand">{{ brand }}</option>
+      </select>
+
+      <select placeholder="Cars" class="box" name="cars" formControlName="cars">
+        <option value="" disabled selected>Select Cars</option>
+        <option *ngFor="let brand of carBrands" [value]="brand">{{ brand }}</option>
+      </select>
+
+    </div>
 
 
-      <input *ngIf="entity === 'Cars'" type="email" placeholder="Description" class="box" name="description" formControlName="description">
-
-      <input *ngIf="entity === 'Cars'" type="text" placeholder="Price" class="box" name="price" formControlName="price">
-
-      
-      <input *ngIf="entity === 'Cars'" type="text" placeholder="Stock" class="box" name="stock" formControlName="stock">
-
-
-      <input type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"   minlength="14"
-      maxlength="14" placeholder="Phone Number" class="box" name="phoneNumber">
-
-
-
-      <input type="password" placeholder="Password" class="box" data-type="password" name="password"
-      >
-
-      <input type="password" placeholder="Confirm Password" class="box" data-type="password" name="confirmPassword"
-      >
 
 
       <input type="submit" value="Submit" class="btn" [disabled]="createForm.invalid">

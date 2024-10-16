@@ -13,6 +13,8 @@ export class AdminPanelSectionComponent implements OnInit{
   @Output() formSubmit = new EventEmitter<any>();
   @Output() closeForm = new EventEmitter<void>();
 
+  carBrands: string[] = ['Toyota', 'Honda', 'Ford', 'BMW', 'Audi', 'Mercedes'];
+
 
   @ViewChild('createCarFormContainer') addCarFormContainer!: ElementRef;
   createForm!: UntypedFormGroup;
@@ -52,10 +54,10 @@ export class AdminPanelSectionComponent implements OnInit{
   buildForm() {
     if (this.entity === 'Cars') {
       this.createForm = this.fb.group({
-        make: ['', Validators.required],          // Marca del coche
-        model: ['', Validators.required],         // Modelo
-        year: ['', [Validators.required, Validators.pattern('^[0-9]{4}$')]], // Año de fabricación
-        price: ['', Validators.required]          // Precio
+        name: ['', Validators.required],          // Marca del coche
+        description: ['', Validators.required],         // Modelo
+        price: ['', [Validators.required, Validators.pattern('^[0-9]{4}$')]], // Año de fabricación
+        stock: ['', Validators.required]          // Precio
       });
     } else if (this.entity === 'Users') {
       this.createForm = this.fb.group({
@@ -64,6 +66,28 @@ export class AdminPanelSectionComponent implements OnInit{
         phoneNumber: ['', [Validators.required, Validators.pattern('[0-9]{3}-[0-9]{3}-[0-9]{4}')]], // Número de teléfono
         password: ['', Validators.required],        // Contraseña
         confirmPassword: ['', Validators.required]  // Confirmación de contraseña
+      });
+    }
+    else if (this.entity === 'Orders') {
+      this.createForm = this.fb.group({
+        totalPrice: ['', Validators.required],        // Nombre de usuario
+        status: ['', [Validators.required]],  // Correo electrónico
+        cars: ['', [Validators.required, Validators.pattern('[0-9]{3}-[0-9]{3}-[0-9]{4}')]], // Número de teléfono
+        user: ['', Validators.required]     // Contraseña
+      });
+    }
+    else if (this.entity === 'Reviews') {
+      this.createForm = this.fb.group({
+        rating: ['', Validators.required],        // Nombre de usuario
+        comment: ['', [Validators.required, Validators.email]],  // Correo electrónico
+        user: ['', [Validators.required, Validators.pattern('[0-9]{3}-[0-9]{3}-[0-9]{4}')]], // Número de teléfono
+        cars: ['', Validators.required]        // Contraseña
+      });
+    }
+    else if (this.entity === 'Carts') {
+      this.createForm = this.fb.group({
+        user: ['', Validators.required],        // Nombre de usuario
+        cars: ['', Validators.required] // Confirmación de contraseña
       });
     }
   }
