@@ -188,7 +188,7 @@ export class HomeComponent implements OnInit{
             (user: User) => {  
               // Comprobar el rol del usuario
               console.log("User role:", user.role);
-console.log("Role.ADMIN value:", Role.ADMIN);
+              console.log("Role.ADMIN value:", Role.ADMIN);
               if (user.role === Role.ADMIN) {
                 this.router.navigate(['/', 'admin']);
               console.log("Soy admin");

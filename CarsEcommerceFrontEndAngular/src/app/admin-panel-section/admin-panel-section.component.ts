@@ -2,6 +2,11 @@ import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChang
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { User } from '../services/user/user';
 import { UserService } from '../services/user/user.service';
+import { ReviewService } from '../services/review/review.service';
+import { CarService } from '../services/car/car.service';
+import { CartService } from '../services/cart/cart.service';
+import { OrderService } from '../services/order/order.service';
+import { Car } from '../services/car/car';
 
 @Component({
   selector: 'app-admin-panel-section',
@@ -20,6 +25,8 @@ export class AdminPanelSectionComponent implements OnInit{
   createForm!: UntypedFormGroup;
 
   user: User;
+  car!: Car;
+
   signUpForm!: UntypedFormGroup;
   usernameRepeated: boolean = false;
   usernameEmpty: boolean = false;
@@ -34,7 +41,7 @@ export class AdminPanelSectionComponent implements OnInit{
   emailPattern =  new RegExp (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/);
   phonePattern = new RegExp(/^\d{3}-\d{3}-\d{4}$/);
 
-  constructor(private fb: UntypedFormBuilder, private userService: UserService) {
+  constructor(private fb: UntypedFormBuilder, private userService: UserService, private carService: CarService, private reviewService: ReviewService, private cartService: CartService, private orderService: OrderService) {
     this.user = new User();
 
   }
@@ -95,8 +102,16 @@ export class AdminPanelSectionComponent implements OnInit{
     if (this.createForm.valid) {
 
     if (this.entity === 'Cars') {
-      // Lógica para crear un registro de Car
-    } else if (this.entity === 'Users') {
+      this.carService.addCar(this.user).subscribe(data => {
+        this.singupFormContainer.nativeElement.classList.remove('active');
+        this.loginFormContainer.nativeElement.classList.toggle('active');        
+      })    } else if (this.entity === 'Users') {
+      // Lógica para crear un registro de User
+    } else if (this.entity === 'Orders') {
+      // Lógica para crear un registro de User
+    } else if (this.entity === 'Reviews') {
+      // Lógica para crear un registro de User
+    } else if (this.entity === 'Carts') {
       // Lógica para crear un registro de User
     }
 
