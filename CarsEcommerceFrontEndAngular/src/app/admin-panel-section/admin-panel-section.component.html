@@ -1,4 +1,36 @@
 <div #createCarFormContainer class="create-form-container">
+  <span (click)="onClose()" id="close-create-form" class="fas fa-times"></span>
+
+  <form [formGroup]="createForm" (ngSubmit)="onSubmit()" #f="ngForm">
+    <h3>Create {{ entity }} Form</h3>
+
+    <div *ngFor="let field of formFields">
+      <!-- Campo de entrada dinámico -->
+      <input *ngIf="field.type === 'text' || field.type === 'email' || field.type === 'tel'"
+             [type]="field.type" [placeholder]="field.placeholder" class="box"
+             [name]="field.name" [formControlName]="field.name">
+      
+      <!-- Campo de selección dinámica -->
+      <select *ngIf="field.type === 'select'" class="box" [formControlName]="field.name">
+        <option value="" disabled selected>{{ field.placeholder }}</option>
+        <option *ngFor="let option of field.options" [value]="option">{{ option }}</option>
+      </select>
+      
+      <!-- Mensajes de error dinámicos -->
+      <div *ngIf="isFieldInvalid(field.name)" class="alert-danger">
+        <div *ngFor="let error of field.errors" class="submitErrorMessages">{{ error }}</div>
+      </div>
+    </div>
+
+    <input type="submit" value="Submit" class="btn" [disabled]="createForm.invalid">
+    <input type="button" value="Cancel" class="btn" (click)="onClose()">
+  </form>
+</div>
+
+
+
+
+<!--<div #createCarFormContainer class="create-form-container">
 
   <span (click)="onClose()" id="close-create-form" class="fas fa-times"></span>
 
@@ -114,3 +146,4 @@
     </form>
 
 </div>
+-->
