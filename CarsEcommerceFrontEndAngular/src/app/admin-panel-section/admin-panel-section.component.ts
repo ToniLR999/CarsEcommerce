@@ -30,22 +30,9 @@
 
 
     ngOnInit() {
-      //this.buildForm(); // Construimos el formulario la primera vez
-
-      this.formFields = [
-        { name: 'name', type: 'text', placeholder: 'Car Name', errors: [] },
-        { name: 'description', type: 'text', placeholder: 'Description', errors: [] },
-        { name: 'price', type: 'text', placeholder: 'Price', errors: [] },
-        { name: 'stock', type: 'text', placeholder: 'Stock', errors: [] }
-      ];
+      this.buildForm(); // Construimos el formulario la primera vez
   
-      // Inicializar el formulario reactivo con controles
-      this.createForm = this.fb.group({
-        name: ['', Validators.required],
-        description: ['', Validators.required],
-        price: ['', Validators.required],
-        stock: ['', Validators.required]
-      });
+
     }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -57,30 +44,63 @@
 
     buildForm() {
       if (this.entity === 'Cars') {
-        this.createForm = this.fb.group({
-          name: ['', Validators.required],          // Marca del coche
-          description: ['', Validators.required],         // Modelo
-          price: ['', [Validators.required, Validators.pattern('^[0-9]{4}$')]], // Año de fabricación
-          stock: ['', Validators.required]          // Precio
-        });
+        this.formFields = [
+          { name: 'name', type: 'text', placeholder: 'Car Name', errors: [] },
+          { name: 'description', type: 'text', placeholder: 'Description', errors: [] },
+          { name: 'price', type: 'text', placeholder: 'Price', errors: [] },
+          { name: 'stock', type: 'text', placeholder: 'Stock', errors: [] }
+        ];
+
+              // Inicializar el formulario reactivo con controles
+      this.createForm = this.fb.group({
+        name: ['', Validators.required],
+        description: ['', Validators.required],
+        price: ['', Validators.required],
+        stock: ['', Validators.required]
+      });
       } else if (this.entity === 'Users') {
+
+        this.formFields = [
+          { name: 'username', type: 'text', placeholder: 'Username', errors: [] },
+          { name: 'email', type: 'email', placeholder: 'Email', errors: [] },
+          { name: 'phoneNumber', type: 'text', placeholder: 'PhoneNumber', errors: [] },
+          { name: 'password', type: 'text', placeholder: 'Password', errors: []  },
+          { name: 'role', type: 'select', placeholder: 'Role', errors: [], options: ['ADMIN','USER']  }
+        ];
+
         this.createForm = this.fb.group({
           username: ['', Validators.required],        // Nombre de usuario
           email: ['', [Validators.required, Validators.email]],  // Correo electrónico
-          phoneNumber: ['', [Validators.required, Validators.pattern('[0-9]{3}-[0-9]{3}-[0-9]{4}')]], // Número de teléfono
-          password: ['', Validators.required],        // Contraseña
-          confirmPassword: ['', Validators.required]  // Confirmación de contraseña
+          phoneNumber: ['', [Validators.pattern('[0-9]{3}-[0-9]{3}-[0-9]{4}')]], // Número de teléfono
+          password: ['', Validators.required],
+          role: ['', Validators.required]
+        
+        
         });
       }
-      else if (this.entity === 'Orders') {
-        this.createForm = this.fb.group({
-          totalPrice: ['', Validators.required],        // Nombre de usuario
-          status: ['', [Validators.required]],  // Correo electrónico
-          cars: ['', [Validators.required, Validators.pattern('[0-9]{3}-[0-9]{3}-[0-9]{4}')]], // Número de teléfono
-          user: ['', Validators.required]     // Contraseña
-        });
+        else if (this.entity === 'Orders') {
+
+          this.formFields = [
+            { name: 'totalPrice', type: 'text', placeholder: 'Total Price', errors: [] },
+            { name: 'status', type: 'select', placeholder: 'Select Status', errors: [],   options: ['Pending', 'Completed'] },
+            { name: 'cars', type: 'select', placeholder: 'Select Car', errors: [], options: this.carBrands },
+            { name: 'user', type: 'select', placeholder: 'Select User', errors: [],options: ['User1', 'User2', 'User3']  }
+          ];
+          this.createForm = this.fb.group({
+            totalPrice: ['', Validators.required],        // Nombre de usuario
+            status: ['', [Validators.required]],  // Correo electrónico
+            cars: ['', [Validators.required, Validators.pattern('[0-9]{3}-[0-9]{3}-[0-9]{4}')]], // Número de teléfono
+            user: ['', Validators.required]     // Contraseña
+          });
       }
       else if (this.entity === 'Reviews') {
+        
+        this.formFields = [
+          { name: 'rating', type: 'text', placeholder: 'Rating', errors: [] },
+          { name: 'comment', type: 'text', placeholder: 'Comment', errors: [] },
+          { name: 'user', type: 'select', placeholder: 'Select an User', errors: [],options: ['User1', 'User2', 'User3']  },
+          { name: 'cars', type: 'select', placeholder: 'Select Cars', errors: [], options: this.carBrands  }
+        ];
         this.createForm = this.fb.group({
           rating: ['', Validators.required],        // Nombre de usuario
           comment: ['', [Validators.required, Validators.email]],  // Correo electrónico
@@ -89,6 +109,12 @@
         });
       }
       else if (this.entity === 'Carts') {
+
+        
+        this.formFields = [
+          { name: 'user', type: 'text', placeholder: 'user', errors: [] },
+          { name: 'cars', type: 'text', placeholder: 'cars', errors: [] }
+        ];
         this.createForm = this.fb.group({
           user: ['', Validators.required],        // Nombre de usuario
           cars: ['', Validators.required] // Confirmación de contraseña

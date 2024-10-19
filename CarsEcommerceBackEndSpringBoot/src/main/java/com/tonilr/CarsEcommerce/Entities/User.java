@@ -36,7 +36,7 @@ public class User {
     
 	@Column(nullable = false, updatable = true)
 	private LocalDateTime register_date;
-	
+		
 	@Column(nullable = true, updatable = true)
     private String phoneNumber;
 	
