@@ -112,8 +112,8 @@
 
         
         this.formFields = [
-          { name: 'user', type: 'text', placeholder: 'user', errors: [] },
-          { name: 'cars', type: 'text', placeholder: 'cars', errors: [] }
+          { name: 'user', type: 'select', placeholder: 'Select an User', errors: [],options: ['User1', 'User2', 'User3'] },  
+          { name: 'cars', type: 'select', placeholder: 'Select Cars', errors: [], options: this.carBrands  }
         ];
         this.createForm = this.fb.group({
           user: ['', Validators.required],        // Nombre de usuario
@@ -141,6 +141,8 @@
       if (this.createForm.valid) {
 
         const formData = this.createForm.value;
+
+        console.log(formData);
 
 
       if (this.entity === 'Cars') {
