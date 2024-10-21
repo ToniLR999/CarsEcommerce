@@ -48,7 +48,8 @@
           { name: 'name', type: 'text', placeholder: 'Car Name', errors: [] },
           { name: 'description', type: 'text', placeholder: 'Description', errors: [] },
           { name: 'price', type: 'text', placeholder: 'Price', errors: [] },
-          { name: 'stock', type: 'text', placeholder: 'Stock', errors: [] }
+          { name: 'stock', type: 'text', placeholder: 'Stock', errors: [] },
+          { name: 'category', type: 'select', placeholder: 'Select a Category', errors: [], options: ['ADMIN','USER']  }
         ];
 
               // Inicializar el formulario reactivo con controles
@@ -56,7 +57,8 @@
         name: ['', Validators.required],
         description: ['', Validators.required],
         price: ['', Validators.required],
-        stock: ['', Validators.required]
+        stock: ['', Validators.required],
+        category: ['', Validators.required]
       });
       } else if (this.entity === 'Users') {
 
@@ -69,9 +71,9 @@
         ];
 
         this.createForm = this.fb.group({
-          username: ['', Validators.required],        // Nombre de usuario
-          email: ['', [Validators.required, Validators.email]],  // Correo electrónico
-          phoneNumber: ['', [Validators.pattern('[0-9]{3}-[0-9]{3}-[0-9]{4}')]], // Número de teléfono
+          username: ['', Validators.required],
+          email: ['', [Validators.required, Validators.email]],
+          phoneNumber: ['', [Validators.pattern('[0-9]{3}-[0-9]{3}-[0-9]{4}')]], 
           password: ['', Validators.required],
           role: ['', Validators.required]
         
@@ -89,7 +91,7 @@
           this.createForm = this.fb.group({
             totalPrice: ['', Validators.required],        // Nombre de usuario
             status: ['', [Validators.required]],  // Correo electrónico
-            cars: ['', [Validators.required, Validators.pattern('[0-9]{3}-[0-9]{3}-[0-9]{4}')]], // Número de teléfono
+            cars: ['', [Validators.required]], // Número de teléfono
             user: ['', Validators.required]     // Contraseña
           });
       }
@@ -102,10 +104,10 @@
           { name: 'cars', type: 'select', placeholder: 'Select Cars', errors: [], options: this.carBrands  }
         ];
         this.createForm = this.fb.group({
-          rating: ['', Validators.required],        // Nombre de usuario
-          comment: ['', [Validators.required, Validators.email]],  // Correo electrónico
-          user: ['', [Validators.required, Validators.pattern('[0-9]{3}-[0-9]{3}-[0-9]{4}')]], // Número de teléfono
-          cars: ['', Validators.required]        // Contraseña
+          rating: ['', Validators.required],      
+          comment: ['', [Validators.required, Validators.email]],  
+          user: ['', [Validators.required]],
+          cars: ['', Validators.required]     
         });
       }
       else if (this.entity === 'Carts') {
@@ -116,8 +118,8 @@
           { name: 'cars', type: 'select', placeholder: 'Select Cars', errors: [], options: this.carBrands  }
         ];
         this.createForm = this.fb.group({
-          user: ['', Validators.required],        // Nombre de usuario
-          cars: ['', Validators.required] // Confirmación de contraseña
+          user: ['', Validators.required],
+          cars: ['', Validators.required] 
         });
       }
 
