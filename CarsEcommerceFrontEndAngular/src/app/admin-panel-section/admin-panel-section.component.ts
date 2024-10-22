@@ -23,6 +23,9 @@
 
 
     carBrands: string[] = ['Toyota', 'Honda', 'Ford', 'BMW', 'Audi', 'Mercedes'];
+    cars: Car[] = [];  // Para almacenar la lista de coches desde la API
+    users: User[] = [];  // Para almacenar la lista de users desde la API
+
 
 
     constructor(private fb: UntypedFormBuilder, private userService: UserService, private carService: CarService, private reviewService: ReviewService, private cartService: CartService, private orderService: OrderService) {
@@ -30,8 +33,10 @@
 
 
     ngOnInit() {
+      console.log("OnInit");
+      this.loadOptionsData();  // Cargamos los coches al inicializar el componente
       this.buildForm(); // Construimos el formulario la primera vez
-  
+
 
     }
 
@@ -85,8 +90,8 @@
           this.formFields = [
             { name: 'totalPrice', type: 'text', placeholder: 'Total Price', errors: [] },
             { name: 'status', type: 'select', placeholder: 'Select Status', errors: [],   options: ['Pending', 'Completed'] },
-            { name: 'cars', type: 'select', placeholder: 'Select Car', errors: [], options: this.carBrands },
-            { name: 'user', type: 'select', placeholder: 'Select User', errors: [],options: ['User1', 'User2', 'User3']  }
+            { name: 'cars', type: 'select', placeholder: 'Select Car', errors: [], options: this.cars.map(car => car.name)  },
+            { name: 'user', type: 'select', placeholder: 'Select User', errors: [],options: this.users.map(user => user.username)   }
           ];
           this.createForm = this.fb.group({
             totalPrice: ['', Validators.required],        // Nombre de usuario
@@ -100,8 +105,8 @@
         this.formFields = [
           { name: 'rating', type: 'text', placeholder: 'Rating', errors: [] },
           { name: 'comment', type: 'text', placeholder: 'Comment', errors: [] },
-          { name: 'user', type: 'select', placeholder: 'Select an User', errors: [],options: ['User1', 'User2', 'User3']  },
-          { name: 'cars', type: 'select', placeholder: 'Select Cars', errors: [], options: this.carBrands  }
+          { name: 'user', type: 'select', placeholder: 'Select an User', errors: [],options: this.users.map(user => user.username) },
+          { name: 'cars', type: 'select', placeholder: 'Select Cars', errors: [], options: this.cars.map(car => car.name) }
         ];
         this.createForm = this.fb.group({
           rating: ['', Validators.required],      
@@ -114,8 +119,8 @@
 
         
         this.formFields = [
-          { name: 'user', type: 'select', placeholder: 'Select an User', errors: [],options: ['User1', 'User2', 'User3'] },  
-          { name: 'cars', type: 'select', placeholder: 'Select Cars', errors: [], options: this.carBrands  }
+          { name: 'user', type: 'select', placeholder: 'Select an User', errors: [],options: this.users.map(user => user.username) },  
+          { name: 'cars', type: 'select', placeholder: 'Select Cars', errors: [], options: this.cars.map(car => car.name)  }
         ];
         this.createForm = this.fb.group({
           user: ['', Validators.required],
@@ -170,5 +175,34 @@
     onClose(): void {
       this.closeForm.emit(); // Emitimos un evento para cerrar el formulario
     }
+
+      // Método para cargar los coches desde el servicio
+  loadOptionsData() {
+    console.log("Loading data");
+    this.carService.getCars().subscribe(
+      (cars: Car[]) => {
+        console.log('Coches recibidos:', cars);  // Verifica si recibes los datos aquí
+        this.cars = cars;
+      },
+      (error) => {
+        console.error('Error al cargar coches', error);
+      }
+    );
+
+    this.userService.getUsers().subscribe(
+      (users: User[]) => {
+        console.log('Users recibidos:', users);  // Verifica si recibes los datos aquí
+
+        this.users = users;
+      },
+      (error) => {
+        console.error('Error al cargar users', error);
+      }
+    );
+
+    console.log("Cars: "+this.cars);
+    console.log("Users: "+this.users);
+
+  }
     
   }
