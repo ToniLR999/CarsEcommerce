@@ -183,6 +183,10 @@
       (cars: Car[]) => {
         console.log('Coches recibidos:', cars);  // Verifica si recibes los datos aquí
         this.cars = cars;
+
+        if (this.entity === 'Orders' || this.entity === 'Reviews' || this.entity === 'Carts') {
+          this.buildForm();  // Llamamos a buildForm nuevamente después de recibir los coches
+        }
       },
       (error) => {
         console.error('Error al cargar coches', error);
@@ -194,6 +198,10 @@
         console.log('Users recibidos:', users);  // Verifica si recibes los datos aquí
 
         this.users = users;
+
+        if (this.entity === 'Orders' || this.entity === 'Reviews' || this.entity === 'Carts') {
+          this.buildForm();  // Llamamos a buildForm nuevamente después de recibir los coches
+        }
       },
       (error) => {
         console.error('Error al cargar users', error);
