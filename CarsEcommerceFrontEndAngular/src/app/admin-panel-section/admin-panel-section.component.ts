@@ -33,7 +33,7 @@
 
 
     ngOnInit() {
-      console.log("OnInit");
+      console.log("a");
       this.loadOptionsData();  // Cargamos los coches al inicializar el componente
       this.buildForm(); // Construimos el formulario la primera vez
 
