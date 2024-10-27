@@ -26,6 +26,9 @@
     cars: Car[] = [];  // Para almacenar la lista de coches desde la API
     users: User[] = [];  // Para almacenar la lista de users desde la API
     categories: string[] = [];  // Almacena las categorías del enum
+    roles: string[] = [];  // Almacena las categorías del enum
+    orderStatuses: string[] = [];  // Almacena las categorías del enum
+
 
 
 
@@ -74,7 +77,7 @@
           { name: 'email', type: 'email', placeholder: 'Email', errors: [] },
           { name: 'phoneNumber', type: 'text', placeholder: 'PhoneNumber', errors: [] },
           { name: 'password', type: 'text', placeholder: 'Password', errors: []  },
-          { name: 'role', type: 'select', placeholder: 'Role', errors: [], options: ['ADMIN','USER']  }
+          { name: 'role', type: 'select', placeholder: 'Role', errors: [], options: this.roles.map(role => role)  }
         ];
 
         this.createForm = this.fb.group({
@@ -91,7 +94,7 @@
 
           this.formFields = [
             { name: 'totalPrice', type: 'text', placeholder: 'Total Price', errors: [] },
-            { name: 'status', type: 'select', placeholder: 'Select Status', errors: [],   options: ['Pending', 'Completed'] },
+            { name: 'status', type: 'select', placeholder: 'Select Status', errors: [],   options: this.orderStatuses.map(status => status) },
             { name: 'cars', type: 'select', placeholder: 'Select Car', errors: [], options: this.cars.map(car => car.name)  },
             { name: 'user', type: 'select', placeholder: 'Select User', errors: [],options: this.users.map(user => user.username)   }
           ];
@@ -220,6 +223,34 @@
       },
       (error) => {
         console.error('Error al cargar users', error);
+      }
+    );
+
+    
+    this.userService.getRoles().subscribe(
+      (roles: string[]) => {
+        console.log('Roles recibidos:', roles);  // Verifica si recibes los datos aquí
+
+        this.roles = roles;
+
+          this.buildForm();  // Llamamos a buildForm nuevamente después de recibir los coches
+      },
+      (error) => {
+        console.error('Error al cargar roles', error);
+      }
+    );
+
+
+    this.orderService.getStatuses().subscribe(
+      (statuses: string[]) => {
+        console.log('Status recibidos:', statuses);  // Verifica si recibes los datos aquí
+
+        this.orderStatuses = statuses;
+
+          this.buildForm();  // Llamamos a buildForm nuevamente después de recibir los coches
+      },
+      (error) => {
+        console.error('Error al cargar statuses', error);
       }
     );
 

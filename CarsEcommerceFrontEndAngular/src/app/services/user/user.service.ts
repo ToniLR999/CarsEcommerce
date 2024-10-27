@@ -20,6 +20,10 @@ export class UserService {
 
   }
 
+  public getRoles(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.apiServerUrl}/role/all`);
+  }
+
   public  loginUser(user: User): Observable<User> {
     return this.http.post<User>(`${this.apiServerUrl}/user/login`,user);
 	}
