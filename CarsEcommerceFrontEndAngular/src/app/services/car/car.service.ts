@@ -19,6 +19,10 @@ export class CarService {
     return this.http.get<Car[]>(`${this.apiServerUrl}/car/all`);
 
   }
+
+  public getCategories(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.apiServerUrl}/category/all`);
+  }
   
   public getCarbyId(id: number): Observable<Car>{
     return this.http.get<Car>(`${this.apiServerUrl}/car/find/${id}`);

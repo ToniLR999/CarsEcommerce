@@ -25,6 +25,8 @@
     carBrands: string[] = ['Toyota', 'Honda', 'Ford', 'BMW', 'Audi', 'Mercedes'];
     cars: Car[] = [];  // Para almacenar la lista de coches desde la API
     users: User[] = [];  // Para almacenar la lista de users desde la API
+    categories: string[] = [];  // Almacena las categorías del enum
+
 
 
 
@@ -54,7 +56,7 @@
           { name: 'description', type: 'text', placeholder: 'Description', errors: [] },
           { name: 'price', type: 'text', placeholder: 'Price', errors: [] },
           { name: 'stock', type: 'text', placeholder: 'Stock', errors: [] },
-          { name: 'category', type: 'select', placeholder: 'Select a Category', errors: [], options: ['ADMIN','USER']  }
+          { name: 'category', type: 'select', placeholder: 'Select a Category', errors: [], options: this.categories.map(category => category)  }
         ];
 
               // Inicializar el formulario reactivo con controles
@@ -190,6 +192,19 @@
       },
       (error) => {
         console.error('Error al cargar coches', error);
+      }
+    );
+
+    this.carService.getCategories().subscribe(
+      (categories: string[]) => {
+        console.log('Categories recibidas:', categories);  // Verifica si recibes los datos aquí
+        this.categories  = categories;
+        this.buildForm();  // Construimos el formulario después de recibir las categorías
+
+          this.buildForm();  // Llamamos a buildForm nuevamente después de recibir los coches
+      },
+      (error) => {
+        console.error('Error al cargar categorias', error);
       }
     );
 
