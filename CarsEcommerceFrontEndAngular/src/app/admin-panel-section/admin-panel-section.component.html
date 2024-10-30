@@ -13,7 +13,12 @@
       <!-- Campo de selección dinámica -->
       <select *ngIf="field.type === 'select'" class="box" [formControlName]="field.name">
         <option value="" disabled selected>{{ field.placeholder }}</option>
-        <option *ngFor="let option of field.options" [value]="option">{{ option }}</option>
+        <option *ngFor="let option of field.options" [ngValue]="option">{{ option.name || option.username || option }}</option>
+      </select>
+
+      <!-- Campo de selección múltiple dinámica -->
+      <select *ngIf="field.type === 'select-multiple'" class="box" [formControlName]="field.name" multiple>
+        <option *ngFor="let option of field.options" [ngValue]="option">{{ option.name || option.username || option }}</option>
       </select>
       
       <!-- Mensajes de error dinámicos -->
@@ -26,124 +31,3 @@
     <input type="button" value="Cancel" class="btn" (click)="onClose()">
   </form>
 </div>
-
-
-
-
-<!--<div #createCarFormContainer class="create-form-container">
-
-  <span (click)="onClose()" id="close-create-form" class="fas fa-times"></span>
-
-  <form [formGroup]="createForm" (ngSubmit)="onSubmit()" #f="ngForm">
-        <h3>create {{entity}} form</h3>
-
-
-      <input *ngIf="entity === 'Cars'" type="text" placeholder="Name" class="box"  name="name" formControlName="name">
-
-
-      <input *ngIf="entity === 'Cars'" type="email" placeholder="Description" class="box" name="description" formControlName="description">
-
-      <input *ngIf="entity === 'Cars'" type="text" placeholder="Price" class="box" name="price" formControlName="price">
-
-      
-      <input *ngIf="entity === 'Cars'" type="text" placeholder="Stock" class="box" name="stock" formControlName="stock">
-
-    <div *ngIf="entity === 'Users'">
-      <input type="text" placeholder="Username" class="box"  name="username" formControlName="username"   [(ngModel)]="user.username">
-      <div *ngIf="usernameEmpty==true || usernameRepeated==true " class="alert-danger">
-          <div *ngIf="usernameEmpty==true" class="submitErrorMessages">Username is required.</div>
-          <div *ngIf="usernameRepeated==true" class="submitErrorMessages">Username is repeated. </div>
-      </div>
-
-      <input type="email" placeholder="Email" class="box" name="email" formControlName="email"  [(ngModel)]="user.email">
-      <div *ngIf="emailRepeated==true || emailInvalid==true || emailEmpty == true" class="alert-danger">
-          <div *ngIf="emailEmpty == true" class="submitErrorMessages">Email is required.</div>
-          <div *ngIf="emailRepeated==true" class="submitErrorMessages">Email is repeated. </div>
-          <div *ngIf="emailInvalid==true" class="submitErrorMessages">Please provide a valid email address. </div>
-      </div>
-
-      <input type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"   minlength="14"
-      maxlength="14" placeholder="Phone Number" class="box" name="phoneNumber" formControlName="phoneNumber"  [(ngModel)]="user.phoneNumber">
-      <div *ngIf="phoneInvalid==true || phoneRepeated == true" class="alert-danger">
-          <div *ngIf="phoneInvalid==true" class="submitErrorMessages">The Phone Number must be in the format XXX-XXX-XXXX.</div>
-          <div *ngIf="phoneRepeated==true" class="submitErrorMessages">The Phone Number is repeated.</div>
-      </div>
-
-
-      <input type="password" placeholder="Password" class="box" data-type="password" name="password"
-      formControlName="password"   [(ngModel)]="user.password">
-      <div *ngIf="passwordEmpty==true" class="alert alert-danger">
-          <div class="submitErrorMessages">Password is required</div>
-      </div>
-      <input type="password" placeholder="Confirm Password" class="box" data-type="password" name="confirmPassword"
-      formControlName="confirmPassword" >
-      <div *ngIf="passwordsNotMatch==true ||  confirmPasswordEmpty==true" class="alert alert-danger">
-          <div *ngIf="confirmPasswordEmpty==true" class="submitErrorMessages">Confirm Password is required.</div>
-          <div *ngIf="passwordsNotMatch==true && confirmPasswordEmpty==false && passwordEmpty==false" class="submitErrorMessages">Passsword and
-          Confirm Password didn't match. </div>
-      </div>
-    </div>
-
-    <div *ngIf="entity === 'Orders'">
-      <input  type="text" placeholder="Total Price" class="box"  name="totalPrice" formControlName="totalPrice">
-
-      <select placeholder="Status" class="box" name="status" formControlName="status">
-        <option value="" disabled selected>Select a Status</option>
-        <option *ngFor="let brand of carBrands" [value]="brand">{{ brand }}</option>
-      </select>
-
-      <select placeholder="Cars" class="box" name="cars" formControlName="cars">
-        <option value="" disabled selected>Select Cars</option>
-        <option *ngFor="let brand of carBrands" [value]="brand">{{ brand }}</option>
-      </select>
-
-      <select placeholder="User" class="box" name="user" formControlName="user">
-        <option value="" disabled selected>Select a User</option>
-        <option *ngFor="let brand of carBrands" [value]="brand">{{ brand }}</option>
-      </select>
-  
-    </div>
-
-    <div *ngIf="entity === 'Reviews'">
-      <input  type="number" placeholder="Rating" class="box"  name="rating" formControlName="rating">
-
-
-      <input type="text" placeholder="Comment" class="box" name="comment" formControlName="comment">
-
-      <select placeholder="User" class="box" name="user" formControlName="user">
-        <option value="" disabled selected>Select a User</option>
-        <option *ngFor="let brand of carBrands" [value]="brand">{{ brand }}</option>
-      </select>
-
-      <select placeholder="Cars" class="box" name="cars" formControlName="cars">
-        <option value="" disabled selected>Select Cars</option>
-        <option *ngFor="let brand of carBrands" [value]="brand">{{ brand }}</option>
-      </select>
- 
-    </div>
-      
-
-    <div *ngIf="entity === 'Carts'">
-
-      <select placeholder="User" class="box" name="user" formControlName="user">
-        <option value="" disabled selected>Select a User</option>
-        <option *ngFor="let brand of carBrands" [value]="brand">{{ brand }}</option>
-      </select>
-
-      <select placeholder="Cars" class="box" name="cars" formControlName="cars">
-        <option value="" disabled selected>Select Cars</option>
-        <option *ngFor="let brand of carBrands" [value]="brand">{{ brand }}</option>
-      </select>
-
-    </div>
-
-
-
-
-      <input type="submit" value="Submit" class="btn" [disabled]="createForm.invalid">
-      <input type="submit" value="Cancel" class="btn" (click)="onClose()">
-
-    </form>
-
-</div>
--->

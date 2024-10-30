@@ -2,6 +2,7 @@ package com.tonilr.CarsEcommerce.Controllers;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,6 +22,6 @@ public class CategoryController {
         return Arrays.asList(CarCategory.values())  // Devuelve una lista de categorías
             .stream()
             .map(Enum::name)
-            .toList();
-    }
+            .collect(Collectors.toList());
+        }
 }

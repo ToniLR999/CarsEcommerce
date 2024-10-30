@@ -7,6 +7,7 @@
   import { CartService } from '../services/cart/cart.service';
   import { OrderService } from '../services/order/order.service';
   import { Car } from '../services/car/car';
+import { forkJoin } from 'rxjs';
 
   @Component({
     selector: 'app-admin-panel-section',
@@ -29,16 +30,18 @@
     roles: string[] = [];  // Almacena las categorías del enum
     orderStatuses: string[] = [];  // Almacena las categorías del enum
 
-
-
-
-
-    constructor(private fb: UntypedFormBuilder, private userService: UserService, private carService: CarService, private reviewService: ReviewService, private cartService: CartService, private orderService: OrderService) {
-    }
+    constructor(
+      private fb: UntypedFormBuilder, 
+      private userService: UserService, 
+      private carService: CarService, 
+      private reviewService: ReviewService, 
+      private cartService: CartService, 
+      private orderService: OrderService
+    ) 
+      {}
 
 
     ngOnInit() {
-      console.log("b");
       this.loadOptionsData();  // Cargamos los coches al inicializar el componente
       this.buildForm(); // Construimos el formulario la primera vez
 
@@ -124,12 +127,12 @@
 
         
         this.formFields = [
-          { name: 'user', type: 'select', placeholder: 'Select an User', errors: [],options: this.users.map(user => user.username) },  
-          { name: 'cars', type: 'select', placeholder: 'Select Cars', errors: [], options: this.cars.map(car => car.name)  }
+          { name: 'user', type: 'select', placeholder: 'Select an User', errors: [],options: this.users },  
+          { name: 'cars', type: 'select-multiple', placeholder: 'Select Cars', errors: [], options: this.cars }
         ];
         this.createForm = this.fb.group({
           user: ['', Validators.required],
-          cars: ['', Validators.required] 
+          cars: [[], Validators.required] 
         });
       }
 
@@ -166,11 +169,13 @@
       } else if (this.entity === 'Reviews') {
         this.reviewService.addReview(formData).subscribe();      
       } else if (this.entity === 'Carts') {
+        console.log("Coches seleccionados:", formData.cars);
+
         this.cartService.addCart(formData).subscribe();      
       }
 
       
-      this.formSubmit.emit(this.createForm.value); // Emitimos los datos del formulario
+      this.formSubmit.emit(formData); // Emitimos los datos del formulario
       this.createForm.reset(); // Limpiamos el formulario después de enviar
     }
 
@@ -182,81 +187,81 @@
     }
 
       // Método para cargar los coches desde el servicio
-  loadOptionsData() {
-    console.log("Loading data");
-    this.carService.getCars().subscribe(
-      (cars: Car[]) => {
-        console.log('Coches recibidos:', cars);  // Verifica si recibes los datos aquí
-        this.cars = cars;
+    loadOptionsData() {
+      console.log("Loading data");
+      this.carService.getCars().subscribe(
+        (cars: Car[]) => {
+          console.log('Coches recibidos:', cars);  // Verifica si recibes los datos aquí
+          this.cars = cars;
 
-        if (this.entity === 'Orders' || this.entity === 'Reviews' || this.entity === 'Carts') {
-          this.buildForm();  // Llamamos a buildForm nuevamente después de recibir los coches
+          if (this.entity === 'Orders' || this.entity === 'Reviews' || this.entity === 'Carts') {
+            this.buildForm();  // Llamamos a buildForm nuevamente después de recibir los coches
+          }
+        },
+        (error) => {
+          console.error('Error al cargar coches', error);
         }
-      },
-      (error) => {
-        console.error('Error al cargar coches', error);
-      }
-    );
+      );
 
-    this.carService.getCategories().subscribe(
-      (categories: string[]) => {
-        console.log('Categories recibidas:', categories);  // Verifica si recibes los datos aquí
-        this.categories  = categories;
-        this.buildForm();  // Construimos el formulario después de recibir las categorías
+      this.carService.getCategories().subscribe(
+        (categories: string[]) => {
+          console.log('Categories recibidas:', categories);  // Verifica si recibes los datos aquí
+          this.categories  = categories;
+          this.buildForm();  // Construimos el formulario después de recibir las categorías
 
-          this.buildForm();  // Llamamos a buildForm nuevamente después de recibir los coches
-      },
-      (error) => {
-        console.error('Error al cargar categorias', error);
-      }
-    );
-
-    this.userService.getUsers().subscribe(
-      (users: User[]) => {
-        console.log('Users recibidos:', users);  // Verifica si recibes los datos aquí
-
-        this.users = users;
-
-        if (this.entity === 'Orders' || this.entity === 'Reviews' || this.entity === 'Carts') {
-          this.buildForm();  // Llamamos a buildForm nuevamente después de recibir los coches
+            this.buildForm();  // Llamamos a buildForm nuevamente después de recibir los coches
+        },
+        (error) => {
+          console.error('Error al cargar categorias', error);
         }
-      },
-      (error) => {
-        console.error('Error al cargar users', error);
-      }
-    );
+      );
 
-    
-    this.userService.getRoles().subscribe(
-      (roles: string[]) => {
-        console.log('Roles recibidos:', roles);  // Verifica si recibes los datos aquí
+      this.userService.getUsers().subscribe(
+        (users: User[]) => {
+          console.log('Users recibidos:', users);  // Verifica si recibes los datos aquí
 
-        this.roles = roles;
+          this.users = users;
 
-          this.buildForm();  // Llamamos a buildForm nuevamente después de recibir los coches
-      },
-      (error) => {
-        console.error('Error al cargar roles', error);
-      }
-    );
+          if (this.entity === 'Orders' || this.entity === 'Reviews' || this.entity === 'Carts') {
+            this.buildForm();  // Llamamos a buildForm nuevamente después de recibir los coches
+          }
+        },
+        (error) => {
+          console.error('Error al cargar users', error);
+        }
+      );
+
+      
+      this.userService.getRoles().subscribe(
+        (roles: string[]) => {
+          console.log('Roles recibidos:', roles);  // Verifica si recibes los datos aquí
+
+          this.roles = roles;
+
+            this.buildForm();  // Llamamos a buildForm nuevamente después de recibir los coches
+        },
+        (error) => {
+          console.error('Error al cargar roles', error);
+        }
+      );
 
 
-    this.orderService.getStatuses().subscribe(
-      (statuses: string[]) => {
-        console.log('Status recibidos:', statuses);  // Verifica si recibes los datos aquí
+      this.orderService.getStatuses().subscribe(
+        (statuses: string[]) => {
+          console.log('Status recibidos:', statuses);  // Verifica si recibes los datos aquí
 
-        this.orderStatuses = statuses;
+          this.orderStatuses = statuses;
 
-          this.buildForm();  // Llamamos a buildForm nuevamente después de recibir los coches
-      },
-      (error) => {
-        console.error('Error al cargar statuses', error);
-      }
-    );
+            this.buildForm();  // Llamamos a buildForm nuevamente después de recibir los coches
+        },
+        (error) => {
+          console.error('Error al cargar statuses', error);
+        }
+      );
 
-    console.log("Cars: "+this.cars);
-    console.log("Users: "+this.users);
+      console.log("Cars: "+this.cars);
+      console.log("Users: "+this.users);
 
-  }
+    }
     
   }
