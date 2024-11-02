@@ -8,6 +8,8 @@
   import { OrderService } from '../services/order/order.service';
   import { Car } from '../services/car/car';
 import { forkJoin } from 'rxjs';
+import { Order } from '../services/order/order';
+import { Review } from '../services/review/review';
 
   @Component({
     selector: 'app-admin-panel-section',
@@ -28,6 +30,10 @@ import { forkJoin } from 'rxjs';
     users: User[] = [];  // Para almacenar la lista de users desde la API
     categories: string[] = [];  // Almacena las categorías del enum
     roles: string[] = [];  // Almacena las categorías del enum
+    images: string[] = [];  // Almacena las categorías del enum
+    orders: Order[] = [];  // Almacena las categorías del enum
+    reviews: Review[] = [];  // Almacena las categorías del enum
+    carts: string[] = [];  // Almacena las categorías del enum
     orderStatuses: string[] = [];  // Almacena las categorías del enum
 
     constructor(
@@ -62,7 +68,11 @@ import { forkJoin } from 'rxjs';
           { name: 'description', type: 'text', placeholder: 'Description', errors: [] },
           { name: 'price', type: 'text', placeholder: 'Price', errors: [] },
           { name: 'stock', type: 'text', placeholder: 'Stock', errors: [] },
-          { name: 'category', type: 'select', placeholder: 'Select a Category', errors: [], options: this.categories.map(category => category)  }
+          { name: 'category', type: 'select', placeholder: 'Select a Category', errors: [], options: this.categories.map(category => category)  },
+          { name: 'images', type: 'select-multiple', placeholder: 'Select Images', errors: [], options: this.images  },
+          { name: 'orders', type: 'select-multiple', placeholder: 'Select Orders', errors: [], options: this.orders  },
+          { name: 'reviews', type: 'select-multiple', placeholder: 'Select Reviews', errors: [], options: this.reviews  },
+          { name: 'carts', type: 'select-multiple', placeholder: 'Select Carts', errors: [], options: this.carts  },
         ];
 
               // Inicializar el formulario reactivo con controles
@@ -80,7 +90,10 @@ import { forkJoin } from 'rxjs';
           { name: 'email', type: 'email', placeholder: 'Email', errors: [] },
           { name: 'phoneNumber', type: 'text', placeholder: 'PhoneNumber', errors: [] },
           { name: 'password', type: 'text', placeholder: 'Password', errors: []  },
-          { name: 'role', type: 'select', placeholder: 'Role', errors: [], options: this.roles.map(role => role)  }
+          { name: 'role', type: 'select', placeholder: 'Select Role', errors: [], options: this.roles.map(role => role)  },
+          { name: 'orders', type: 'select-multiple', placeholder: 'Select Orders', errors: [], options: this.orders  },
+          { name: 'reviews', type: 'select-multiple', placeholder: 'Select Reviews', errors: [], options: this.reviews  },
+          { name: 'cart', type: 'select', placeholder: 'Select Cart', errors: [], options: this.carts }
         ];
 
         this.createForm = this.fb.group({
@@ -98,8 +111,8 @@ import { forkJoin } from 'rxjs';
           this.formFields = [
             { name: 'totalPrice', type: 'text', placeholder: 'Total Price', errors: [] },
             { name: 'status', type: 'select', placeholder: 'Select Status', errors: [],   options: this.orderStatuses.map(status => status) },
-            { name: 'cars', type: 'select', placeholder: 'Select Car', errors: [], options: this.cars.map(car => car.name)  },
-            { name: 'user', type: 'select', placeholder: 'Select User', errors: [],options: this.users.map(user => user.username)   }
+            { name: 'cars', type: 'select-multiple', placeholder: 'Select Car', errors: [], options: this.cars  },
+            { name: 'user', type: 'select', placeholder: 'Select User', errors: [],options: this.users   }
           ];
           this.createForm = this.fb.group({
             totalPrice: ['', Validators.required],        // Nombre de usuario
@@ -113,8 +126,8 @@ import { forkJoin } from 'rxjs';
         this.formFields = [
           { name: 'rating', type: 'text', placeholder: 'Rating', errors: [] },
           { name: 'comment', type: 'text', placeholder: 'Comment', errors: [] },
-          { name: 'user', type: 'select', placeholder: 'Select an User', errors: [],options: this.users.map(user => user.username) },
-          { name: 'cars', type: 'select', placeholder: 'Select Cars', errors: [], options: this.cars.map(car => car.name) }
+          { name: 'user', type: 'select', placeholder: 'Select an User', errors: [],options: this.users },
+          { name: 'cars', type: 'select-multiple', placeholder: 'Select Cars', errors: [], options: this.cars }
         ];
         this.createForm = this.fb.group({
           rating: ['', Validators.required],      
@@ -245,6 +258,18 @@ import { forkJoin } from 'rxjs';
         }
       );
 
+      this.orderService.getOrders().subscribe(
+        (orders: Order[]) => {
+          console.log('Orders recibidos:', orders);  // Verifica si recibes los datos aquí
+
+          this.orders = orders;
+
+            this.buildForm();  // Llamamos a buildForm nuevamente después de recibir los coches
+        },
+        (error) => {
+          console.error('Error al cargar statuses', error);
+        }
+      );
 
       this.orderService.getStatuses().subscribe(
         (statuses: string[]) => {
