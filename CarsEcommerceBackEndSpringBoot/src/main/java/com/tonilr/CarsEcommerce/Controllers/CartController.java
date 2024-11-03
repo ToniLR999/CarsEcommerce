@@ -30,11 +30,13 @@ public class CartController {
 	@Autowired
 	private final CartServices cartService;
 	
+	@Autowired
 	private UserRepo userRepository;
 
 	
 	public CartController(CartServices cartService) {
 		this.cartService = cartService;
+
 	}
 
 	@GetMapping("/all")
@@ -51,9 +53,6 @@ public class CartController {
 
 	@PostMapping("/add")
 	public ResponseEntity<Cart> addCart(@RequestBody Cart cart) {
-		if (cart == null || cart.getUser() == null) {
-		    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
 		User user = userRepository.findById(cart.getUser().getId())
 		        .orElseThrow(() -> new NotFoundException("User not found with id: " + cart.getUser().getId()));
 	        cart.setUser(user);

@@ -32,7 +32,7 @@ public class Review {
 	    @Column(nullable = false)
 	    private Date createdAt;
 
-	    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+	    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, optional = false)
 	    @JoinColumn(name = "user_id", nullable = false)
 	    private User user;
 	    

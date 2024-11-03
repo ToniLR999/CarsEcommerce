@@ -25,7 +25,7 @@ public class Cart {
     @JoinColumn(name = "user_id", nullable = true)    
     private User user;
 
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
 	private Set<Car> cars = new HashSet<Car>();
 
     // Getters and Setters
