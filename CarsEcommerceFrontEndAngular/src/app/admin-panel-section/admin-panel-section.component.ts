@@ -10,6 +10,7 @@
 import { forkJoin } from 'rxjs';
 import { Order } from '../services/order/order';
 import { Review } from '../services/review/review';
+import { Cart } from '../services/cart/cart';
 
   @Component({
     selector: 'app-admin-panel-section',
@@ -33,7 +34,7 @@ import { Review } from '../services/review/review';
     images: string[] = [];  // Almacena las categorías del enum
     orders: Order[] = [];  // Almacena las categorías del enum
     reviews: Review[] = [];  // Almacena las categorías del enum
-    carts: string[] = [];  // Almacena las categorías del enum
+    carts: Cart[] = [];  // Almacena las categorías del enum
     orderStatuses: string[] = [];  // Almacena las categorías del enum
 
     constructor(
@@ -170,7 +171,7 @@ import { Review } from '../services/review/review';
 
         const formData = this.createForm.value;
 
-        console.log(formData);
+       //console.log(formData);
 
 
       if (this.entity === 'Cars') {
@@ -180,6 +181,13 @@ import { Review } from '../services/review/review';
       } else if (this.entity === 'Orders') {
         this.orderService.addOrder(formData).subscribe();      
       } else if (this.entity === 'Reviews') {
+
+        formData.cars = formData.cars.map((car: Car) => car.car_Id);
+
+        formData.users = formData.users.map((user: User) => user.user_Id);
+
+        console.log(formData);
+
         this.reviewService.addReview(formData).subscribe();      
       } else if (this.entity === 'Carts') {
         console.log("Coches seleccionados:", formData.cars);
@@ -258,6 +266,19 @@ import { Review } from '../services/review/review';
         }
       );
 
+      this.reviewService.getReviews().subscribe(
+        (reviews: Review[]) => {
+          console.log('Reviews recibidos:', reviews);  // Verifica si recibes los datos aquí
+
+          this.reviews = reviews;
+
+            this.buildForm();  // Llamamos a buildForm nuevamente después de recibir los coches
+        },
+        (error) => {
+          console.error('Error al cargar reviews', error);
+        }
+      );
+
       this.orderService.getOrders().subscribe(
         (orders: Order[]) => {
           console.log('Orders recibidos:', orders);  // Verifica si recibes los datos aquí
@@ -267,7 +288,7 @@ import { Review } from '../services/review/review';
             this.buildForm();  // Llamamos a buildForm nuevamente después de recibir los coches
         },
         (error) => {
-          console.error('Error al cargar statuses', error);
+          console.error('Error al cargar orders', error);
         }
       );
 
@@ -284,8 +305,18 @@ import { Review } from '../services/review/review';
         }
       );
 
-      console.log("Cars: "+this.cars);
-      console.log("Users: "+this.users);
+      this.cartService.getCarts().subscribe(
+        (carts: Cart[]) => {
+          console.log('Carts recibidos:', carts);  // Verifica si recibes los datos aquí
+
+          this.carts = carts;
+
+            this.buildForm();  // Llamamos a buildForm nuevamente después de recibir los coches
+        },
+        (error) => {
+          console.error('Error al cargar carts', error);
+        }
+      );
 
     }
     

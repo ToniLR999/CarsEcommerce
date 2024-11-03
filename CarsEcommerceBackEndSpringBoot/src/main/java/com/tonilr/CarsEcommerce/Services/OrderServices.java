@@ -1,5 +1,6 @@
 package com.tonilr.CarsEcommerce.Services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ public class OrderServices {
 	}
 
 	public Order addOrder(Order order) {
+		
+	order.setCreatedAt(LocalDateTime.now());
+
 		return orderRepo.save(order);
 	}
 
