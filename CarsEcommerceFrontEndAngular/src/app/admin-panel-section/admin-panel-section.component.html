@@ -7,18 +7,18 @@
     <div *ngFor="let field of formFields">
       <!-- Campo de entrada dinámico -->
       <input *ngIf="field.type === 'text' || field.type === 'email' || field.type === 'tel'"
-             [type]="field.type" [placeholder]="field.placeholder" class="box"
-             [name]="field.name" [formControlName]="field.name">
+            [type]="field.type" [placeholder]="field.placeholder" class="box"
+            [name]="field.name" [formControlName]="field.name">
       
       <!-- Campo de selección dinámica -->
       <select *ngIf="field.type === 'select'" class="box" [formControlName]="field.name">
         <option value="" disabled selected>{{ field.placeholder }}</option>
-        <option *ngFor="let option of field.options" [ngValue]="option">{{ option.name || option.username || option }}</option>
+        <option *ngFor="let option of field.options" [ngValue]="option">{{ option.name || option.username || option.comment || option.description || option.id || option}}</option>
       </select>
 
       <!-- Campo de selección múltiple dinámica -->
       <select *ngIf="field.type === 'select-multiple'" class="box" [formControlName]="field.name" multiple>
-        <option *ngFor="let option of field.options" [ngValue]="option">{{ option.name || option.username || option }}</option>
+        <option *ngFor="let option of field.options" [ngValue]="option">{{ option.name || option.username || option.comment || option.description || option.id || option }}</option>
       </select>
       
       <!-- Mensajes de error dinámicos -->

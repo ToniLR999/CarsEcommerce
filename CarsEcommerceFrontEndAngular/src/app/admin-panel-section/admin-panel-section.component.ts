@@ -102,7 +102,10 @@ import { Cart } from '../services/cart/cart';
           email: ['', [Validators.required, Validators.email]],
           phoneNumber: ['', [Validators.pattern('[0-9]{3}-[0-9]{3}-[0-9]{4}')]], 
           password: ['', Validators.required],
-          role: ['', Validators.required]
+          role: ['', Validators.required],
+          orders: [[], [Validators.required]], // Número de teléfono
+          reviews: [[], [Validators.required]], // Número de teléfono
+          cart: ['', [Validators.required]]
         
         
         });
@@ -210,113 +213,34 @@ import { Cart } from '../services/cart/cart';
       // Método para cargar los coches desde el servicio
     loadOptionsData() {
       console.log("Loading data");
-      this.carService.getCars().subscribe(
-        (cars: Car[]) => {
-          console.log('Coches recibidos:', cars);  // Verifica si recibes los datos aquí
-          this.cars = cars;
 
-          if (this.entity === 'Orders' || this.entity === 'Reviews' || this.entity === 'Carts') {
-            this.buildForm();  // Llamamos a buildForm nuevamente después de recibir los coches
-          }
-        },
-        (error) => {
-          console.error('Error al cargar coches', error);
-        }
-      );
-
-      this.carService.getCategories().subscribe(
-        (categories: string[]) => {
-          console.log('Categories recibidas:', categories);  // Verifica si recibes los datos aquí
-          this.categories  = categories;
-          this.buildForm();  // Construimos el formulario después de recibir las categorías
-
-            this.buildForm();  // Llamamos a buildForm nuevamente después de recibir los coches
-        },
-        (error) => {
-          console.error('Error al cargar categorias', error);
-        }
-      );
-
-      this.userService.getUsers().subscribe(
-        (users: User[]) => {
-          console.log('Users recibidos:', users);  // Verifica si recibes los datos aquí
-
-          this.users = users;
-
-          if (this.entity === 'Orders' || this.entity === 'Reviews' || this.entity === 'Carts') {
-            this.buildForm();  // Llamamos a buildForm nuevamente después de recibir los coches
-          }
-        },
-        (error) => {
-          console.error('Error al cargar users', error);
-        }
-      );
-
-      
-      this.userService.getRoles().subscribe(
-        (roles: string[]) => {
-          console.log('Roles recibidos:', roles);  // Verifica si recibes los datos aquí
-
-          this.roles = roles;
-
-            this.buildForm();  // Llamamos a buildForm nuevamente después de recibir los coches
-        },
-        (error) => {
-          console.error('Error al cargar roles', error);
-        }
-      );
-
-      this.reviewService.getReviews().subscribe(
-        (reviews: Review[]) => {
-          console.log('Reviews recibidos:', reviews);  // Verifica si recibes los datos aquí
-
-          this.reviews = reviews;
-
-            this.buildForm();  // Llamamos a buildForm nuevamente después de recibir los coches
-        },
-        (error) => {
-          console.error('Error al cargar reviews', error);
-        }
-      );
-
-      this.orderService.getOrders().subscribe(
-        (orders: Order[]) => {
-          console.log('Orders recibidos:', orders);  // Verifica si recibes los datos aquí
-
-          this.orders = orders;
-
-            this.buildForm();  // Llamamos a buildForm nuevamente después de recibir los coches
-        },
-        (error) => {
-          console.error('Error al cargar orders', error);
-        }
-      );
-
-      this.orderService.getStatuses().subscribe(
-        (statuses: string[]) => {
-          console.log('Status recibidos:', statuses);  // Verifica si recibes los datos aquí
-
-          this.orderStatuses = statuses;
-
-            this.buildForm();  // Llamamos a buildForm nuevamente después de recibir los coches
-        },
-        (error) => {
-          console.error('Error al cargar statuses', error);
-        }
-      );
-
-      this.cartService.getCarts().subscribe(
-        (carts: Cart[]) => {
-          console.log('Carts recibidos:', carts);  // Verifica si recibes los datos aquí
-
-          this.carts = carts;
-
-            this.buildForm();  // Llamamos a buildForm nuevamente después de recibir los coches
-        },
-        (error) => {
-          console.error('Error al cargar carts', error);
-        }
-      );
+      forkJoin({
+        cars: this.carService.getCars(),
+        categories: this.carService.getCategories(),
+        users: this.userService.getUsers(),
+        roles: this.userService.getRoles(),
+        reviews: this.reviewService.getReviews(),
+        orders: this.orderService.getOrders(),
+        statuses: this.orderService.getStatuses(),
+        carts: this.cartService.getCarts()
+      }).subscribe(results => {
+        // Asigna los datos de cada resultado a las propiedades correspondientes
+        this.cars = results.cars;
+        this.categories = results.categories;
+        this.users = results.users;
+        this.roles = results.roles;
+        this.reviews = results.reviews;
+        this.orders = results.orders;
+        this.orderStatuses = results.statuses;
+        this.carts = results.carts;
+    
+        console.log("Data loaded:", results);
+    
+        // Llama a buildForm solo después de que todos los datos se hayan cargado
+        this.buildForm();
+      }, error => {
+        console.error('Error al cargar datos:', error);
+      });
 
     }
     

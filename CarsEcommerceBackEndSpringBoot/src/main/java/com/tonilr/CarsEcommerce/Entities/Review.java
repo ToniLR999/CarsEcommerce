@@ -3,6 +3,8 @@ package com.tonilr.CarsEcommerce.Entities;
 import java.time.LocalDateTime;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,6 +20,7 @@ import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "reviews")
+@JsonPropertyOrder({ "id", "rating", "comment", "createdAt", "user", "car" }) // Especificar el orden
 public class Review {
 	  @Id
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,11 +36,11 @@ public class Review {
 	    @Column(nullable = false)
 	    private LocalDateTime createdAt;
 
-	    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, optional = false)
+	    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, optional = false)
 	    @JoinColumn(name = "user_id", nullable = false)
 	    private User user;
 	    
-	    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, optional = false)
+	    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, optional = false)
 	    @JoinColumn(name = "car_id", nullable = false)
 	    private Car car;
 	    
