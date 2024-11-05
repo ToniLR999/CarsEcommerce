@@ -1,5 +1,6 @@
 package com.tonilr.CarsEcommerce.Entities;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import jakarta.persistence.CascadeType;
@@ -30,13 +31,13 @@ public class Review {
 
 	    @Temporal(TemporalType.TIMESTAMP)
 	    @Column(nullable = false)
-	    private Date createdAt;
+	    private LocalDateTime createdAt;
 
 	    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, optional = false)
 	    @JoinColumn(name = "user_id", nullable = false)
 	    private User user;
 	    
-	    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+	    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, optional = false)
 	    @JoinColumn(name = "car_id", nullable = false)
 	    private Car car;
 	    
@@ -82,11 +83,11 @@ public class Review {
 	        this.rating = rating;
 	    }
 
-	    public Date getCreatedAt() {
+	    public LocalDateTime getCreatedAt() {
 	        return createdAt;
 	    }
 
-	    public void setCreatedAt(Date createdAt) {
-	        this.createdAt = createdAt;
+	    public void setCreatedAt(LocalDateTime localDateTime) {
+	        this.createdAt = localDateTime;
 	    }
 }

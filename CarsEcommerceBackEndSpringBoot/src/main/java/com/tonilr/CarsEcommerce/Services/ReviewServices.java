@@ -1,5 +1,6 @@
 package com.tonilr.CarsEcommerce.Services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ public class ReviewServices {
 	}
 
 	public Review addReview(Review review) {
+		review.setCreatedAt(LocalDateTime.now());
+
 		return reviewRepo.save(review);
 	}
 

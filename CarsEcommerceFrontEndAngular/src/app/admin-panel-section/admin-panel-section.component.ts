@@ -118,7 +118,7 @@ import { Cart } from '../services/cart/cart';
           this.createForm = this.fb.group({
             totalPrice: ['', Validators.required],        // Nombre de usuario
             status: ['', [Validators.required]],  // Correo electrónico
-            cars: ['', [Validators.required]], // Número de teléfono
+            cars: [[], [Validators.required]], // Número de teléfono
             user: ['', Validators.required]     // Contraseña
           });
       }
@@ -128,13 +128,13 @@ import { Cart } from '../services/cart/cart';
           { name: 'rating', type: 'text', placeholder: 'Rating', errors: [] },
           { name: 'comment', type: 'text', placeholder: 'Comment', errors: [] },
           { name: 'user', type: 'select', placeholder: 'Select an User', errors: [],options: this.users },
-          { name: 'cars', type: 'select-multiple', placeholder: 'Select Cars', errors: [], options: this.cars }
+          { name: 'car', type: 'select', placeholder: 'Select Car', errors: [], options: this.cars }
         ];
         this.createForm = this.fb.group({
           rating: ['', Validators.required],      
           comment: ['', [Validators.required, Validators.email]],  
           user: ['', [Validators.required]],
-          cars: ['', Validators.required]     
+          car: ['', Validators.required]     
         });
       }
       else if (this.entity === 'Carts') {
@@ -182,9 +182,9 @@ import { Cart } from '../services/cart/cart';
         this.orderService.addOrder(formData).subscribe();      
       } else if (this.entity === 'Reviews') {
 
-        formData.cars = formData.cars.map((car: Car) => car.car_Id);
+        //formData.cars = formData.cars.map((car: Car) => car.car_Id);
 
-        formData.users = formData.users.map((user: User) => user.user_Id);
+        //formData.users = formData.users.map((user: User) => user.user_Id);
 
         console.log(formData);
 
