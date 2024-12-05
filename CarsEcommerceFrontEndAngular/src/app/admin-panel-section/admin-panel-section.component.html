@@ -11,15 +11,33 @@
             [name]="field.name" [formControlName]="field.name">
       
       <!-- Campo de selección dinámica -->
-      <select *ngIf="field.type === 'select'" class="box" [formControlName]="field.name">
+      <select *ngIf="field.type === 'select'" class="box custom-select" [formControlName]="field.name">
         <option value="" disabled selected>{{ field.placeholder }}</option>
         <option *ngFor="let option of field.options" [ngValue]="option">{{ option.name || option.username || option.comment || option.description || option.id || option}}</option>
       </select>
 
-      <!-- Campo de selección múltiple dinámica -->
-      <select *ngIf="field.type === 'select-multiple'" class="box" [formControlName]="field.name" multiple>
+      <!-- Campo dinámico para selección múltiple -->
+      <mat-form-field *ngIf="field.type === 'select-multiple'" appearance="fill" class="full-width">
+        <mat-label>{{ field.placeholder }}</mat-label>
+        <mat-select [formControlName]="field.name" multiple>
+          <mat-option *ngFor="let option of field.options" [value]="option">
+            {{ option.name || option.username || option.comment || option.description || option.id || option }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!--<mat-form-field>
+        <mat-label>Toppings</mat-label>
+        <mat-select [formControl]="toppings" multiple>
+          @for (topping of toppingList; track topping) {
+            <mat-option [value]="topping">{{topping}}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>-->
+      
+      <!--<select *ngIf="field.type === 'select-multiple'" class="box" [formControlName]="field.name" multiple data-multi-select>
         <option *ngFor="let option of field.options" [ngValue]="option">{{ option.name || option.username || option.comment || option.description || option.id || option }}</option>
-      </select>
+      </select>-->
       
       <!-- Mensajes de error dinámicos -->
       <div *ngIf="isFieldInvalid(field.name)" class="alert-danger">

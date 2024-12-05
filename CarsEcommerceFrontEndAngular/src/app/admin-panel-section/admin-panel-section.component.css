@@ -1,3 +1,6 @@
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+
 .seccion {
     display: none;
   }
@@ -9,17 +12,18 @@
 
     
   .create-form-container{
-    position: fixed; /* Se asegura de que esté fijo sobre el contenido */
+    position: fixed;
     top: 0;
     left: 0;
     height:100%;
     width:100%;
     align-items: center;
     justify-content: center;
-    display: flex;  /* Asegura que se usa flexbox */
+    display: flex;
     background:rgba(255, 255, 255, 0.93);
     z-index: 10000;
-  }
+    overflow: visible;
+    }
   
   .create-form-container.active {
     top:0;
@@ -32,8 +36,8 @@
     text-align: center;
     padding:2rem;
     width:40rem;
-    max-width: 40rem;  /* Limita el tamaño máximo del formulario */
-    margin: 0 auto;  /* Asegura que esté centrado horizontalmente */
+    max-width: 40rem;
+    margin: 0 auto;
 
     border-radius: .5rem;
     box-shadow: 0 .5rem 1rem rgba(0,0,0,.1);
@@ -101,7 +105,32 @@
     width:100%;
     margin:.5rem 0;
   }
+/* Estilo para los select con clase específica */
+.create-form-container form .custom-select {
+  display: block;
+  width: 100%;
+  font-size: 1.6rem;
+  color: #130f40;
+  border: 0.1rem solid rgba(0, 0, 0, 0.1);
+  padding: 0.8rem 1.2rem;
+  border-radius: 0.5rem;
+  background: #fff;
+  outline: none;
+  appearance: auto;
+  cursor: pointer;
+}
 
+.create-form-container form .custom-select:focus {
+  border-color: #ed4d52;
+  box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.2);
+}
+
+.create-form-container form .custom-select option {
+  font-size: 1.6rem;
+  color: #130f40;
+  padding: 0.8rem;
+  background-color: #fff;
+}
   
 .btn:hover{
   background:#E82127;
@@ -161,4 +190,75 @@
   .create-form-container #close-create-form {
     font-size: 3rem;
   }
+}
+
+
+/* multi selector*/
+.full-width {
+  width: 100%;
+}
+.mat-form-field {
+  margin-bottom: 16px;
+}
+
+.mat-select {
+  font-size: 16px;
+  color: #333;
+}
+
+.mat-select-arrow {
+  color: #666;
+}
+
+.mat-form-field {
+  width: 100%; /* Asegura que el ancho sea correcto */
+}
+
+.mat-select {
+  color: #000; /* Cambia el color del texto */
+}
+
+.mat-select-arrow {
+  color: #000; /* Cambia el color de la flecha */
+}
+
+.create-form-container form select {
+  width: 100%;
+  margin: 0.7rem 0;
+  font-size: 1.6rem;
+  color: #130f40;
+  border: 0.1rem solid rgba(0, 0, 0, 0.1);
+  padding: 1rem 1.2rem;
+  border-radius: 0.5rem;
+  background: #fff; /* Fondo blanco */
+  outline: none;
+  appearance: auto; /* Restaura el comportamiento predeterminado */
+  box-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.1); /* Agrega un sombreado sutil */
+  cursor: pointer;
+}
+
+/* Estilo para el icono de dropdown (flecha) */
+/*.create-form-container form{
+  content: '▼'; /* Símbolo de flecha 
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}/*/
+
+/* Estilo para las opciones */
+.create-form-container form select option {
+  font-size: 1.6rem;
+  color: #130f40;
+  padding: 0.8rem;
+  background-color: #fff;
+}
+
+
+/* Hover y focus en dropdown */
+.create-form-container form select:hover,
+.create-form-container form select:focus {
+  border-color: #ed4d52; /* Cambia el borde al hacer hover o focus */
+  box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.2); /* Mayor sombreado */
 }
