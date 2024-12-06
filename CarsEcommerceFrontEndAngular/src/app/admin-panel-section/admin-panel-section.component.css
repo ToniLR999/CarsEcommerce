@@ -258,7 +258,100 @@
 
 /* Hover y focus en dropdown */
 .create-form-container form select:hover,
-.create-form-container form select:focus {
+.create-form-container form select:focus{
   border-color: #ed4d52; /* Cambia el borde al hacer hover o focus */
   box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.2); /* Mayor sombreado */
+}
+
+
+
+
+
+
+
+
+mat-form-field {
+  width: 100%;
+  font-size: 1.6rem;
+  border: 0.1rem solid rgba(0, 0, 0, 0.1);
+
+}
+
+.mat-form-field-wrapper {
+  padding: 0; /* Elimina espacio interno innecesario */
+}
+
+.mat-select {
+  font-size: 1.6rem;
+  color: #130f40;
+  border: 0.1rem solid rgba(0, 0, 0, 0.1);
+  padding: 0.8rem 1.2rem; /* Similar al padding de .custom-select */
+  border-radius: 0.5rem;
+  background: #fff;
+  box-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.1);
+}
+
+.mat-select:hover,
+.mat-select.mat-focused,
+mat-form-field:hover {
+  border-color: #ed4d52; /* Misma interacción en hover y focus */
+  box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.2);
+}
+
+.mat-select-value {
+  font-size: 1.6rem;
+  color: #130f40; /* Consistencia con .custom-select */
+}
+
+.mat-option {
+  font-size: 1.6rem;
+  color: #130f40;
+  background-color: #fff; /* Fondo blanco */
+  padding: 0.8rem; /* Espaciado interno similar */
+}
+
+.mat-option:hover {
+  background-color: #f5f5f5; /* Resalta la opción al pasar el mouse */
+}
+
+/* Cambia el color de la flecha del dropdown */
+.mat-select-arrow {
+  color: #130f40;
+}
+
+/* Ajusta el comportamiento del campo al seleccionarse */
+.mat-form-field-appearance-fill .mat-form-field-flex {
+  padding: 0; /* Quita padding extra en la apariencia 'fill' */
+}
+
+/*Poner de color blanco los inputs y opciones*/
+mat-option{
+  background-color: white !important;
+}
+
+mat-pseudo-checkbox{
+
+  color: black;
+}
+
+.mdc-text-field{
+  background-color: white !important;
+}
+
+.mat-mdc-option-active {}
+
+::ng-deep .mdc-line-ripple {
+  display: none !important; /* Oculta completamente el div */
+}
+
+::ng-deep .mdc-line-ripple::before,
+::ng-deep .mdc-line-ripple::after {
+  display: none !important; /* Oculta los pseudo-elementos */
+  content: none !important; /* Asegúrate de que no se muestre contenido */
+}
+
+::ng-deep .mdc-line-ripple {
+  background: transparent !important; /* Elimina el color de la línea */
+  height: 0 !important; /* Reduce su tamaño */
+  border: none !important; /* Si tiene bordes, los elimina */
 }

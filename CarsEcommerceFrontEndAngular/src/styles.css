@@ -16,6 +16,20 @@ body {
     box-sizing: border-box;
 }
 
+/*Adelantar listado de opciones de los mat-form-field*/
 .cdk-overlay-container, .cdk-overlay-pane {
     z-index: 999999 !important;
 }
+/*Quitar estilo a los mat-form-field*/
+.mat-mdc-text-field-wrapper {
+    background-color: transparent !important;
+  }
+  
+  .mat-mdc-form-field-focus-overlay {
+    background: transparent !important;
+  }
+  
+  .mdc-line-ripple {
+    background-color: transparent !important;
+  }
+  
