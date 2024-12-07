@@ -105,32 +105,7 @@
     width:100%;
     margin:.5rem 0;
   }
-/* Estilo para los select con clase específica */
-.create-form-container form .custom-select {
-  display: block;
-  width: 100%;
-  font-size: 1.6rem;
-  color: #130f40;
-  border: 0.1rem solid rgba(0, 0, 0, 0.1);
-  padding: 0.8rem 1.2rem;
-  border-radius: 0.5rem;
-  background: #fff;
-  outline: none;
-  appearance: auto;
-  cursor: pointer;
-}
 
-.create-form-container form .custom-select:focus {
-  border-color: #ed4d52;
-  box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.2);
-}
-
-.create-form-container form .custom-select option {
-  font-size: 1.6rem;
-  color: #130f40;
-  padding: 0.8rem;
-  background-color: #fff;
-}
   
 .btn:hover{
   background:#E82127;
@@ -194,6 +169,34 @@
 
 
 /* multi selector*/
+
+/* Estilo para los select con clase específica */
+.create-form-container form .custom-select {
+  display: block;
+  width: 100%;
+  font-size: 1.6rem;
+  color: #130f40;
+  border: 0.1rem solid rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  background: #fff;
+  outline: none;
+  appearance: auto;
+  cursor: pointer;
+}
+
+.create-form-container form .custom-select:focus,
+.create-form-container form .custom-select:hover {
+  border-color: #ed4d52;
+  box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.2);
+}
+
+.create-form-container form .custom-select option {
+  font-size: 1.6rem;
+  color: #130f40;
+  padding: 0.8rem;
+  background-color: #fff;
+}
+
 .full-width {
   width: 100%;
 }
@@ -201,9 +204,10 @@
   margin-bottom: 16px;
 }
 
-.mat-select {
-  font-size: 16px;
-  color: #333;
+mat-select {
+  font-size: 1.6rem;
+  color: black !important;
+  width: 100%;
 }
 
 .mat-select-arrow {
@@ -237,16 +241,6 @@
   cursor: pointer;
 }
 
-/* Estilo para el icono de dropdown (flecha) */
-/*.create-form-container form{
-  content: '▼'; /* Símbolo de flecha 
-  position: absolute;
-  right: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none;
-}/*/
-
 /* Estilo para las opciones */
 .create-form-container form select option {
   font-size: 1.6rem;
@@ -265,16 +259,12 @@
 
 
 
-
-
-
-
-
 mat-form-field {
   width: 100%;
   font-size: 1.6rem;
   border: 0.1rem solid rgba(0, 0, 0, 0.1);
-
+  margin: .7rem 0;
+  padding: .6rem;
 }
 
 .mat-form-field-wrapper {
@@ -303,6 +293,10 @@ mat-form-field:hover {
   color: #130f40; /* Consistencia con .custom-select */
 }
 
+::ng-deep .mat-mdc-select-placeholder {
+  color: black !important; /* Un color dorado, puedes cambiarlo por cualquier valor de color */
+}
+
 .mat-option {
   font-size: 1.6rem;
   color: #130f40;
@@ -310,9 +304,26 @@ mat-form-field:hover {
   padding: 0.8rem; /* Espaciado interno similar */
 }
 
-.mat-option:hover {
-  background-color: #f5f5f5; /* Resalta la opción al pasar el mouse */
+::ng-deep .mat-mdc-option:hover {
+  background-color: #007aff !important;
+  color: white !important; /* Cambia el color del texto en hover */
 }
+
+::ng-deep .mat-mdc-option:hover .mat-pseudo-checkbox{
+border-color: white;
+
+}
+
+::ng-deep .mat-mdc-option.mat-mdc-option-active:hover {
+  background-color: #007aff !important;
+  color: white !important; /* Cambia el color del texto cuando está seleccionado */
+}
+
+
+::ng-deep .mat-mdc-option.mat-mdc-option-active:hover .mat-pseudo-checkbox{
+  border-color: white;
+  
+  }
 
 /* Cambia el color de la flecha del dropdown */
 .mat-select-arrow {
@@ -354,4 +365,8 @@ mat-pseudo-checkbox{
   background: transparent !important; /* Elimina el color de la línea */
   height: 0 !important; /* Reduce su tamaño */
   border: none !important; /* Si tiene bordes, los elimina */
+}
+
+::ng-deep .mat-mdc-form-field-subscript-wrapper {
+  display: none !important; /* Oculta el div */
 }
