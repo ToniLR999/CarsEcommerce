@@ -1,6 +1,7 @@
 package com.tonilr.CarsEcommerce.Services;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class UserServices {
 
 		usuario.setPassword(encodedPassword);
 		usuario.setIsActive(true);
-		usuario.setRegisterDate(LocalDateTime.now());
+		usuario.setRegisterDate(new Date());
 		usuario.setRole(Role.USER);
 		return userRepo.save(usuario);
 	}
