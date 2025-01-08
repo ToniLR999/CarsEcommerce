@@ -1,8 +1,11 @@
 package com.tonilr.CarsEcommerce.Entities;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -34,7 +37,7 @@ public class User {
     private String email;
     
 	@Column(nullable = false, updatable = true)
-	private LocalDateTime register_date;
+	private Date register_date;
 		
 	@Column(nullable = true, updatable = true)
     private String phoneNumber;
@@ -51,7 +54,7 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<Review> reviews = new HashSet<Review>();
     
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true) 
     private Cart cart;
 
     // Getters and Setters
@@ -88,11 +91,11 @@ public class User {
         this.email = email;
     }
     
-	public LocalDateTime getRegisterDate() {
+	public Date getRegisterDate() {
 		return register_date;
 	}
 
-	public void setRegisterDate(LocalDateTime register_date) {
+	public void setRegisterDate(Date register_date) {
 		this.register_date = register_date;
 	}
 

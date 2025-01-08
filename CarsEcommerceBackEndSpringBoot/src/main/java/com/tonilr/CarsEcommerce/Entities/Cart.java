@@ -17,11 +17,12 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "carts")
 public class Cart {
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cart_id;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "user_id", nullable = true)    
     private User user;
 

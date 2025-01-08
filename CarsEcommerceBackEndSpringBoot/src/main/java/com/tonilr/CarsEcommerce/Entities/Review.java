@@ -22,7 +22,8 @@ import jakarta.persistence.TemporalType;
 @Table(name = "reviews")
 @JsonPropertyOrder({ "id", "rating", "comment", "createdAt", "user", "car" }) // Especificar el orden
 public class Review {
-	  @Id
+	
+	  	@Id
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	    private Long id;
 
@@ -34,13 +35,13 @@ public class Review {
 
 	    @Temporal(TemporalType.TIMESTAMP)
 	    @Column(nullable = false)
-	    private LocalDateTime createdAt;
+	    private Date createdAt;
 
-	    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, optional = false)
+	    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, optional = false)
 	    @JoinColumn(name = "user_id", nullable = false)
 	    private User user;
 	    
-	    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, optional = false)
+	    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, optional = false)
 	    @JoinColumn(name = "car_id", nullable = false)
 	    private Car car;
 	    
@@ -86,11 +87,11 @@ public class Review {
 	        this.rating = rating;
 	    }
 
-	    public LocalDateTime getCreatedAt() {
+	    public Date getCreatedAt() {
 	        return createdAt;
 	    }
 
-	    public void setCreatedAt(LocalDateTime localDateTime) {
+	    public void setCreatedAt(Date localDateTime) {
 	        this.createdAt = localDateTime;
 	    }
 }
