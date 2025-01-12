@@ -88,9 +88,8 @@ export class AdminPanelSectionComponent implements OnInit{
 
     // Imprimir las opciones de cada campo para revisar su contenido
     this.formFields.forEach(field => {
-      console.log(`Field: ${field.name}, Options:`, field.options);
+      //Datos de todos los listados de opciones  console.log(`Field: ${field.name}, Options:`, field.options);
     });
-    console.log("Lista: "+this.toppingList);
             // Inicializar el formulario reactivo con controles
     this.createForm = this.fb.group({
       name: ['', Validators.required],
@@ -122,9 +121,9 @@ export class AdminPanelSectionComponent implements OnInit{
         phoneNumber: ['', [Validators.pattern('[0-9]{3}-[0-9]{3}-[0-9]{4}')]], 
         password: ['', Validators.required],
         role: ['', Validators.required],
-        orders: [[], [Validators.required]], // Número de teléfono
-        reviews: [[], [Validators.required]], // Número de teléfono
-        cart: ['', [Validators.required]]
+        orders: [[]],
+        reviews: [[]],
+        cart: [null]
       
       
       });
@@ -191,10 +190,19 @@ export class AdminPanelSectionComponent implements OnInit{
   onSubmit(){
     if (this.createForm.valid) {
 
-      const formData = this.createForm.value;
+      const formData = { ...this.createForm.value };
 
-     //console.log(formData);
+          // Verificar si 'orders' es un arreglo válido antes de enviarlo
+    if (this.entity === 'Users' || this.entity === 'Cars' || this.entity === 'Orders') {
+      // Asegurarse de que 'orders' sea un arreglo no vacío
+      formData.orders = Array.isArray(formData.orders) ? formData.orders.filter((order: any) => order) : [];
+      formData.reviews = Array.isArray(formData.reviews) ? formData.reviews.filter((review: any) => review) : [];
+      formData.cart = formData.cart && typeof formData.cart === 'object' && Object.keys(formData.cart).length > 0 ? formData.cart : null;
 
+    }
+
+    // Verificar el formato y los datos de 'orders' antes de hacer el envío
+    console.log('Datos antes de enviar:', JSON.stringify(formData, null, 2));
 
     if (this.entity === 'Cars') {
       this.carService.addCar(formData).subscribe();   
@@ -208,11 +216,11 @@ export class AdminPanelSectionComponent implements OnInit{
 
       //formData.users = formData.users.map((user: User) => user.user_Id);
 
-      console.log(formData);
+      console.log("Form a enviar: "+formData);
 
       this.reviewService.addReview(formData).subscribe();      
     } else if (this.entity === 'Carts') {
-      console.log("Coches seleccionados:", formData.cars);
+      //console.log("Coches seleccionados:", formData.cars);
 
       this.cartService.addCart(formData).subscribe();      
     }

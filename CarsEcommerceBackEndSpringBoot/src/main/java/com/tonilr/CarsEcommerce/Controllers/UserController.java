@@ -18,13 +18,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.tonilr.CarsEcommerce.Entities.User;
 import com.tonilr.CarsEcommerce.Services.UserServices;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Controller
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/user")
 public class UserController {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
+	
 	@Autowired
 	private final UserServices userService;
 	
@@ -69,6 +73,10 @@ public class UserController {
 
 	@PostMapping("/add")
 	public ResponseEntity<User> addUser(@RequestBody User user) {
+		System.out.println("Billete pa que no te constipe");
+		logger.warn("Iniciando tarea...");
+
+		logger.warn("User: "+user);
 		User newUser = userService.addUser(user);
 		return new ResponseEntity<>(newUser, HttpStatus.CREATED);
 	}
