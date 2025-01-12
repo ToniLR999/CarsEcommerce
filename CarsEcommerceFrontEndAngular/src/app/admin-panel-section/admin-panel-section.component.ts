@@ -208,6 +208,15 @@ export class AdminPanelSectionComponent implements OnInit{
     }else if (this.entity === 'Orders') {
       // Asegurarse de que 'orders' sea un arreglo no vacío
       formData.cars = Array.isArray(formData.cars) ? formData.cars.filter((car: any) => car) : [];
+    }else if (this.entity === 'Reviews') {
+      // Asegurarse de que 'orders' sea un arreglo no vacío
+      formData.user = formData.user && typeof formData.user === 'object' && Object.keys(formData.user).length > 0 ? formData.user : null;
+      formData.car = formData.car && typeof formData.car === 'object' && Object.keys(formData.car).length > 0 ? formData.car : null;
+
+    }else if (this.entity === 'Carts') {
+      // Asegurarse de que 'orders' sea un arreglo no vacío
+      formData.user = formData.user && typeof formData.user === 'object' && Object.keys(formData.user).length > 0 ? formData.user : null;
+      formData.cars = Array.isArray(formData.cars) ? formData.cars.filter((car: any) => car) : [];
 
     }
 
