@@ -193,7 +193,8 @@ export class AdminPanelSectionComponent implements OnInit{
       const formData = { ...this.createForm.value };
 
           // Verificar si 'orders' es un arreglo válido antes de enviarlo
-    if (this.entity === 'Users' || this.entity === 'Cars' || this.entity === 'Orders') {
+    //if (this.entity === 'Users' || this.entity === 'Cars' || this.entity === 'Orders') {
+      if (this.entity === 'Users') {
       // Asegurarse de que 'orders' sea un arreglo no vacío
       formData.orders = Array.isArray(formData.orders) ? formData.orders.filter((order: any) => order) : [];
       formData.reviews = Array.isArray(formData.reviews) ? formData.reviews.filter((review: any) => review) : [];

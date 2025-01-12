@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tonilr.CarsEcommerce.Entities.Cart;
 import com.tonilr.CarsEcommerce.Entities.Role;
 import com.tonilr.CarsEcommerce.Entities.User;
 import com.tonilr.CarsEcommerce.Exceptions.NotFoundException;
@@ -22,6 +23,9 @@ public class UserServices {
 	
 	@Autowired
 	private final UserRepo userRepo;
+	
+	@Autowired
+    private CartServices cartServices;  // Servicio de Carrito
 
 	public UserServices(UserRepo userRepo) {
 		this.userRepo = userRepo;
@@ -34,7 +38,20 @@ public class UserServices {
 		usuario.setIsActive(true);
 		usuario.setRegisterDate(new Date());
 		usuario.setRole(Role.USER);
-		return userRepo.save(usuario);
+		 if (usuario.getCart() == null) {
+	            Cart newCart = new Cart();
+	            newCart = cartServices.addCart(newCart);  // Guardar el carrito en la base de datos
+	            usuario.setCart(newCart); // Asignar el carrito al usuario
+	            
+	            usuario = userRepo.save(usuario);  
+	            
+	            newCart.setUser(usuario);
+
+	            cartServices.updateCart(newCart);
+	        }
+		
+		//return userRepo.save(usuario);
+		 return usuario;
 	}
 	
     public boolean verifyPassword(String rawPassword, String encodedPassword) {

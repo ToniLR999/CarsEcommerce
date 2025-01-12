@@ -73,10 +73,9 @@ public class UserController {
 
 	@PostMapping("/add")
 	public ResponseEntity<User> addUser(@RequestBody User user) {
-		System.out.println("Billete pa que no te constipe");
 		logger.warn("Iniciando tarea...");
 
-		logger.warn("User: "+user);
+		logger.warn("User : "+user.getCart());
 		User newUser = userService.addUser(user);
 		return new ResponseEntity<>(newUser, HttpStatus.CREATED);
 	}

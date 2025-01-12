@@ -3,6 +3,9 @@ package com.tonilr.CarsEcommerce.Entities;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -23,7 +26,8 @@ public class Cart {
     private Long cart_id;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "user_id", nullable = true)    
+    @JoinColumn(name = "user_id", nullable = true)
+    @JsonBackReference // Esto indica que 'Cart' es el lado inverso de la relación
     private User user;
 
 	@ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
