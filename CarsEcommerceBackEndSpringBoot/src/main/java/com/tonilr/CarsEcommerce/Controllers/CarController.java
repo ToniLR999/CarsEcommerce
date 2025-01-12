@@ -2,6 +2,8 @@ package com.tonilr.CarsEcommerce.Controllers;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,9 @@ import com.tonilr.CarsEcommerce.Services.CarServices;
 @RequestMapping("/car")
 public class CarController {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
+	
 	@Autowired
 	private final CarServices carService;
 	
@@ -44,6 +49,10 @@ public class CarController {
 
 	@PostMapping("/add")
 	public ResponseEntity<Car> addCar(@RequestBody Car car) {
+		
+		logger.warn("Iniciando tarea...");
+
+		logger.warn("CarOrders : "+car.getOrders());
 		Car newCar = carService.addCar(car);
 		return new ResponseEntity<>(newCar, HttpStatus.CREATED);
 	}

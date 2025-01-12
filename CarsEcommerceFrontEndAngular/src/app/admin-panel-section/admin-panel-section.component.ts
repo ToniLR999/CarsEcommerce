@@ -97,10 +97,10 @@ export class AdminPanelSectionComponent implements OnInit{
       price: ['', Validators.required],
       stock: ['', Validators.required],
       category: ['', Validators.required],
-      images: [[], [Validators.required]],
-      orders: [[], [Validators.required]],
-      reviews: [[], [Validators.required]], 
-      carts: [[], [Validators.required]]
+      images: [[]],
+      orders: [[]],
+      reviews: [[]], 
+      carts: [[]]
     });
     } else if (this.entity === 'Users') {
 
@@ -191,14 +191,23 @@ export class AdminPanelSectionComponent implements OnInit{
     if (this.createForm.valid) {
 
       const formData = { ...this.createForm.value };
-
-          // Verificar si 'orders' es un arreglo válido antes de enviarlo
-    //if (this.entity === 'Users' || this.entity === 'Cars' || this.entity === 'Orders') {
-      if (this.entity === 'Users') {
+      
+      if (this.entity === 'Cars') {
+        formData.images = Array.isArray(formData.images) ? formData.images.filter((image: any) => !!image) : [];
+        formData.orders = Array.isArray(formData.orders) ? formData.orders.filter((order: any) => !!order) : [];
+        formData.reviews = Array.isArray(formData.reviews) ? formData.reviews.filter((review: any) => !!review) : [];
+        formData.carts = Array.isArray(formData.carts) ? formData.carts.filter((cart: any) => !!cart) : [];
+      }
+      
+    else if (this.entity === 'Users') {
       // Asegurarse de que 'orders' sea un arreglo no vacío
       formData.orders = Array.isArray(formData.orders) ? formData.orders.filter((order: any) => order) : [];
       formData.reviews = Array.isArray(formData.reviews) ? formData.reviews.filter((review: any) => review) : [];
       formData.cart = formData.cart && typeof formData.cart === 'object' && Object.keys(formData.cart).length > 0 ? formData.cart : null;
+
+    }else if (this.entity === 'Orders') {
+      // Asegurarse de que 'orders' sea un arreglo no vacío
+      formData.cars = Array.isArray(formData.cars) ? formData.cars.filter((car: any) => car) : [];
 
     }
 

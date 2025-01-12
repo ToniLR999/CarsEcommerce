@@ -73,9 +73,6 @@ public class UserController {
 
 	@PostMapping("/add")
 	public ResponseEntity<User> addUser(@RequestBody User user) {
-		logger.warn("Iniciando tarea...");
-
-		logger.warn("User : "+user.getCart());
 		User newUser = userService.addUser(user);
 		return new ResponseEntity<>(newUser, HttpStatus.CREATED);
 	}
