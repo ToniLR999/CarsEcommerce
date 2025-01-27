@@ -205,6 +205,26 @@ getTableData(seccion: string): string[][] {
       );
       break; // Agregar break para detener el flujo
     }
+    case 'carts': {
+      this.cartService.getCarts().subscribe(
+        (data) => {
+          // Mapear los datos del servicio para adaptarlos a la tabla
+          this.rows = data.map(cart => [
+            String(cart.id ?? '-'),   // Ajusta según las propiedades de `Car`
+            String(cart.user?.username ?? ''),
+            cart.cars.map((car: any) => car.name).join(', ') ?? "-"// Extraer y concatenar nombres de los carros       
+          ]);
+
+          this.tableHeaders = ['Id', 'User', 'Cars'];
+          this.calculatePages();
+          this.displayTable(this.currentPage);
+        },
+        (error) => {
+          console.error('Error al obtener los autos:', error);
+        }
+      );
+      break; // Agregar break para detener el flujo
+    }
 
   }
 

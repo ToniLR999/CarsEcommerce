@@ -27,7 +27,6 @@ public class Cart {
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "user_id", nullable = true)
-    @JsonBackReference // Esto indica que 'Cart' es el lado inverso de la relación
     private User user;
 
 	@ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)

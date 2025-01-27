@@ -232,11 +232,7 @@
       <table class="fl-table">
           <thead>
           <tr>
-              <th>Header 1</th>
-              <th>Header 2</th>
-              <th>Header 3</th>
-              <th>Header 4</th>
-              <th>Header 5</th>
+            <th *ngFor="let header of tableHeaders">{{ header }}</th>
           </tr>
           </thead>
           <tbody>
@@ -244,8 +240,6 @@
               <td>{{ row[0] }}</td>
               <td>{{ row[1] }}</td>
               <td>{{ row[2] }}</td>
-              <td>{{ row[3] }}</td>
-              <td>{{ row[4] }}</td>
           </tr>
           <tbody>
       </table>

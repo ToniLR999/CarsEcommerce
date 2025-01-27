@@ -58,7 +58,6 @@ public class User {
     
     @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "cart_id", nullable = true)
-    @JsonManagedReference // Esto indica que 'User' es el lado principal de la relación
     private Cart cart;
 
     // Getters and Setters

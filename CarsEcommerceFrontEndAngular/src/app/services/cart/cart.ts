@@ -3,7 +3,7 @@ import { User } from "../user/user";
 
 export class Cart {
 
-    cart_id!: number;
+    id!: number;
     user!: User;
     cars: Car[] = [];
 }
