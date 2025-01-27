@@ -3,9 +3,9 @@ import { User } from "../user/user";
 
 export class Review {
 
-    review_Id!: number;
+    id!: number;
     rating: number|undefined;
-    comment: String|undefined;
+    comment: string|undefined;
     createdAt!: Date;
     user!: User;
     car!: Car;

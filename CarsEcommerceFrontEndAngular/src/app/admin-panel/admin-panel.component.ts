@@ -185,6 +185,26 @@ getTableData(seccion: string): string[][] {
       );
       break; // Agregar break para detener el flujo
     }
+    case 'reviews': {
+      this.reviewService.getReviews().subscribe(
+        (data) => {
+          // Mapear los datos del servicio para adaptarlos a la tabla
+          this.rows = data.map(review => [
+            String(review.id ?? '-'),   // Ajusta según las propiedades de `Car`
+            String(review.rating ?? ''),
+            review.comment ?? 'N/A',
+            String(review.createdAt ?? ''),
+          ]);
+          this.tableHeaders = ['Id', 'Raing', 'Comment','Created at'];
+          this.calculatePages();
+          this.displayTable(this.currentPage);
+        },
+        (error) => {
+          console.error('Error al obtener los autos:', error);
+        }
+      );
+      break; // Agregar break para detener el flujo
+    }
 
   }
 
