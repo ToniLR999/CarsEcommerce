@@ -2,6 +2,8 @@ import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/co
 import { User } from '../services/user/user';
 import { AuthenticationService } from '../services/authentication/authentication.service';
 import { UntypedFormGroup } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { CarService } from '../services/car/car.service';
 
 @Component({
   selector: 'app-admin-panel',
@@ -19,7 +21,7 @@ export class AdminPanelComponent implements OnInit{
   createCarForm!: UntypedFormGroup;
 
 
-
+  tableHeaders: string[] = []; // Encabezados de la tabla
   paginatedRows: string[][] = []; // Filas mostradas en la página actual
   rows: string[][] = []; // Array de filas de la tabla
   rowsPerPage: number = 5; // Número de filas por página
@@ -27,8 +29,9 @@ export class AdminPanelComponent implements OnInit{
   pages: number[] = []; // Número de páginas
   maxVisiblePages: number = 5; // Máximo número de botones de página visibles
 
-  constructor(private renderer: Renderer2,public loginService: AuthenticationService){
+  constructor(private carService: CarService, private renderer: Renderer2,public loginService: AuthenticationService, private http: HttpClient){
     this.user = new User();
+    
   }
 
   ngOnInit(): void {
@@ -37,7 +40,7 @@ export class AdminPanelComponent implements OnInit{
       console.log("OnInit isUserLoggedIn: "+this.isUserLoggedIn);
     });*/  
   
-    this.rows = this.getTableData(); // Cargar datos en las filas
+    this.getTableData('cars'); // Cargar datos en las filas
     this.calculatePages(); // Calcular el número de páginas
     this.displayTable(this.currentPage); // Mostrar la primera página
   
@@ -86,8 +89,6 @@ export class AdminPanelComponent implements OnInit{
   }
 }
 
-
-
 openCreateForm(entity: string) {
   this.currentEntity = entity; // Almacenar la entidad
   this.isCreateFormVisible = true; // Mostrar el formulario
@@ -110,15 +111,40 @@ SignOut() {
 }
 
 
-getTableData(): string[][] {
+getTableData(seccion: string): string[][] {
   // Añadimos más filas para probar la paginación
-  return Array.from({ length: 50 }, (_, i) => [
+  const selectedSection = document.getElementById(seccion);
+  
+  
+  this.carService.getCars().subscribe(
+    (data) => {
+      // Mapear los datos del servicio para adaptarlos a la tabla
+      this.rows = data.map(car => [
+        String(car.id ?? '-'),   // Ajusta según las propiedades de `Car`
+        car.name ?? 'N/A',
+        car.description ?? 'N/A',
+        String(car.category ?? ''),
+        String(car.price ?? ''),
+        String(car.stock ?? '')
+      ]);
+      this.tableHeaders = ['ID', 'Name', 'Description','Category', 'Price', 'Stock'];
+      this.calculatePages();
+      this.displayTable(this.currentPage);
+    },
+    (error) => {
+      console.error('Error al obtener los autos:', error);
+    }
+  );
+  
+  return this.rows;
+
+  /*return Array.from({ length: 50 }, (_, i) => [
     `Content ${i + 1}`,
     `Content ${i + 1}`,
     `Content ${i + 1}`,
     `Content ${i + 1}`,
     `Content ${i + 1}`
-  ]);
+  ]);*/
 }
 
 

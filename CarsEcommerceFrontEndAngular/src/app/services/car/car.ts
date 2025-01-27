@@ -5,13 +5,13 @@ import { Review } from "../review/review";
 
 export class Car {
 
-    car_Id!: number;
+    id!: number;
     name: string|undefined;
-    description: String|undefined;
+    description: string|undefined;
     price!: number;
     stock!: number;
     category!: carCategory;
-    images: String[] = [];
+    images: string[] = [];
     orders: Order[] = [];
     reviews: Review[] = [];
     carts: Cart[] = [];
