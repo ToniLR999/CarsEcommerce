@@ -4,6 +4,10 @@ import { AuthenticationService } from '../services/authentication/authentication
 import { UntypedFormGroup } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { CarService } from '../services/car/car.service';
+import { UserService } from '../services/user/user.service';
+import { OrderService } from '../services/order/order.service';
+import { ReviewService } from '../services/review/review.service';
+import { CartService } from '../services/cart/cart.service';
 
 @Component({
   selector: 'app-admin-panel',
@@ -29,7 +33,7 @@ export class AdminPanelComponent implements OnInit{
   pages: number[] = []; // Número de páginas
   maxVisiblePages: number = 5; // Máximo número de botones de página visibles
 
-  constructor(private carService: CarService, private renderer: Renderer2,public loginService: AuthenticationService, private http: HttpClient){
+  constructor(private carService: CarService, private userService: UserService, private orderService: OrderService, private reviewService: ReviewService, private cartService: CartService, private renderer: Renderer2,public loginService: AuthenticationService, private http: HttpClient){
     this.user = new User();
     
   }
@@ -40,7 +44,7 @@ export class AdminPanelComponent implements OnInit{
       console.log("OnInit isUserLoggedIn: "+this.isUserLoggedIn);
     });*/  
   
-    this.getTableData('cars'); // Cargar datos en las filas
+    //this.getTableData('cars'); // Cargar datos en las filas
     this.calculatePages(); // Calcular el número de páginas
     this.displayTable(this.currentPage); // Mostrar la primera página
   
@@ -87,6 +91,7 @@ export class AdminPanelComponent implements OnInit{
   if (selectedSection) {
     selectedSection.style.display = 'block';
   }
+  this.getTableData(seccion);
 }
 
 openCreateForm(entity: string) {
@@ -113,29 +118,57 @@ SignOut() {
 
 getTableData(seccion: string): string[][] {
   // Añadimos más filas para probar la paginación
-  const selectedSection = document.getElementById(seccion);
-  
-  
-  this.carService.getCars().subscribe(
-    (data) => {
-      // Mapear los datos del servicio para adaptarlos a la tabla
-      this.rows = data.map(car => [
-        String(car.id ?? '-'),   // Ajusta según las propiedades de `Car`
-        car.name ?? 'N/A',
-        car.description ?? 'N/A',
-        String(car.category ?? ''),
-        String(car.price ?? ''),
-        String(car.stock ?? '')
-      ]);
-      this.tableHeaders = ['ID', 'Name', 'Description','Category', 'Price', 'Stock'];
-      this.calculatePages();
-      this.displayTable(this.currentPage);
-    },
-    (error) => {
-      console.error('Error al obtener los autos:', error);
+  console.log("Seccion: "+seccion);
+  switch(seccion){
+    case 'cars': {
+      this.carService.getCars().subscribe(
+        (data) => {
+          // Mapear los datos del servicio para adaptarlos a la tabla
+          this.rows = data.map(car => [
+            String(car.id ?? '-'),   // Ajusta según las propiedades de `Car`
+            car.name ?? 'N/A',
+            car.description ?? 'N/A',
+            String(car.category ?? ''),
+            String(car.price ?? ''),
+            String(car.stock ?? '')
+          ]);
+          this.tableHeaders = ['ID', 'Name', 'Description','Category', 'Price', 'Stock'];
+          this.calculatePages();
+          this.displayTable(this.currentPage);
+        },
+        (error) => {
+          console.error('Error al obtener los autos:', error);
+        }
+      );
+      break; // Agregar break para detener el flujo
+
     }
-  );
-  
+    case 'users': {
+      this.userService.getUsers().subscribe(
+        (data) => {
+          // Mapear los datos del servicio para adaptarlos a la tabla
+          this.rows = data.map(user => [
+            String(user.id ?? '-'),   // Ajusta según las propiedades de `Car`
+            user.username ?? 'N/A',
+            user.email ?? 'N/A',
+            String(user.registerDate ?? ''),
+            String(user.phoneNumber ?? ''),
+            String(user.role ?? '')
+          ]);
+          this.tableHeaders = ['ID', 'Username', 'Email','Register Date', 'Phone Number', 'Role'];
+          this.calculatePages();
+          this.displayTable(this.currentPage);
+        },
+        (error) => {
+          console.error('Error al obtener los autos:', error);
+        }
+      );
+      break; // Agregar break para detener el flujo
+    }
+
+  }
+
+
   return this.rows;
 
   /*return Array.from({ length: 50 }, (_, i) => [

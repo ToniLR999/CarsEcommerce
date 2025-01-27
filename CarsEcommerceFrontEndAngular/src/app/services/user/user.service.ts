@@ -41,10 +41,10 @@ export class UserService {
 
   public addUser(user: User): Observable<User>{
     console.log("User recibido en addUser de angular: "
-      +"user_id:"+user.user_Id
+      +"user_id:"+user.id
       +" username:"+user.username
       +" user_email:"+user.email
-      +" user_id:"+user.user_Id
+      +" user_id:"+user.id
       +" user_orders:"+user.orders
       +" user_reviews:"+user.reviews
       +" user_cart:"+user.cart
