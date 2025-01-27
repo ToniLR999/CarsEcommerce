@@ -4,7 +4,7 @@ import { User } from "../user/user";
 
 export class Order {
 
-    order_Id!: number;
+    id!: number;
     status!: orderStatus;
     totalPrice: number|undefined;
     createdAt: Date|undefined;

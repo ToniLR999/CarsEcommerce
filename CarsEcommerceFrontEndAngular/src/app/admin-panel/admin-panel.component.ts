@@ -165,6 +165,26 @@ getTableData(seccion: string): string[][] {
       );
       break; // Agregar break para detener el flujo
     }
+    case 'orders': {
+      this.orderService.getOrders().subscribe(
+        (data) => {
+          // Mapear los datos del servicio para adaptarlos a la tabla
+          this.rows = data.map(order => [
+            String(order.id ?? '-'),   // Ajusta según las propiedades de `Car`
+            String(order.status ?? ''),
+            String(order.totalPrice ?? ''),
+            String(order.createdAt ?? '')
+          ]);
+          this.tableHeaders = ['Id', 'Status', 'Total Price','Created at'];
+          this.calculatePages();
+          this.displayTable(this.currentPage);
+        },
+        (error) => {
+          console.error('Error al obtener los autos:', error);
+        }
+      );
+      break; // Agregar break para detener el flujo
+    }
 
   }
 
