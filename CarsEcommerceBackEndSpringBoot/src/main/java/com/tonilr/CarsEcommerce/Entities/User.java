@@ -56,6 +56,7 @@ public class User {
     @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<Review> reviews = new HashSet<Review>();
     
+    @JsonIgnore // Evita referencias cíclicas
     @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "cart_id", nullable = true)
     private Cart cart;
