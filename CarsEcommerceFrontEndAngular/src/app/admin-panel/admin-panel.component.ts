@@ -70,14 +70,6 @@ export class AdminPanelComponent implements OnInit{
     
   }
 
-
-
-  createCar(){
-
-
-
-  }
-
   // Método para mostrar la sección seleccionada
   mostrarSeccion(seccion: string): void {
   // Ocultar todas las secciones
@@ -230,14 +222,6 @@ getTableData(seccion: string): string[][] {
 
 
   return this.rows;
-
-  /*return Array.from({ length: 50 }, (_, i) => [
-    `Content ${i + 1}`,
-    `Content ${i + 1}`,
-    `Content ${i + 1}`,
-    `Content ${i + 1}`,
-    `Content ${i + 1}`
-  ]);*/
 }
 
 
@@ -290,6 +274,64 @@ closeCreateForm() {
   this.isCreateFormVisible = false; // Cerrar el formulario
 }
 
+editRow(row: string[], seccion: string): void {
+  console.log('Editando fila:', row);
+  alert(`Editar: ${row.join(' | ')}`);
+  // Aquí puedes abrir un formulario con los valores actuales para editarlos.
+}
+
+deleteRow(row: string[], seccion: string): void {
+  const confirmDelete = confirm(`¿Seguro que quieres eliminar esta fila?`);
+  console.log("Row data: "+row);
+  if (confirmDelete) {
+    this.rows = this.rows.filter(r => r !== row);
+    this.calculatePages();  // Recalcular paginación
+    this.displayTable(this.currentPage);
+    console.log('Fila eliminada:', row);
+  }
+  switch(seccion){
+    case 'cars': {
+          this.carService.DeleteCar(parseInt(row[0], 10)).subscribe(() => {
+            console.log(`Car con ID ${parseInt(row[0], 10)} eliminado de la base de datos.`);
+          }, error => {
+            console.error('Error al eliminar el coche:', error);
+          });
+      break; // Agregar break para detener el flujo
+    }
+    case 'users': {
+          this.userService.DeleteUser(parseInt(row[0], 10)).subscribe(() => {
+            console.log(`User con ID ${parseInt(row[0], 10)} eliminado de la base de datos.`);
+          }, error => {
+            console.error('Error al eliminar el user:', error);
+          });      
+      break; // Agregar break para detener el flujo
+    }
+    case 'orders': {
+          this.orderService.DeleteOrder(parseInt(row[0], 10)).subscribe(() => {
+            console.log(`Order con ID ${parseInt(row[0], 10)} eliminado de la base de datos.`);
+          }, error => {
+            console.error('Error al eliminar el order:', error);
+          }); 
+      break; // Agregar break para detener el flujo
+    }
+    case 'reviews': {
+          this.reviewService.DeleteReview(parseInt(row[0], 10)).subscribe(() => {
+            console.log(`Review con ID ${parseInt(row[0], 10)} eliminado de la base de datos.`);
+          }, error => {
+            console.error('Error al eliminar el review:', error);
+          });       
+      break; // Agregar break para detener el flujo
+    }
+    case 'carts': {
+          this.cartService.DeleteCart(parseInt(row[0], 10)).subscribe(() => {
+            console.log(`Cart con ID ${parseInt(row[0], 10)} eliminado de la base de datos.`);
+          }, error => {
+            console.error('Error al eliminar el cart:', error);
+          });        
+      break; // Agregar break para detener el flujo
+    }
+  }
+}
 
 
 
