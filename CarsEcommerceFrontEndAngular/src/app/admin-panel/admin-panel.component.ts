@@ -132,7 +132,7 @@ getTableData(seccion: string): string[][] {
             String(car.price ?? ''),
             String(car.stock ?? '')
           ]);
-          this.tableHeaders = ['ID', 'Name', 'Description','Category', 'Price', 'Stock'];
+          this.tableHeaders = ['ID', 'Name', 'Description','Category', 'Price', 'Stock', ' '];
           this.calculatePages();
           this.displayTable(this.currentPage);
         },
@@ -155,7 +155,7 @@ getTableData(seccion: string): string[][] {
             String(user.phoneNumber ?? ''),
             String(user.role ?? '')
           ]);
-          this.tableHeaders = ['ID', 'Username', 'Email','Register Date', 'Phone Number', 'Role'];
+          this.tableHeaders = ['ID', 'Username', 'Email','Register Date', 'Phone Number', 'Role', ' '];
           this.calculatePages();
           this.displayTable(this.currentPage);
         },
@@ -175,7 +175,7 @@ getTableData(seccion: string): string[][] {
             String(order.totalPrice ?? ''),
             String(order.createdAt ?? '')
           ]);
-          this.tableHeaders = ['Id', 'Status', 'Total Price','Created at'];
+          this.tableHeaders = ['Id', 'Status', 'Total Price','Created at', ' '];
           this.calculatePages();
           this.displayTable(this.currentPage);
         },
@@ -195,7 +195,7 @@ getTableData(seccion: string): string[][] {
             review.comment ?? 'N/A',
             String(review.createdAt ?? ''),
           ]);
-          this.tableHeaders = ['Id', 'Raing', 'Comment','Created at'];
+          this.tableHeaders = ['Id', 'Raing', 'Comment','Created at', ' '];
           this.calculatePages();
           this.displayTable(this.currentPage);
         },
@@ -211,11 +211,11 @@ getTableData(seccion: string): string[][] {
           // Mapear los datos del servicio para adaptarlos a la tabla
           this.rows = data.map(cart => [
             String(cart.id ?? '-'),   // Ajusta según las propiedades de `Car`
-            String(cart.user?.username ?? ''),
-            cart.cars.map((car: any) => car.name).join(', ') ?? "-"// Extraer y concatenar nombres de los carros       
+            String(cart.user?.username ?? '-'),
+            cart.cars.map((car: any) => car.name).join(', ')// Extraer y concatenar nombres de los carros       
           ]);
 
-          this.tableHeaders = ['Id', 'User', 'Cars'];
+          this.tableHeaders = ['Id', 'User', 'Cars', ' '];
           this.calculatePages();
           this.displayTable(this.currentPage);
         },
