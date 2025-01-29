@@ -26,6 +26,9 @@ export class AdminPanelSectionComponent implements OnInit{
   @Output() formSubmit = new EventEmitter<any>();
   @Output() closeForm = new EventEmitter<void>();
 
+  isEditing: boolean = false;  // Indica si estamos editando
+  editingItem: any = null;  // Almacena el elemento que se está editando
+
   toppings = new FormControl('');
   toppingList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
   
@@ -73,6 +76,13 @@ export class AdminPanelSectionComponent implements OnInit{
   
 
   buildForm() {
+    let defaultValues: any = {};
+
+    if (this.editingItem) {
+      // Si hay un item en edición, precargar los valores
+      defaultValues = { ...this.editingItem };
+    }
+
     if (this.entity === 'Cars') {
       this.formFields = [
         { name: 'name', type: 'text', placeholder: 'Car Name', errors: [] },
@@ -91,7 +101,7 @@ export class AdminPanelSectionComponent implements OnInit{
       //Datos de todos los listados de opciones  console.log(`Field: ${field.name}, Options:`, field.options);
     });
             // Inicializar el formulario reactivo con controles
-    this.createForm = this.fb.group({
+    /*this.createForm = this.fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
       price: ['', Validators.required],
@@ -101,7 +111,21 @@ export class AdminPanelSectionComponent implements OnInit{
       orders: [[]],
       reviews: [[]], 
       carts: [[]]
+    });*/
+
+    this.createForm = this.fb.group({
+      name: [defaultValues.name || '', Validators.required],
+      description: [defaultValues.description || '', Validators.required],
+      price: [defaultValues.price || '', Validators.required],
+      stock: [defaultValues.stock || '', Validators.required],
+      category: [defaultValues.category || '', Validators.required],
+      images: [defaultValues.images || []],
+      orders: [defaultValues.orders || []],
+      reviews: [defaultValues.reviews || []],
+      carts: [defaultValues.carts || []]
     });
+
+
     } else if (this.entity === 'Users') {
 
       this.formFields = [
@@ -115,7 +139,7 @@ export class AdminPanelSectionComponent implements OnInit{
         { name: 'cart', type: 'select', placeholder: 'Select Cart', errors: [], options: this.carts }
       ];
 
-      this.createForm = this.fb.group({
+      /*this.createForm = this.fb.group({
         username: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
         phoneNumber: ['', [Validators.pattern('[0-9]{3}-[0-9]{3}-[0-9]{4}')]], 
@@ -126,6 +150,17 @@ export class AdminPanelSectionComponent implements OnInit{
         cart: [null]
       
       
+      });*/
+
+      this.createForm = this.fb.group({
+        username: [defaultValues.username || '', Validators.required],
+        email: [defaultValues.email || '', [Validators.required, Validators.email]],
+        phoneNumber: [defaultValues.phoneNumber || '', [Validators.pattern('[0-9]{3}-[0-9]{3}-[0-9]{4}')]],
+        password: [defaultValues.password || '', Validators.required],
+        role: [defaultValues.role || '', Validators.required],
+        orders: [defaultValues.orders || []],
+        reviews: [defaultValues.reviews || []],
+        cart: [defaultValues.cart || null]
       });
     }
       else if (this.entity === 'Orders') {
@@ -136,11 +171,18 @@ export class AdminPanelSectionComponent implements OnInit{
           { name: 'cars', type: 'select-multiple', placeholder: 'Select Car', errors: [], options: this.cars  },
           { name: 'user', type: 'select', placeholder: 'Select User', errors: [],options: this.users   }
         ];
-        this.createForm = this.fb.group({
+        /*this.createForm = this.fb.group({
           totalPrice: ['', Validators.required],        // Nombre de usuario
           status: ['', [Validators.required]],  // Correo electrónico
           cars: [[], [Validators.required]], // Número de teléfono
           user: ['', Validators.required]     // Contraseña
+        });*/
+
+        this.createForm = this.fb.group({
+          totalPrice: [defaultValues.totalPrice || '', Validators.required],
+          status: [defaultValues.status || '', [Validators.required]],
+          cars: [defaultValues.cars || [], [Validators.required]],
+          user: [defaultValues.user || '', Validators.required]
         });
     }
     else if (this.entity === 'Reviews') {
@@ -151,11 +193,18 @@ export class AdminPanelSectionComponent implements OnInit{
         { name: 'user', type: 'select', placeholder: 'Select an User', errors: [],options: this.users },
         { name: 'car', type: 'select', placeholder: 'Select Car', errors: [], options: this.cars }
       ];
-      this.createForm = this.fb.group({
+      /*this.createForm = this.fb.group({
         rating: ['', Validators.required],      
         comment: ['', [Validators.required, Validators.email]],  
         user: ['', [Validators.required]],
         car: ['', Validators.required]     
+      });*/
+
+      this.createForm = this.fb.group({
+        rating: [defaultValues.rating || '', Validators.required],
+        comment: [defaultValues.comment || '', Validators.required],
+        user: [defaultValues.user || '', Validators.required],
+        car: [defaultValues.car || '', Validators.required]
       });
     }
     else if (this.entity === 'Carts') {
@@ -165,17 +214,22 @@ export class AdminPanelSectionComponent implements OnInit{
         { name: 'user', type: 'select', placeholder: 'Select an User', errors: [],options: this.users },  
         { name: 'cars', type: 'select-multiple', placeholder: 'Select Cars', errors: [], options: this.cars }
       ];
-      this.createForm = this.fb.group({
+      /*this.createForm = this.fb.group({
         user: ['', Validators.required],
         cars: [[], Validators.required] 
+      });*/
+
+      this.createForm = this.fb.group({
+        user: [defaultValues.user || '', Validators.required],
+        cars: [defaultValues.cars || [], Validators.required]
       });
     }
 
         // Configuración del formulario dinámico
-  const formGroupConfig = this.formFields.reduce((config, field) => {
-    config[field.name] = ['', field.validators];
-    return config;
-  }, {});
+    const formGroupConfig = this.formFields.reduce((config, field) => {
+      config[field.name] = ['', field.validators];
+      return config;
+    }, {});
 
   this.createForm = this.fb.group(formGroupConfig);
   }
@@ -186,11 +240,24 @@ export class AdminPanelSectionComponent implements OnInit{
       return !!(field?.invalid && field?.touched);
   }
 
+  editItem(item: any) {
+      this.isEditing = true;
+      this.editingItem = item;
+      this.buildForm();  // Volvemos a construir el formulario con los valores del item
+    }
+
 
   onSubmit(){
-    if (this.createForm.valid) {
+      if (this.createForm.valid) {
 
       const formData = { ...this.createForm.value };
+
+      if (this.isEditing) {
+        formData.id = this.editingItem.id;  // Asegurar que el ID está presente para actualizar
+      }
+
+      console.log('Datos antes de enviar:', JSON.stringify(formData, null, 2));
+
       
       if (this.entity === 'Cars') {
         formData.images = Array.isArray(formData.images) ? formData.images.filter((image: any) => !!image) : [];
@@ -199,60 +266,59 @@ export class AdminPanelSectionComponent implements OnInit{
         formData.carts = Array.isArray(formData.carts) ? formData.carts.filter((cart: any) => !!cart) : [];
       }
       
-    else if (this.entity === 'Users') {
-      // Asegurarse de que 'orders' sea un arreglo no vacío
-      formData.orders = Array.isArray(formData.orders) ? formData.orders.filter((order: any) => order) : [];
-      formData.reviews = Array.isArray(formData.reviews) ? formData.reviews.filter((review: any) => review) : [];
-      formData.cart = formData.cart && typeof formData.cart === 'object' && Object.keys(formData.cart).length > 0 ? formData.cart : null;
+      else if (this.entity === 'Users') {
+        // Asegurarse de que 'orders' sea un arreglo no vacío
+        formData.orders = Array.isArray(formData.orders) ? formData.orders.filter((order: any) => order) : [];
+        formData.reviews = Array.isArray(formData.reviews) ? formData.reviews.filter((review: any) => review) : [];
+        formData.cart = formData.cart && typeof formData.cart === 'object' && Object.keys(formData.cart).length > 0 ? formData.cart : null;
 
-    }else if (this.entity === 'Orders') {
-      // Asegurarse de que 'orders' sea un arreglo no vacío
-      formData.cars = Array.isArray(formData.cars) ? formData.cars.filter((car: any) => car) : [];
-    }else if (this.entity === 'Reviews') {
-      // Asegurarse de que 'orders' sea un arreglo no vacío
-      formData.user = formData.user && typeof formData.user === 'object' && Object.keys(formData.user).length > 0 ? formData.user : null;
-      formData.car = formData.car && typeof formData.car === 'object' && Object.keys(formData.car).length > 0 ? formData.car : null;
+      }else if (this.entity === 'Orders') {
+        // Asegurarse de que 'orders' sea un arreglo no vacío
+        formData.cars = Array.isArray(formData.cars) ? formData.cars.filter((car: any) => car) : [];
+      }else if (this.entity === 'Reviews') {
+        // Asegurarse de que 'orders' sea un arreglo no vacío
+        formData.user = formData.user && typeof formData.user === 'object' && Object.keys(formData.user).length > 0 ? formData.user : null;
+        formData.car = formData.car && typeof formData.car === 'object' && Object.keys(formData.car).length > 0 ? formData.car : null;
 
-    }else if (this.entity === 'Carts') {
-      // Asegurarse de que 'orders' sea un arreglo no vacío
-      formData.user = formData.user && typeof formData.user === 'object' && Object.keys(formData.user).length > 0 ? formData.user : null;
-      formData.cars = Array.isArray(formData.cars) ? formData.cars.filter((car: any) => car) : [];
+      }else if (this.entity === 'Carts') {
+        // Asegurarse de que 'orders' sea un arreglo no vacío
+        formData.user = formData.user && typeof formData.user === 'object' && Object.keys(formData.user).length > 0 ? formData.user : null;
+        formData.cars = Array.isArray(formData.cars) ? formData.cars.filter((car: any) => car) : [];
 
-    }
+      }
 
-    // Verificar el formato y los datos de 'orders' antes de hacer el envío
-    console.log('Datos antes de enviar:', JSON.stringify(formData, null, 2));
+      // Verificar el formato y los datos de 'orders' antes de hacer el envío
+      console.log('Datos antes de enviar:', JSON.stringify(formData, null, 2));
 
-    if (this.entity === 'Cars') {
-      this.carService.addCar(formData).subscribe();   
-    } else if (this.entity === 'Users') {
-      this.userService.addUser(formData).subscribe();      
-    } else if (this.entity === 'Orders') {
-      this.orderService.addOrder(formData).subscribe();      
-    } else if (this.entity === 'Reviews') {
+      if (this.entity === 'Cars') {
+        this.carService.addCar(formData).subscribe();   
+      } else if (this.entity === 'Users') {
+        this.userService.addUser(formData).subscribe();      
+      } else if (this.entity === 'Orders') {
+        this.orderService.addOrder(formData).subscribe();      
+      } else if (this.entity === 'Reviews') {
+        console.log("Form a enviar: "+formData);
+        this.reviewService.addReview(formData).subscribe();      
+      } else if (this.entity === 'Carts') {
+        //console.log("Coches seleccionados:", formData.cars);
 
-      //formData.cars = formData.cars.map((car: Car) => car.car_Id);
+        this.cartService.addCart(formData).subscribe();      
+      }
 
-      //formData.users = formData.users.map((user: User) => user.user_Id);
-
-      console.log("Form a enviar: "+formData);
-
-      this.reviewService.addReview(formData).subscribe();      
-    } else if (this.entity === 'Carts') {
-      //console.log("Coches seleccionados:", formData.cars);
-
-      this.cartService.addCart(formData).subscribe();      
-    }
-
-    
-    this.formSubmit.emit(formData); // Emitimos los datos del formulario
-    this.createForm.reset(); // Limpiamos el formulario después de enviar
+      
+      this.formSubmit.emit(formData); // Emitimos los datos del formulario
+      this.createForm.reset(); // Limpiamos el formulario después de enviar
+      this.isEditing = false;
+      this.editingItem = null;
   }
 
   }
 
 
   onClose(): void {
+    this.isEditing = false;
+    this.editingItem = null;
+    this.createForm.reset();
     this.closeForm.emit(); // Emitimos un evento para cerrar el formulario
   }
 
