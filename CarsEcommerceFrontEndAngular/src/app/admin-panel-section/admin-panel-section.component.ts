@@ -23,22 +23,15 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 })
 export class AdminPanelSectionComponent implements OnInit{
   @Input() entity: string = '';
+  @Input() itemToEdit: any = null;
   @Output() formSubmit = new EventEmitter<any>();
   @Output() closeForm = new EventEmitter<void>();
 
   isEditing: boolean = false;  // Indica si estamos editando
-  editingItem: any = null;  // Almacena el elemento que se está editando
-
-  toppings = new FormControl('');
-  toppingList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
   
   createForm!: UntypedFormGroup;
   formFields: any[] = []; // Dinámico: lista de campos
 
-  isOptionsVisible: { [key: string]: boolean } = {};
-  selectedOptions: string[] = [];
-
-  carBrands: string[] = ['Toyota', 'Honda', 'Ford', 'BMW', 'Audi', 'Mercedes'];
   cars: Car[] = [];  // Para almacenar la lista de coches desde la API
   users: User[] = [];  // Para almacenar la lista de users desde la API
   categories: string[] = [];  // Almacena las categorías del enum
@@ -69,19 +62,24 @@ export class AdminPanelSectionComponent implements OnInit{
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['entity']) {
+
+    console.log('ngOnChanges detected changes:', changes);
+
+    if (changes['entity'] || changes['itemToEdit']) {
+      this.isEditing = !!this.itemToEdit;
       this.buildForm(); // Volvemos a construir el formulario si cambia la entidad
+      setTimeout(() => this.cdRef.detectChanges(), 0); // Asegura la actualización
+
     }
   }
   
 
   buildForm() {
-    let defaultValues: any = {};
 
-    if (this.editingItem) {
-      // Si hay un item en edición, precargar los valores
-      defaultValues = { ...this.editingItem };
-    }
+    console.log('Item to edit:', this.itemToEdit);
+
+    // Valores por defecto: si estamos editando, usamos itemToEdit; sino, valores vacíos
+    const defaultValues: any = this.itemToEdit ? { ...this.itemToEdit } : {};
 
     if (this.entity === 'Cars') {
       this.formFields = [
@@ -240,20 +238,13 @@ export class AdminPanelSectionComponent implements OnInit{
       return !!(field?.invalid && field?.touched);
   }
 
-  editItem(item: any) {
-      this.isEditing = true;
-      this.editingItem = item;
-      this.buildForm();  // Volvemos a construir el formulario con los valores del item
-    }
-
-
   onSubmit(){
       if (this.createForm.valid) {
 
       const formData = { ...this.createForm.value };
 
-      if (this.isEditing) {
-        formData.id = this.editingItem.id;  // Asegurar que el ID está presente para actualizar
+      if (this.isEditing && this.itemToEdit) {
+        formData.id = this.itemToEdit.id;  // Asegurar que el ID está presente para actualizar
       }
 
       console.log('Datos antes de enviar:', JSON.stringify(formData, null, 2));
@@ -309,7 +300,7 @@ export class AdminPanelSectionComponent implements OnInit{
       this.formSubmit.emit(formData); // Emitimos los datos del formulario
       this.createForm.reset(); // Limpiamos el formulario después de enviar
       this.isEditing = false;
-      this.editingItem = null;
+      this.itemToEdit  = null;
   }
 
   }
@@ -317,7 +308,7 @@ export class AdminPanelSectionComponent implements OnInit{
 
   onClose(): void {
     this.isEditing = false;
-    this.editingItem = null;
+    this.itemToEdit  = null;
     this.createForm.reset();
     this.closeForm.emit(); // Emitimos un evento para cerrar el formulario
   }
@@ -351,12 +342,6 @@ export class AdminPanelSectionComponent implements OnInit{
       console.error('Error al cargar datos:', error);
     });
 
-    setTimeout(() => {
-      this.toppingList = ['Cheese', 'Bacon', 'Olives'];
-      
-      // Forzar la detección de cambios después de actualizar los datos
-      this.cdRef.detectChanges();
-    }, 2000);
   }
 
 }

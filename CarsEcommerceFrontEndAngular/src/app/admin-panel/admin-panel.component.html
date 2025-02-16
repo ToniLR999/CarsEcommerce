@@ -73,7 +73,7 @@
       </div>
     </div>
 
-    <app-admin-panel-section *ngIf="isCreateFormVisible" [entity]="'Cars'" (formSubmit)="handleFormSubmit($event)" (closeForm)="handleFormClose()"></app-admin-panel-section>
+    <app-admin-panel-section *ngIf="isCreateFormVisible" [entity]="'Cars'" [itemToEdit]="editingData" (formSubmit)="handleFormSubmit($event)" (closeForm)="handleFormClose()"></app-admin-panel-section>
 
 
 </div>
@@ -133,7 +133,7 @@
       </div>
 
     </div>
-    <app-admin-panel-section *ngIf="isCreateFormVisible" [entity]="'Users'" (formSubmit)="handleFormSubmit($event)" (closeForm)="handleFormClose()"></app-admin-panel-section>
+    <app-admin-panel-section *ngIf="isCreateFormVisible" [entity]="'Users'" [itemToEdit]="editingData" (formSubmit)="handleFormSubmit($event)" (closeForm)="handleFormClose()"></app-admin-panel-section>
 
   </div>
 
@@ -190,7 +190,7 @@
       </div>
     </div>
 
-    <app-admin-panel-section *ngIf="isCreateFormVisible" [entity]="'Orders'" (formSubmit)="handleFormSubmit($event)" (closeForm)="handleFormClose()"></app-admin-panel-section>
+    <app-admin-panel-section *ngIf="isCreateFormVisible" [entity]="'Orders'" [itemToEdit]="editingData" (formSubmit)="handleFormSubmit($event)" (closeForm)="handleFormClose()"></app-admin-panel-section>
 
   </div>
 
@@ -246,7 +246,7 @@
         <button (click)="nextPage()" [disabled]="currentPage === pages.length">Siguiente</button>
       </div>
     </div>
-    <app-admin-panel-section *ngIf="isCreateFormVisible" [entity]="'Reviews'" (formSubmit)="handleFormSubmit($event)" (closeForm)="handleFormClose()"></app-admin-panel-section>
+    <app-admin-panel-section *ngIf="isCreateFormVisible" [entity]="'Reviews'" [itemToEdit]="editingData" (formSubmit)="handleFormSubmit($event)" (closeForm)="handleFormClose()"></app-admin-panel-section>
 
     
   </div>
@@ -303,7 +303,8 @@
       </div>
     </div>
 
-    <app-admin-panel-section *ngIf="isCreateFormVisible" [entity]="'Carts'" (formSubmit)="handleFormSubmit($event)" (closeForm)="handleFormClose()"></app-admin-panel-section>
+    <app-admin-panel-section *ngIf="isCreateFormVisible" [entity]="'Carts'" [itemToEdit]="editingData"
+    (formSubmit)="handleFormSubmit($event)" (closeForm)="handleFormClose()"></app-admin-panel-section>
 
   </div>
 </div>

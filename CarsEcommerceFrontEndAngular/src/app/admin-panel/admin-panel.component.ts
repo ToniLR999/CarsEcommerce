@@ -33,6 +33,8 @@ export class AdminPanelComponent implements OnInit{
   pages: number[] = []; // Número de páginas
   maxVisiblePages: number = 5; // Máximo número de botones de página visibles
 
+  editingData: any = null;
+
   constructor(private carService: CarService, private userService: UserService, private orderService: OrderService, private reviewService: ReviewService, private cartService: CartService, private renderer: Renderer2,public loginService: AuthenticationService, private http: HttpClient){
     this.user = new User();
     
@@ -274,9 +276,12 @@ closeCreateForm() {
   this.isCreateFormVisible = false; // Cerrar el formulario
 }
 
-editRow(row: string[], seccion: string): void {
+editRow(row: any, seccion: string): void {
   console.log('Editando fila:', row);
-  alert(`Editar: ${row.join(' | ')}`);
+  this.editingData = row; // row debería ser un objeto con la estructura adecuada.
+  
+  this.currentEntity = seccion;
+  this.isCreateFormVisible = true;
   // Aquí puedes abrir un formulario con los valores actuales para editarlos.
 }
 
