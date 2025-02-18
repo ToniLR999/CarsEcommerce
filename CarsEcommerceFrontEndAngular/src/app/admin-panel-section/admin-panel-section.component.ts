@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, ChangeDetectionStrategy, AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { User } from '../services/user/user';
 import { UserService } from '../services/user/user.service';
@@ -11,9 +11,6 @@ import { forkJoin } from 'rxjs';
 import { Order } from '../services/order/order';
 import { Review } from '../services/review/review';
 import { Cart } from '../services/cart/cart';
-import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatSelectModule} from '@angular/material/select';
-import {MatFormFieldModule} from '@angular/material/form-field';
 
 
 @Component({
@@ -63,7 +60,6 @@ export class AdminPanelSectionComponent implements OnInit{
 
   ngOnChanges(changes: SimpleChanges) {
 
-    console.log('ngOnChanges detected changes:', changes);
 
     if (changes['entity'] || changes['itemToEdit']) {
       this.isEditing = !!this.itemToEdit;
@@ -72,16 +68,15 @@ export class AdminPanelSectionComponent implements OnInit{
 
     }
   }
-  
 
   buildForm() {
 
-    console.log('Item to edit:', this.itemToEdit);
-
     // Valores por defecto: si estamos editando, usamos itemToEdit; sino, valores vacíos
-    const defaultValues: any = this.itemToEdit ? { ...this.itemToEdit } : {};
+
+    const defaultValues: any = this.itemToEdit ? this.itemToEdit : {};
 
     if (this.entity === 'Cars') {
+
       this.formFields = [
         { name: 'name', type: 'text', placeholder: 'Car Name', errors: [] },
         { name: 'description', type: 'text', placeholder: 'Description', errors: [] },
@@ -98,18 +93,7 @@ export class AdminPanelSectionComponent implements OnInit{
     this.formFields.forEach(field => {
       //Datos de todos los listados de opciones  console.log(`Field: ${field.name}, Options:`, field.options);
     });
-            // Inicializar el formulario reactivo con controles
-    /*this.createForm = this.fb.group({
-      name: ['', Validators.required],
-      description: ['', Validators.required],
-      price: ['', Validators.required],
-      stock: ['', Validators.required],
-      category: ['', Validators.required],
-      images: [[]],
-      orders: [[]],
-      reviews: [[]], 
-      carts: [[]]
-    });*/
+
 
     this.createForm = this.fb.group({
       name: [defaultValues.name || '', Validators.required],
@@ -137,18 +121,6 @@ export class AdminPanelSectionComponent implements OnInit{
         { name: 'cart', type: 'select', placeholder: 'Select Cart', errors: [], options: this.carts }
       ];
 
-      /*this.createForm = this.fb.group({
-        username: ['', Validators.required],
-        email: ['', [Validators.required, Validators.email]],
-        phoneNumber: ['', [Validators.pattern('[0-9]{3}-[0-9]{3}-[0-9]{4}')]], 
-        password: ['', Validators.required],
-        role: ['', Validators.required],
-        orders: [[]],
-        reviews: [[]],
-        cart: [null]
-      
-      
-      });*/
 
       this.createForm = this.fb.group({
         username: [defaultValues.username || '', Validators.required],
@@ -169,12 +141,6 @@ export class AdminPanelSectionComponent implements OnInit{
           { name: 'cars', type: 'select-multiple', placeholder: 'Select Car', errors: [], options: this.cars  },
           { name: 'user', type: 'select', placeholder: 'Select User', errors: [],options: this.users   }
         ];
-        /*this.createForm = this.fb.group({
-          totalPrice: ['', Validators.required],        // Nombre de usuario
-          status: ['', [Validators.required]],  // Correo electrónico
-          cars: [[], [Validators.required]], // Número de teléfono
-          user: ['', Validators.required]     // Contraseña
-        });*/
 
         this.createForm = this.fb.group({
           totalPrice: [defaultValues.totalPrice || '', Validators.required],
@@ -191,12 +157,6 @@ export class AdminPanelSectionComponent implements OnInit{
         { name: 'user', type: 'select', placeholder: 'Select an User', errors: [],options: this.users },
         { name: 'car', type: 'select', placeholder: 'Select Car', errors: [], options: this.cars }
       ];
-      /*this.createForm = this.fb.group({
-        rating: ['', Validators.required],      
-        comment: ['', [Validators.required, Validators.email]],  
-        user: ['', [Validators.required]],
-        car: ['', Validators.required]     
-      });*/
 
       this.createForm = this.fb.group({
         rating: [defaultValues.rating || '', Validators.required],
@@ -212,10 +172,6 @@ export class AdminPanelSectionComponent implements OnInit{
         { name: 'user', type: 'select', placeholder: 'Select an User', errors: [],options: this.users },  
         { name: 'cars', type: 'select-multiple', placeholder: 'Select Cars', errors: [], options: this.cars }
       ];
-      /*this.createForm = this.fb.group({
-        user: ['', Validators.required],
-        cars: [[], Validators.required] 
-      });*/
 
       this.createForm = this.fb.group({
         user: [defaultValues.user || '', Validators.required],
@@ -225,7 +181,7 @@ export class AdminPanelSectionComponent implements OnInit{
 
         // Configuración del formulario dinámico
     const formGroupConfig = this.formFields.reduce((config, field) => {
-      config[field.name] = ['', field.validators];
+      config[field.name] = [defaultValues[field.name] || '', Validators.required];
       return config;
     }, {});
 
@@ -344,4 +300,23 @@ export class AdminPanelSectionComponent implements OnInit{
 
   }
 
+
+  forzarValidacion() {
+    Object.entries(this.createForm.controls).forEach(([controlName, control]) => {
+      control.markAsTouched();
+      control.updateValueAndValidity();
+  
+      if (control.invalid) {
+        console.warn(`❌ Error en el control '${controlName}':`, control.errors);
+      } else {
+        console.log(`✅ El control '${controlName}' es válido.`);
+      }
+    });
+  
+    console.log('📋 Estado general del formulario:', this.createForm.status);
+  }
+  
+
 }
+
+

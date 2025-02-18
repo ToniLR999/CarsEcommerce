@@ -10,7 +10,6 @@ import Swiper from 'swiper';
 export class AppComponent {
   title = 'CarsEcommerce';
 
-  @ViewChild('menuBtn') menuBtn!: ElementRef;
   @ViewChild('navbar') navbar!: ElementRef;
   @ViewChild('loginFormContainer') loginFormContainer!: ElementRef;
   @ViewChild('header') header!: ElementRef;
@@ -19,10 +18,6 @@ export class AppComponent {
 
   ngAfterViewInit(): void {
     // Menu button toggle
-    this.renderer.listen(this.menuBtn.nativeElement, 'click', () => {
-      this.menuBtn.nativeElement.classList.toggle('fa-times');
-      this.navbar.nativeElement.classList.toggle('active');
-    });
 
     // Login form toggle
     const loginBtn = document.querySelector('#login-btn');
@@ -52,7 +47,6 @@ export class AppComponent {
       this.header.nativeElement.classList.remove('active');
     }
 
-    this.menuBtn.nativeElement.classList.remove('fa-times');
     this.navbar.nativeElement.classList.remove('active');
   }
 

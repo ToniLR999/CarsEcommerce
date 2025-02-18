@@ -25,10 +25,6 @@
         </mat-select>
       </mat-form-field>
       
-      <!--<select *ngIf="field.type === 'select-multiple'" class="box" [formControlName]="field.name" multiple data-multi-select>
-        <option *ngFor="let option of field.options" [ngValue]="option">{{ option.name || option.username || option.comment || option.description || option.id || option }}</option>
-      </select>-->
-      
       <!-- Mensajes de error dinámicos -->
       <div *ngIf="isFieldInvalid(field.name)" class="alert-danger">
         <div *ngFor="let error of field.errors" class="submitErrorMessages">{{ error }}</div>
@@ -36,6 +32,7 @@
     </div>
 
     <input type="submit" value="Submit" class="btn" [disabled]="createForm.invalid">
+    <input type="button" value="Errors" class="btn" (click)="forzarValidacion()">
     <input type="button" value="Cancel" class="btn" (click)="onClose()">
   </form>
 </div>

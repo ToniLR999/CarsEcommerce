@@ -8,6 +8,7 @@ import { UserService } from '../services/user/user.service';
 import { OrderService } from '../services/order/order.service';
 import { ReviewService } from '../services/review/review.service';
 import { CartService } from '../services/cart/cart.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-admin-panel',
@@ -112,7 +113,6 @@ SignOut() {
 
 getTableData(seccion: string): string[][] {
   // Añadimos más filas para probar la paginación
-  console.log("Seccion: "+seccion);
   switch(seccion){
     case 'cars': {
       this.carService.getCars().subscribe(
@@ -276,18 +276,45 @@ closeCreateForm() {
   this.isCreateFormVisible = false; // Cerrar el formulario
 }
 
-editRow(row: any, seccion: string): void {
-  console.log('Editando fila:', row);
-  this.editingData = row; // row debería ser un objeto con la estructura adecuada.
+  getEntityById(entity: string, id: number): Observable<any> {
+    switch (entity) {
+      case 'cars':
+        return this.carService.getCarbyId(id);
+      case 'users':
+        return this.userService.getUserbyId(id);
+      case 'orders':
+        return this.orderService.getOrderbyId(id);
+      case 'reviews':
+        return this.reviewService.getReviewbyId(id);
+      case 'carts':
+        return this.cartService.getCartbyId(id);
+      default:
+        throw new Error('Entidad no soportada');
+    }
+  }
+
+  editRow(row: any, entity: string): void {
+    console.log("Editing RowId:"+row[0]+ " Row:"+row+" entity:"+entity);
+
+
+    this.getEntityById(entity, row[0]).subscribe(
+      (data) => {
+        console.log('Datos completos para editar:', data);
+        this.editingData = data; // O asignarlo a itemToEdit
+        this.currentEntity = entity;
+        this.isCreateFormVisible = true;
+
+      },
+      (error) => {
+        console.error('Error al obtener el registro:', error);
+      }
+    );
+  }
   
-  this.currentEntity = seccion;
-  this.isCreateFormVisible = true;
-  // Aquí puedes abrir un formulario con los valores actuales para editarlos.
-}
 
 deleteRow(row: string[], seccion: string): void {
   const confirmDelete = confirm(`¿Seguro que quieres eliminar esta fila?`);
-  console.log("Row data: "+row);
+  //console.log("Row data: "+row);
   if (confirmDelete) {
     this.rows = this.rows.filter(r => r !== row);
     this.calculatePages();  // Recalcular paginación
