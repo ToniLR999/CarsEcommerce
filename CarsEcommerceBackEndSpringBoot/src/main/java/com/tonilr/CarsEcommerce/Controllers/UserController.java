@@ -73,7 +73,6 @@ public class UserController {
 
 	@PostMapping("/add")
 	public ResponseEntity<User> addUser(@RequestBody User user) {
-		logger.warn("UserCart: "+user.getCart().getId());
 		User newUser = userService.addUser(user);
 		return new ResponseEntity<>(newUser, HttpStatus.CREATED);
 	}

@@ -1,13 +1,10 @@
 package com.tonilr.CarsEcommerce.Entities;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -38,18 +38,19 @@ public class UserServices {
 		usuario.setIsActive(true);
 		usuario.setRegisterDate(new Date());
 		usuario.setRole(Role.USER);
-		 if (usuario.getCart().getId() == null) {
+		
+	    usuario = userRepo.save(usuario);
+		 if (usuario.getCart() == null || usuario.getCart().getId() == null) {
 	            Cart newCart = new Cart();
+	            newCart.setUser(usuario);
 	            newCart = cartServices.addCart(newCart);  // Guardar el carrito en la base de datos
 	            usuario.setCart(newCart); // Asignar el carrito al usuario
-	            
-	            usuario = userRepo.save(usuario);  
-	            
-	            newCart.setUser(usuario);
+	            	            
 
-	            cartServices.updateCart(newCart);
+	            updateUser(usuario);
 	        }else {
-	        	
+	        	System.out.println("¿Carrito nulo? " + (usuario.getCart() == null));
+
 	            Cart existentCart = cartServices.findCartById(usuario.getCart().getId());  // Guardar el carrito en la base de datos
 	            usuario.setCart(existentCart); // Asignar el carrito al usuario
 	            
