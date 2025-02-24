@@ -121,17 +121,21 @@ export class AdminPanelSectionComponent implements OnInit{
         { name: 'cart', type: 'select', placeholder: 'Select Cart', errors: [], options: this.carts }
       ];
 
-
+      const defaults = defaultValues || {};
       this.createForm = this.fb.group({
-        username: [defaultValues.username || '', Validators.required],
-        email: [defaultValues.email || '', [Validators.required, Validators.email]],
-        phoneNumber: [defaultValues.phoneNumber || '', [Validators.pattern('[0-9]{3}-[0-9]{3}-[0-9]{4}')]],
-        password: [defaultValues.password || '', Validators.required],
-        role: [defaultValues.role || '', Validators.required],
-        orders: [defaultValues.orders || []],
-        reviews: [defaultValues.reviews || []],
-        cart: [defaultValues.cart || null]
+        username: [defaults.username || '', Validators.required],
+        email: [defaults.email || '', [Validators.required, Validators.email]],
+        phoneNumber: [defaults.phoneNumber || '', [Validators.pattern('[0-9]{10}')]],
+        password: [defaults.password || '', Validators.required],
+        role: [defaults.role || '', Validators.required],
+        orders: [defaults.orders ?? []],
+        reviews: [defaults.reviews ?? []],
+        cart: [defaults.cart ?? null]
       });
+
+      console.log('Validadores de orders:', this.createForm.get('orders')?.validator);
+      console.log('Validadores de reviews:', this.createForm.get('reviews')?.validator);
+      console.log('Validadores de cart:', this.createForm.get('cart')?.validator);
     }
       else if (this.entity === 'Orders') {
 
@@ -195,6 +199,28 @@ export class AdminPanelSectionComponent implements OnInit{
   }
 
   onSubmit(){
+    console.log("Submited");
+    this.createForm.markAllAsTouched(); // Forzar validación de todos los campos
+
+    console.log("¿Formulario válido?", this.createForm.valid);
+    console.log("Valor del formulario:", this.createForm.value);
+
+    console.log("Estado del formulario:", this.createForm.status);
+    Object.keys(this.createForm.controls).forEach((key) => {
+      const control = this.createForm.get(key);
+      console.log(`Control: ${key}, Estado: ${control?.status}, Errores:`, control?.errors);
+    });
+
+    this.createForm.get('orders')?.clearValidators();
+    this.createForm.get('reviews')?.clearValidators();
+    this.createForm.get('cart')?.clearValidators();
+    this.createForm.updateValueAndValidity();
+
+    
+    console.log('Validadores de orders:', this.createForm.get('orders')?.validator);
+    console.log('Validadores de reviews:', this.createForm.get('reviews')?.validator);
+    console.log('Validadores de cart:', this.createForm.get('cart')?.validator);
+
       if (this.createForm.valid) {
 
       const formData = { ...this.createForm.value };
@@ -214,6 +240,8 @@ export class AdminPanelSectionComponent implements OnInit{
       }
       
       else if (this.entity === 'Users') {
+
+        console.log("entro en users");
         // Asegurarse de que 'orders' sea un arreglo no vacío
         formData.orders = Array.isArray(formData.orders) ? formData.orders.filter((order: any) => order) : [];
         formData.reviews = Array.isArray(formData.reviews) ? formData.reviews.filter((review: any) => review) : [];
@@ -240,6 +268,8 @@ export class AdminPanelSectionComponent implements OnInit{
       if (this.entity === 'Cars') {
         this.carService.addCar(formData).subscribe();   
       } else if (this.entity === 'Users') {
+        console.log("entro en users add");
+
         this.userService.addUser(formData).subscribe();      
       } else if (this.entity === 'Orders') {
         this.orderService.addOrder(formData).subscribe();      
@@ -257,6 +287,8 @@ export class AdminPanelSectionComponent implements OnInit{
       this.createForm.reset(); // Limpiamos el formulario después de enviar
       this.isEditing = false;
       this.itemToEdit  = null;
+  }else {
+    console.warn("Formulario inválido.");
   }
 
   }

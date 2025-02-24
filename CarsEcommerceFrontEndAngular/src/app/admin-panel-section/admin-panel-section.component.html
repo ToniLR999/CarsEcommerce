@@ -31,7 +31,8 @@
       </div>
     </div>
 
-    <input type="submit" value="Submit" class="btn" [disabled]="createForm.invalid">
+    <input type="submit" value="Submit" class="btn">
+    <!--<input type="submit" value="Submit" class="btn" [disabled]="createForm.invalid">-->
     <input type="button" value="Errors" class="btn" (click)="forzarValidacion()">
     <input type="button" value="Cancel" class="btn" (click)="onClose()">
   </form>
