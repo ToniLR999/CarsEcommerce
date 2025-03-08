@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.tonilr.CarsEcommerce.DTOs.CartDTO;
 import com.tonilr.CarsEcommerce.Entities.Cart;
 import com.tonilr.CarsEcommerce.Entities.User;
 import com.tonilr.CarsEcommerce.Exceptions.NotFoundException;
@@ -52,20 +53,26 @@ public class CartController {
 	}
 
 	@PostMapping("/add")
-	public ResponseEntity<Cart> addCart(@RequestBody Cart cart) {
+	public ResponseEntity<Cart> addCart(@RequestBody CartDTO cartDTO) {
 		/*User user = userRepository.findById(cart.getUser().getId())
 		        .orElseThrow(() -> new NotFoundException("User not found with id: " + cart.getUser().getId()));
 	        cart.setUser(user);
 */
-		Cart newCart = cartService.addCart(cart);
+		Cart newCart = cartService.updateCart(cartDTO);
 		return new ResponseEntity<>(newCart, HttpStatus.CREATED);
 	}
-
+	
 	@PutMapping("/update")
-	public ResponseEntity<Cart> updateCart(@RequestBody Cart cart) {
-		Cart updateCart = cartService.updateCart(cart);
-		return new ResponseEntity<>(updateCart, HttpStatus.OK);
-	}
+    public ResponseEntity<Cart> updateCart(@RequestBody CartDTO cartDTO) {
+        Cart updatedCart = cartService.updateCart(cartDTO);
+        return ResponseEntity.ok(updatedCart);
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<Cart> getCartByUserId(@PathVariable Long userId) {
+        Cart cart = cartService.getCartByUserId(userId);
+        return ResponseEntity.ok(cart);
+    }
 	
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<?> deleteCart(@PathVariable("id") Long id) {

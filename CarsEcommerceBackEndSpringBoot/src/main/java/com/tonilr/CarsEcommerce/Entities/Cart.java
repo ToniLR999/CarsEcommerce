@@ -1,6 +1,8 @@
 package com.tonilr.CarsEcommerce.Entities;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -30,7 +32,7 @@ public class Cart {
     private User user;
 
 	@ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-	private Set<Car> cars = new HashSet<Car>();
+	private List<Car> cars = new ArrayList<Car>();
 
     // Getters and Setters
 
@@ -50,11 +52,11 @@ public class Cart {
         this.user = user;
     }
 
-    public Set<Car> getCars() {
+    public List<Car> getCars() {
         return cars;
     }
 
-    public void setCars(Set<Car> cars) {
+    public void setCars(List<Car> cars) {
         this.cars = cars;
     }
 
