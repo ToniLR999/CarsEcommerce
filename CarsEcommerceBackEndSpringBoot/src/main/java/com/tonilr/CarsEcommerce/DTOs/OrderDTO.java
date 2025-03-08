@@ -7,6 +7,13 @@ public class OrderDTO {
     private List<Long> carIds;
     
     
+    public OrderDTO() {}
+
+    public OrderDTO(Long userId, List<Long> carIds) {
+        this.userId = userId;
+        this.carIds = carIds;
+    }
+    
     public Long getUserId() {
         return userId;
     }

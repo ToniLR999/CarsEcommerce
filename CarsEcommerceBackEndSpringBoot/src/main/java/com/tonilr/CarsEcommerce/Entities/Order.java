@@ -1,10 +1,8 @@
 package com.tonilr.CarsEcommerce.Entities;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
+import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -42,7 +40,7 @@ public class Order {
     private Date createdAt;
         
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-    private Set<Car> cars = new HashSet<Car>();
+    private List<Car> cars = new ArrayList<Car>();
 
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
@@ -67,11 +65,11 @@ public class Order {
         this.user = user;
     }
 
-    public Set<Car> getCars() {
+    public List<Car> getCars() {
         return cars;
     }
 
-    public void setCars(Set<Car> cars) {
+    public void setCars(List<Car> cars) {
         this.cars = cars;
     }
 

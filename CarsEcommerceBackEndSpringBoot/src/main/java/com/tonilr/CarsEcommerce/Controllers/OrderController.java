@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.tonilr.CarsEcommerce.DTOs.OrderDTO;
 import com.tonilr.CarsEcommerce.Entities.Order;
 import com.tonilr.CarsEcommerce.Services.OrderServices;
 
@@ -43,11 +44,17 @@ public class OrderController {
 		return new ResponseEntity<>(order, HttpStatus.OK);
 	}
 
-	@PostMapping("/add")
+	/*@PostMapping("/add")
 	public ResponseEntity<Order> addOrder(@RequestBody Order order) {
 		Order newOrder = orderService.addOrder(order);
 		return new ResponseEntity<>(newOrder, HttpStatus.CREATED);
-	}
+	}*/
+	
+	@PostMapping("/add")
+    public ResponseEntity<Order> addOrder(@RequestBody OrderDTO orderDTO) {
+        Order newOrder = orderService.addOrder(orderDTO);
+        return ResponseEntity.ok(newOrder);
+    }
 
 	@PutMapping("/update")
 	public ResponseEntity<Order> updateAccount(@RequestBody Order order) {

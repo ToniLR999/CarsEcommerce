@@ -37,7 +37,9 @@ public class UserServices {
 		usuario.setPassword(encodedPassword);
 		usuario.setIsActive(true);
 		usuario.setRegisterDate(new Date());
-		usuario.setRole(Role.USER);
+		if(usuario.getRole() == null) {
+			usuario.setRole(Role.USER);
+		}
 		
 	    usuario = userRepo.save(usuario);
 		 if (usuario.getCart() == null || usuario.getCart().getId() == null) {
