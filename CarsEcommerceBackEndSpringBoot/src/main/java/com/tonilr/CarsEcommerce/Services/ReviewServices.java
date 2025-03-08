@@ -7,25 +7,50 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tonilr.CarsEcommerce.DTOs.ReviewDTO;
+import com.tonilr.CarsEcommerce.Entities.Car;
 import com.tonilr.CarsEcommerce.Entities.Review;
+import com.tonilr.CarsEcommerce.Entities.User;
 import com.tonilr.CarsEcommerce.Exceptions.NotFoundException;
+import com.tonilr.CarsEcommerce.Repos.CarRepo;
 import com.tonilr.CarsEcommerce.Repos.ReviewRepo;
+import com.tonilr.CarsEcommerce.Repos.UserRepo;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class ReviewServices {
 
-	@Autowired
-	private final ReviewRepo reviewRepo;
+    @Autowired
+    private ReviewRepo reviewRepo;
+
+    @Autowired
+    private UserRepo userRepository;
+
+    @Autowired
+    private CarRepo carRepository;
 
 	public ReviewServices(ReviewRepo reviewRepo) {
 		this.reviewRepo = reviewRepo;
 	}
+	
+	   @Transactional
+	    public Review addReview(ReviewDTO reviewDTO) {
+	        User user = userRepository.findById(reviewDTO.getUserId())
+	                .orElseThrow(() -> new RuntimeException("User not found"));
 
-	public Review addReview(Review review) {
-		review.setCreatedAt(new Date());
+	        Car car = carRepository.findById(reviewDTO.getCarId())
+	                .orElseThrow(() -> new RuntimeException("Car not found"));
 
-		return reviewRepo.save(review);
-	}
+	        Review review = new Review();
+	        review.setUser(user);
+	        review.setCar(car);
+	        review.setRating(reviewDTO.getRating());
+	        review.setComment(reviewDTO.getComment());
+	        review.setCreatedAt(new Date());
+
+	        return reviewRepo.save(review);
+	    }
 
 	public List<Review> findAllReviews() {
 		return reviewRepo.findAll();

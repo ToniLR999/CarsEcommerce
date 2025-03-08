@@ -1,6 +1,5 @@
 package com.tonilr.CarsEcommerce.Entities;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.tonilr.CarsEcommerce.DTOs.ReviewDTO;
 import com.tonilr.CarsEcommerce.Entities.Review;
 import com.tonilr.CarsEcommerce.Services.ReviewServices;
 
@@ -42,11 +43,17 @@ public class ReviewController {
 		return new ResponseEntity<>(review, HttpStatus.OK);
 	}
 
-	@PostMapping("/add")
+	/*@PostMapping("/add")
 	public ResponseEntity<Review> addReview(@RequestBody Review review) {
 		Review newReview = reviewService.addReview(review);
 		return new ResponseEntity<>(newReview, HttpStatus.CREATED);
-	}
+	}*/
+	
+    @PostMapping("/add")
+    public ResponseEntity<Review> addReview(@RequestBody ReviewDTO reviewDTO) {
+        Review newReview = reviewService.addReview(reviewDTO);
+        return ResponseEntity.ok(newReview);
+    }
 
 	@PutMapping("/update")
 	public ResponseEntity<Review> updateReview(@RequestBody Review review) {
