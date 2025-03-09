@@ -190,6 +190,9 @@ export class AdminPanelSectionComponent implements OnInit{
     }, {});
 
   this.createForm = this.fb.group(formGroupConfig);
+
+  this.createForm.updateValueAndValidity();
+
   }
   
     // Verificar si un campo es inválido
@@ -200,20 +203,21 @@ export class AdminPanelSectionComponent implements OnInit{
 
   onSubmit(){
     console.log("Submited");
-    this.createForm.markAllAsTouched(); // Forzar validación de todos los campos
 
     console.log("¿Formulario válido?", this.createForm.valid);
     console.log("Valor del formulario:", this.createForm.value);
 
     console.log("Estado del formulario:", this.createForm.status);
+
     Object.keys(this.createForm.controls).forEach((key) => {
       const control = this.createForm.get(key);
-      console.log(`Control: ${key}, Estado: ${control?.status}, Errores:`, control?.errors);
+      console.log(`Campo: ${key}, Estado: ${control?.status}, Errores:`, control?.errors);
     });
+    
 
-    this.createForm.get('orders')?.clearValidators();
-    this.createForm.get('reviews')?.clearValidators();
-    this.createForm.get('cart')?.clearValidators();
+
+    console.log("Valores del formulario:", this.createForm.value);
+
     this.createForm.updateValueAndValidity();
 
     
@@ -252,8 +256,30 @@ export class AdminPanelSectionComponent implements OnInit{
         formData.cars = Array.isArray(formData.cars) ? formData.cars.filter((car: any) => car) : [];
       }else if (this.entity === 'Reviews') {
         // Asegurarse de que 'orders' sea un arreglo no vacío
-        formData.user = formData.user && typeof formData.user === 'object' && Object.keys(formData.user).length > 0 ? formData.user : null;
-        formData.car = formData.car && typeof formData.car === 'object' && Object.keys(formData.car).length > 0 ? formData.car : null;
+        /*formData.user = formData.user && typeof formData.user === 'object' && Object.keys(formData.user).length > 0 ? formData.user : null;
+        formData.car = formData.car && typeof formData.car === 'object' && Object.keys(formData.car).length > 0 ? formData.car : null;*/
+
+        console.log("Procesando reviews...");
+        const formData = { ...this.createForm.value };
+
+        // Asegurar que solo se envían los IDs
+        formData.userId = formData.user?.id;
+        formData.carId = formData.car?.id;
+        
+        // Eliminar los objetos completos del envío
+        delete formData.user;
+        delete formData.car;
+        
+        console.log("Datos a enviar:", JSON.stringify(formData, null, 2));
+        
+
+        if (!formData.userId || !formData.carId) {
+          console.error("Error: ID de usuario o coche es null", formData);
+          return; // Evita enviar la solicitud si falta un ID
+      }
+    
+        console.log("Form a enviar:", formData);
+        this.reviewService.addReview(formData).subscribe();
 
       }else if (this.entity === 'Carts') {
         // Asegurarse de que 'orders' sea un arreglo no vacío
@@ -264,23 +290,6 @@ export class AdminPanelSectionComponent implements OnInit{
 
       // Verificar el formato y los datos de 'orders' antes de hacer el envío
       console.log('Datos antes de enviar:', JSON.stringify(formData, null, 2));
-
-      if (this.entity === 'Cars') {
-        this.carService.addCar(formData).subscribe();   
-      } else if (this.entity === 'Users') {
-        console.log("entro en users add");
-
-        this.userService.addUser(formData).subscribe();      
-      } else if (this.entity === 'Orders') {
-        this.orderService.addOrder(formData).subscribe();      
-      } else if (this.entity === 'Reviews') {
-        console.log("Form a enviar: "+formData);
-        this.reviewService.addReview(formData).subscribe();      
-      } else if (this.entity === 'Carts') {
-        //console.log("Coches seleccionados:", formData.cars);
-
-        this.cartService.addCart(formData).subscribe();      
-      }
 
       
       this.formSubmit.emit(formData); // Emitimos los datos del formulario
@@ -324,7 +333,7 @@ export class AdminPanelSectionComponent implements OnInit{
       this.orderStatuses = results.statuses;
       this.carts = results.carts;
     
-      // Llama a buildForm solo después de que todos los datos se hayan cargado
+      console.log("Datos cargados, ahora construyendo el formulario...");
       this.buildForm();
     }, error => {
       console.error('Error al cargar datos:', error);
