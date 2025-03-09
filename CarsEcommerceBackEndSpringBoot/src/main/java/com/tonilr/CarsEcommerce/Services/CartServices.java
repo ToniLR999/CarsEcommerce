@@ -33,9 +33,9 @@ public class CartServices {
 		this.cartRepo = cartRepo;
 	}
 
-	/*public Cart addCart(Cart cart) {
+	public Cart addCart(Cart cart) {
 		return cartRepo.save(cart);
-	}*/ 	
+	}	
 
 	public List<Cart> findAllCarts() {
 		return cartRepo.findAll();

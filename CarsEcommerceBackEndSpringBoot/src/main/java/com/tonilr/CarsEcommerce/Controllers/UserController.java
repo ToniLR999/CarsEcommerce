@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.tonilr.CarsEcommerce.DTOs.UserDTO;
 import com.tonilr.CarsEcommerce.Entities.User;
 import com.tonilr.CarsEcommerce.Services.UserServices;
 import org.slf4j.Logger;
@@ -60,9 +61,8 @@ public class UserController {
 	    }
 
 	@GetMapping("/find/{id}")
-	public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
-		User user = userService.findUserById(id);
-		return new ResponseEntity<>(user, HttpStatus.OK);
+	public ResponseEntity<UserDTO> getUserById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(userService.getUserById(id));
 	}
 	
 	@GetMapping("/findByUsername/{username}")
@@ -72,10 +72,9 @@ public class UserController {
 	}
 
 	@PostMapping("/add")
-	public ResponseEntity<User> addUser(@RequestBody User user) {
-		User newUser = userService.addUser(user);
-		return new ResponseEntity<>(newUser, HttpStatus.CREATED);
-	}
+    public ResponseEntity<UserDTO> addUser(@RequestBody UserDTO userDTO) {
+        return ResponseEntity.ok(userService.createUser(userDTO));
+    }
 
 	@PutMapping("/update")
 	public ResponseEntity<User> updateUser(@RequestBody User user) {

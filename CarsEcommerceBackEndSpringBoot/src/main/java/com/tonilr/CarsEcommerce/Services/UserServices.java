@@ -3,15 +3,23 @@ package com.tonilr.CarsEcommerce.Services;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tonilr.CarsEcommerce.DTOs.CartDTO;
+import com.tonilr.CarsEcommerce.DTOs.UserDTO;
+import com.tonilr.CarsEcommerce.Entities.Car;
 import com.tonilr.CarsEcommerce.Entities.Cart;
 import com.tonilr.CarsEcommerce.Entities.Role;
 import com.tonilr.CarsEcommerce.Entities.User;
 import com.tonilr.CarsEcommerce.Exceptions.NotFoundException;
 import com.tonilr.CarsEcommerce.Repos.UserRepo;
+
+import jakarta.transaction.Transactional;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 
@@ -31,7 +39,7 @@ public class UserServices {
 		this.userRepo = userRepo;
 	}
 
-	public User addUser(User usuario) {
+	/*public User addUser(User usuario) {
         String encodedPassword = passwordEncoder.encode(usuario.getPassword());
 
 		usuario.setPassword(encodedPassword);
@@ -65,7 +73,66 @@ public class UserServices {
 		
 		//return userRepo.save(usuario);
 		 return usuario;
-	}
+	}*/
+	
+	@Transactional																						
+    public UserDTO createUser(UserDTO userDTO) {
+        User user = new User();
+        user.setUsername(userDTO.getUsername());
+        user.setEmail(userDTO.getEmail());
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword())); // Encriptamos la contraseña
+        user.setRegisterDate(new Date());
+        user.setPhoneNumber(userDTO.getPhoneNumber());
+        user.setIsActive(true);
+        
+        user.setRole(userDTO.getRole() != null ? Role.valueOf(userDTO.getRole()) : Role.USER);
+
+		/*if(userDTO.getRole() == null) {
+			userDTO.setRole(Role.USER);
+		}*/
+		
+		user = userRepo.save(user);
+		 if (userDTO.getCartId() == null) {
+	            Cart newCart = new Cart();
+	            newCart.setUser(user);
+	            newCart = cartServices.addCart(newCart);  // Guardar el carrito en la base de datos
+	            user.setCart(newCart); // Asignar el carrito al usuario
+	            	            
+
+	            updateUser(user);	
+	        }else {
+
+	            Cart existentCart = cartServices.findCartById(userDTO.getCartId());  // Guardar el carrito en la base de datos
+	            user.setCart(existentCart); // Asignar el carrito al usuario
+	            existentCart.setUser(user);
+
+	            // ✅ Convertir `existingCart` a `CartDTO` antes de pasarlo a `updateCart`
+	            CartDTO existingCartDTO = new CartDTO(existentCart.getId(), existentCart.getUser().getId(),
+	            		existentCart.getCars().stream().map(Car::getId).collect(Collectors.toList()));
+
+	            cartServices.updateCart(existingCartDTO);
+	            }
+		
+	        return convertToDTO(user);
+    }
+	
+	private UserDTO convertToDTO(User user) {
+        Set<Long> orderIds = user.getOrders().stream().map(order -> order.getId()).collect(Collectors.toSet());
+        Set<Long> reviewIds = user.getReviews().stream().map(review -> review.getId()).collect(Collectors.toSet());
+        Long cartId = (user.getCart() != null) ? user.getCart().getId() : null;
+
+        return new UserDTO(
+                user.getId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getPhoneNumber(),
+                user.getIsActive(),
+                user.getRole().name(),
+                orderIds,
+                reviewIds,
+                cartId
+        );
+    }
 	
     public boolean verifyPassword(String rawPassword, String encodedPassword) {
         // Verificar si la contraseña ingresada coincide con la almacenada
@@ -83,8 +150,15 @@ public class UserServices {
 	public User findUserById(Long id) {
 		return userRepo.findById(id)
 				.orElseThrow(() -> new NotFoundException("User by id " + id + " was not found"));
-
+		
 	}
+	
+    public UserDTO getUserById(Long id) {
+        User user = userRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return convertToDTO(user);
+    }
 	
 	public User findUserByUsername(String username) {
 		return userRepo.findByUsername(username)
