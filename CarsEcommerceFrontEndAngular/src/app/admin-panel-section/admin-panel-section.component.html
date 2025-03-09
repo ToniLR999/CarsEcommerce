@@ -13,7 +13,7 @@
       <!-- Campo de selección dinámica -->
       <select *ngIf="field.type === 'select'" class="box custom-select" [formControlName]="field.name">
         <option value="" disabled selected>{{ field.placeholder }}</option>
-        <option *ngFor="let option of field.options" [ngValue]="option">{{ option.name || option.username || option.comment || option.description || option.id || option}}</option>
+        <option *ngFor="let option of field.options" [ngValue]="option.id" [selected]="isSelected(field.name, option)">{{ option.name || option.username || option.comment || option.description || option.id || option}}</option>
       </select>
 
       <!-- Campo dinámico para selección múltiple -->

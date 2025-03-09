@@ -60,6 +60,7 @@ export class AdminPanelSectionComponent implements OnInit{
 
   ngOnChanges(changes: SimpleChanges) {
 
+    console.log("Editando item: ", this.itemToEdit);
 
     if (changes['entity'] || changes['itemToEdit']) {
       this.isEditing = !!this.itemToEdit;
@@ -133,9 +134,6 @@ export class AdminPanelSectionComponent implements OnInit{
         cart: [defaults.cart ?? null]
       });
 
-      console.log('Validadores de orders:', this.createForm.get('orders')?.validator);
-      console.log('Validadores de reviews:', this.createForm.get('reviews')?.validator);
-      console.log('Validadores de cart:', this.createForm.get('cart')?.validator);
     }
       else if (this.entity === 'Orders') {
 
@@ -165,8 +163,8 @@ export class AdminPanelSectionComponent implements OnInit{
       this.createForm = this.fb.group({
         rating: [defaultValues.rating || '', Validators.required],
         comment: [defaultValues.comment || '', Validators.required],
-        user: [defaultValues.user || '', Validators.required],
-        car: [defaultValues.car || '', Validators.required]
+        user: [defaultValues.user ? defaultValues.user.id : '', Validators.required],
+        car: [defaultValues.car ? defaultValues.car.id :  '', Validators.required]
       });
     }
     else if (this.entity === 'Carts') {
@@ -368,6 +366,12 @@ export class AdminPanelSectionComponent implements OnInit{
     console.log('📋 Estado general del formulario:', this.createForm.status);
   }
   
+
+  isSelected(fieldName: string, option: any): boolean {
+    const control = this.createForm.get(fieldName);
+    if (!control) return false;
+    return control.value && control.value.id === option.id;  // Comparar el ID
+  }
 
 }
 
