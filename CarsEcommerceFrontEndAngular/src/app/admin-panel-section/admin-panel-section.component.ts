@@ -147,7 +147,7 @@ export class AdminPanelSectionComponent implements OnInit{
         ];
 
         this.createForm = this.fb.group({
-          totalPrice: [defaultValues.totalPrice || '', Validators.required],
+          totalPrice: [defaultValues.totalPrice || null],
           status: [defaultValues.status || '', [Validators.required]],
           cars: [defaultValues.cars || [], [Validators.required]],
           user: [defaultValues.user || '', Validators.required]
@@ -182,16 +182,6 @@ export class AdminPanelSectionComponent implements OnInit{
         cars: [defaultValues.cars || [], Validators.required]
       });
     }
-
-        // Configuración del formulario dinámico
-    const formGroupConfig = this.formFields.reduce((config, field) => {
-      config[field.name] = [defaultValues[field.name] || '', Validators.required];
-      return config;
-    }, {});
-
-  this.createForm = this.fb.group(formGroupConfig);
-
-  this.createForm.updateValueAndValidity();
 
   }
   
@@ -241,6 +231,9 @@ export class AdminPanelSectionComponent implements OnInit{
         formData.orders = Array.isArray(formData.orders) ? formData.orders.filter((order: any) => !!order) : [];
         formData.reviews = Array.isArray(formData.reviews) ? formData.reviews.filter((review: any) => !!review) : [];
         formData.carts = Array.isArray(formData.carts) ? formData.carts.filter((cart: any) => !!cart) : [];
+      
+        this.carService.addCar(formData).subscribe();   
+
       }
       
       else if (this.entity === 'Users') {
@@ -251,9 +244,27 @@ export class AdminPanelSectionComponent implements OnInit{
         formData.reviews = Array.isArray(formData.reviews) ? formData.reviews.filter((review: any) => review) : [];
         formData.cart = formData.cart && typeof formData.cart === 'object' && Object.keys(formData.cart).length > 0 ? formData.cart : null;
 
+        this.userService.addUser(formData).subscribe();      
+
       }else if (this.entity === 'Orders') {
         // Asegurarse de que 'orders' sea un arreglo no vacío
-        formData.cars = Array.isArray(formData.cars) ? formData.cars.filter((car: any) => car) : [];
+        console.log("Procesando orders...");
+        const formData = { ...this.createForm.value };
+
+                // Asegurar que solo se envían los IDs
+                formData.userId = formData.user?.id;
+                formData.carIds = Array.isArray(formData.cars) ? formData.cars.map((car: any) => car.id) : [];
+                
+                // Eliminar los objetos completos del envío
+                delete formData.user;
+                delete formData.cars;
+                
+                console.log("Datos a enviar:", JSON.stringify(formData, null, 2));
+
+        //formData.cars = Array.isArray(formData.cars) ? formData.cars.filter((car: any) => car) : [];
+
+        this.orderService.addOrder(formData).subscribe();      
+
       }else if (this.entity === 'Reviews') {
         // Asegurarse de que 'orders' sea un arreglo no vacío
         /*formData.user = formData.user && typeof formData.user === 'object' && Object.keys(formData.user).length > 0 ? formData.user : null;
@@ -286,12 +297,12 @@ export class AdminPanelSectionComponent implements OnInit{
         formData.user = formData.user && typeof formData.user === 'object' && Object.keys(formData.user).length > 0 ? formData.user : null;
         formData.cars = Array.isArray(formData.cars) ? formData.cars.filter((car: any) => car) : [];
 
+        this.cartService.addCart(formData).subscribe();      
       }
 
       // Verificar el formato y los datos de 'orders' antes de hacer el envío
       console.log('Datos antes de enviar:', JSON.stringify(formData, null, 2));
 
-      
       this.formSubmit.emit(formData); // Emitimos los datos del formulario
       this.createForm.reset(); // Limpiamos el formulario después de enviar
       this.isEditing = false;

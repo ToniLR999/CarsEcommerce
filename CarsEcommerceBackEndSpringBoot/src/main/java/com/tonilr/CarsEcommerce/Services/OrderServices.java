@@ -11,6 +11,7 @@ import com.tonilr.CarsEcommerce.DTOs.OrderDTO;
 import com.tonilr.CarsEcommerce.Entities.Car;
 import com.tonilr.CarsEcommerce.Entities.Order;
 import com.tonilr.CarsEcommerce.Entities.OrderStatus;
+import com.tonilr.CarsEcommerce.Entities.Role;
 import com.tonilr.CarsEcommerce.Entities.User;
 import com.tonilr.CarsEcommerce.Exceptions.NotFoundException;
 import com.tonilr.CarsEcommerce.Repos.CarRepo;
@@ -50,8 +51,8 @@ public class OrderServices {
 	        Order order = new Order();
 	        order.setUser(user);
 	        order.setCars(cars);
-	        order.setTotalPrice(totalPrice);
-	        order.setStatus(OrderStatus.PENDING);
+	        order.setTotalPrice(orderDTO.getTotalPrice() != null ? orderDTO.getTotalPrice() :  totalPrice);
+	        order.setStatus(orderDTO.getStatus() != "" ? OrderStatus.valueOf(orderDTO.getStatus()) :  OrderStatus.PENDING);
 	        order.setCreatedAt(new Date());
 
 	        return orderRepo.save(order);
