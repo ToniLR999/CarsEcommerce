@@ -19,7 +19,7 @@
       <!-- Campo dinámico para selección múltiple -->
       <mat-form-field *ngIf="field.type === 'select-multiple'" appearance="fill" class="custom-select full-width">
         <mat-select [formControlName]="field.name" multiple placeholder="{{ field.placeholder }}">
-          <mat-option *ngFor="let option of field.options" [value]="option">
+          <mat-option *ngFor="let option of field.options" [value]="option.id"> 
             {{ option.name || option.username || option.comment || option.description || option.id || option }}
           </mat-option>
         </mat-select>

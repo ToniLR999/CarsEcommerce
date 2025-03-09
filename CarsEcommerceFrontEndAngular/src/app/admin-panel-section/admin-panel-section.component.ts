@@ -103,9 +103,9 @@ export class AdminPanelSectionComponent implements OnInit{
       stock: [defaultValues.stock || '', Validators.required],
       category: [defaultValues.category || '', Validators.required],
       images: [defaultValues.images || []],
-      orders: [defaultValues.orders || []],
-      reviews: [defaultValues.reviews || []],
-      carts: [defaultValues.carts || []]
+      orders: [defaultValues.orders ? defaultValues.orders.map((c: Order) => c.id) : []],
+      reviews: [defaultValues.reviews ? defaultValues.reviews.map((c: Review) => c.id) : []],
+      carts: [defaultValues.carts ? defaultValues.carts.map((c: Cart) => c.id) : []]
     });
 
 
@@ -128,10 +128,10 @@ export class AdminPanelSectionComponent implements OnInit{
         email: [defaults.email || '', [Validators.required, Validators.email]],
         phoneNumber: [defaults.phoneNumber || '', [Validators.pattern('[0-9]{10}')]],
         password: [defaults.password || '', Validators.required],
-        role: [defaults.role || '', Validators.required],
-        orders: [defaults.orders ?? []],
-        reviews: [defaults.reviews ?? []],
-        cart: [defaults.cart ?? null]
+        role: [defaults.role ? defaultValues.role.id : '', Validators.required],
+        orders: [defaults.orders ? defaultValues.orders.map((c: Order) => c.id) :  []],
+        reviews: [defaults.reviews ? defaultValues.reviews.map((c: Review) => c.id) : []],
+        cart: [defaults.cart ? defaultValues.cart.id : null]
       });
 
     }
@@ -146,9 +146,9 @@ export class AdminPanelSectionComponent implements OnInit{
 
         this.createForm = this.fb.group({
           totalPrice: [defaultValues.totalPrice || null],
-          status: [defaultValues.status || '', [Validators.required]],
-          cars: [defaultValues.cars || [], [Validators.required]],
-          user: [defaultValues.user || '', Validators.required]
+          status: [defaultValues.status ? defaultValues.status.id : '', [Validators.required]],
+          cars: [defaultValues.cars ? defaultValues.cars.map((c: Car) => c.id) :  [], [Validators.required]],
+          user: [defaultValues.user ? defaultValues.user.id : '', Validators.required]
         });
     }
     else if (this.entity === 'Reviews') {
@@ -176,8 +176,8 @@ export class AdminPanelSectionComponent implements OnInit{
       ];
 
       this.createForm = this.fb.group({
-        user: [defaultValues.user || '', Validators.required],
-        cars: [defaultValues.cars || [], Validators.required]
+        user: [defaultValues.user  ? defaultValues.user.id : '', Validators.required],
+        cars: [defaultValues.cars ? defaultValues.cars.map((c: Car) => c.id) :  [], Validators.required]
       });
     }
 
@@ -369,9 +369,13 @@ export class AdminPanelSectionComponent implements OnInit{
 
   isSelected(fieldName: string, option: any): boolean {
     const control = this.createForm.get(fieldName);
-    if (!control) return false;
-    return control.value && control.value.id === option.id;  // Comparar el ID
+  
+    // Asegúrate de que control no es null antes de acceder a su valor
+    const value = Array.isArray(control!.value) ? control!.value : [control!.value];
+    return value.includes(option.id);  // Verificar si el id está en el arreglo
   }
+  
+  
 
 }
 
