@@ -90,18 +90,12 @@ export class AdminPanelSectionComponent implements OnInit{
         { name: 'carts', type: 'select-multiple', placeholder: 'Select Carts', errors: [], options: this.carts  },
       ];
 
-    // Imprimir las opciones de cada campo para revisar su contenido
-    this.formFields.forEach(field => {
-      //Datos de todos los listados de opciones  console.log(`Field: ${field.name}, Options:`, field.options);
-    });
-
-
     this.createForm = this.fb.group({
       name: [defaultValues.name || '', Validators.required],
       description: [defaultValues.description || '', Validators.required],
       price: [defaultValues.price || '', Validators.required],
       stock: [defaultValues.stock || '', Validators.required],
-      category: [defaultValues.category || '', Validators.required],
+      category: [defaultValues?.category || '', Validators.required],
       images: [defaultValues.images || []],
       orders: [defaultValues.orders ? defaultValues.orders.map((c: Order) => c.id) : []],
       reviews: [defaultValues.reviews ? defaultValues.reviews.map((c: Review) => c.id) : []],
@@ -123,15 +117,16 @@ export class AdminPanelSectionComponent implements OnInit{
       ];
 
       const defaults = defaultValues || {};
+      console.log("defaults:", defaults);
       this.createForm = this.fb.group({
         username: [defaults.username || '', Validators.required],
         email: [defaults.email || '', [Validators.required, Validators.email]],
         phoneNumber: [defaults.phoneNumber || '', [Validators.pattern('[0-9]{10}')]],
         password: [defaults.password || '', Validators.required],
-        role: [defaults.role ? defaultValues.role.id : '', Validators.required],
-        orders: [defaults.orders ? defaultValues.orders.map((c: Order) => c.id) :  []],
-        reviews: [defaults.reviews ? defaultValues.reviews.map((c: Review) => c.id) : []],
-        cart: [defaults.cart ? defaultValues.cart.id : null]
+        role: [defaults?.role || '', Validators.required],
+        orders: [defaults.orderIds ? defaultValues.orderIds.map((c: Order) => c.id) :  []],
+        reviews: [defaults.reviewIds ? defaultValues.reviewIds.map((c: Review) => c.id) : []],
+        cart: [defaults?.cartId || null]
       });
 
     }
@@ -146,7 +141,7 @@ export class AdminPanelSectionComponent implements OnInit{
 
         this.createForm = this.fb.group({
           totalPrice: [defaultValues.totalPrice || null],
-          status: [defaultValues.status ? defaultValues.status.id : '', [Validators.required]],
+          status: [defaultValues?.status || '', [Validators.required]],
           cars: [defaultValues.cars ? defaultValues.cars.map((c: Car) => c.id) :  [], [Validators.required]],
           user: [defaultValues.user ? defaultValues.user.id : '', Validators.required]
         });
@@ -364,18 +359,7 @@ export class AdminPanelSectionComponent implements OnInit{
     });
   
     console.log('📋 Estado general del formulario:', this.createForm.status);
-  }
-  
-
-  isSelected(fieldName: string, option: any): boolean {
-    const control = this.createForm.get(fieldName);
-  
-    // Asegúrate de que control no es null antes de acceder a su valor
-    const value = Array.isArray(control!.value) ? control!.value : [control!.value];
-    return value.includes(option.id);  // Verificar si el id está en el arreglo
-  }
-  
-  
+  }  
 
 }
 
