@@ -56,8 +56,9 @@ public class ReviewController {
     }
 
 	@PutMapping("/update")
-	public ResponseEntity<Review> updateReview(@RequestBody Review review) {
-		Review updateReview = reviewService.updateReview(review);
+	public ResponseEntity<Review> updateReview(@RequestBody ReviewDTO reviewDTO) {
+		System.out.println("Review recibida: "+reviewDTO.getCarId());
+		Review updateReview = reviewService.updateReview(reviewDTO);
 		return new ResponseEntity<>(updateReview, HttpStatus.OK);
 	}
 	

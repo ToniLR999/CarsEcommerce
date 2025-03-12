@@ -3,6 +3,7 @@ package com.tonilr.CarsEcommerce.DTOs;
 
 public class ReviewDTO {
 	
+    private Long Id;
     private Long userId;
     private Long carId;
     private Integer rating;
@@ -10,12 +11,22 @@ public class ReviewDTO {
 
     public ReviewDTO() {}
 
-    public ReviewDTO(Long userId, Long carId, Integer rating, String comment) {
+    public ReviewDTO(Long Id, Long userId, Long carId, Integer rating, String comment) {
+        this.Id = Id;
         this.userId = userId;
         this.carId = carId;
         this.rating = rating;
         this.comment = comment;
     }
+    
+    public Long getId() {
+        return Id;
+    }
+
+    public void setId(Long Id) {
+        this.Id = Id;
+    }
+
 
     public Long getUserId() {
         return userId;

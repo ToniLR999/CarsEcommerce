@@ -41,7 +41,7 @@ public class Review {
 	    private User user;
 	    
 	    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, optional = false)
-	    @JoinColumn(name = "car_id", nullable = false)
+	    @JoinColumn(name = "car_id")
 	    private Car car;
 	    
 	    // Getters and Setters

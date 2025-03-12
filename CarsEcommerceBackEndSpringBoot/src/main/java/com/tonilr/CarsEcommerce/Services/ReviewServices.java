@@ -56,7 +56,21 @@ public class ReviewServices {
 		return reviewRepo.findAll();
 	}
 
-	public Review updateReview(Review review) {
+	public Review updateReview(ReviewDTO reviewDTO) {
+        User user = userRepository.findById(reviewDTO.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Car car = carRepository.findById(reviewDTO.getCarId())
+                .orElseThrow(() -> new RuntimeException("Car not found"));
+		
+        Review review = reviewRepo.findById(reviewDTO.getId())
+                .orElseThrow(() -> new RuntimeException("Review not found"));
+        
+        review.setUser(user);
+        review.setCar(car);
+        review.setRating(reviewDTO.getRating());
+        review.setComment(reviewDTO.getComment());
+
 		return reviewRepo.save(review);
 	}
 
