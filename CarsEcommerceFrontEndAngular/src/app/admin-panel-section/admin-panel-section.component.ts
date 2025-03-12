@@ -121,7 +121,7 @@ export class AdminPanelSectionComponent implements OnInit{
       this.createForm = this.fb.group({
         username: [defaults.username || '', Validators.required],
         email: [defaults.email || '', [Validators.required, Validators.email]],
-        phoneNumber: [defaults.phoneNumber || '', [Validators.pattern('[0-9]{10}')]],
+        phoneNumber: [defaults.phoneNumber || '', [Validators.pattern('[0-9]{9}')]],
         password: [defaults.password || '', Validators.required],
         role: [defaults?.role || '', Validators.required],
         orders: [defaults.orderIds ? defaultValues.orderIds.map((c: Order) => c.id) :  []],
@@ -184,127 +184,110 @@ export class AdminPanelSectionComponent implements OnInit{
       return !!(field?.invalid && field?.touched);
   }
 
-  onSubmit(){
-    console.log("Submited");
-
-    console.log("¿Formulario válido?", this.createForm.valid);
-    console.log("Valor del formulario:", this.createForm.value);
-
-    console.log("Estado del formulario:", this.createForm.status);
-
-    Object.keys(this.createForm.controls).forEach((key) => {
-      const control = this.createForm.get(key);
-      console.log(`Campo: ${key}, Estado: ${control?.status}, Errores:`, control?.errors);
-    });
-    
-
-
-    console.log("Valores del formulario:", this.createForm.value);
-
-    this.createForm.updateValueAndValidity();
-
-    
-    console.log('Validadores de orders:', this.createForm.get('orders')?.validator);
-    console.log('Validadores de reviews:', this.createForm.get('reviews')?.validator);
-    console.log('Validadores de cart:', this.createForm.get('cart')?.validator);
-
-      if (this.createForm.valid) {
-
-      const formData = { ...this.createForm.value };
-
-      if (this.isEditing && this.itemToEdit) {
-        formData.id = this.itemToEdit.id;  // Asegurar que el ID está presente para actualizar
-      }
-
-      console.log('Datos antes de enviar:', JSON.stringify(formData, null, 2));
-
-      
-      if (this.entity === 'Cars') {
+  onSubmit() {
+    console.log("Formulario enviado.");
+  
+    if (this.createForm.invalid) {
+      console.warn("Formulario inválido.");
+      return;
+    }
+  
+    const formData = { ...this.createForm.value };
+  
+    if (this.isEditing && this.itemToEdit) {
+      formData.id = this.itemToEdit.id;  // Asegurar que el ID está presente para actualizar
+    }
+  
+    console.log("Datos antes de enviar:", JSON.stringify(formData, null, 2));
+  
+    switch (this.entity) {
+      case 'Cars':
         formData.images = Array.isArray(formData.images) ? formData.images.filter((image: any) => !!image) : [];
         formData.orders = Array.isArray(formData.orders) ? formData.orders.filter((order: any) => !!order) : [];
         formData.reviews = Array.isArray(formData.reviews) ? formData.reviews.filter((review: any) => !!review) : [];
         formData.carts = Array.isArray(formData.carts) ? formData.carts.filter((cart: any) => !!cart) : [];
-      
-        this.carService.addCar(formData).subscribe();   
-
-      }
-      
-      else if (this.entity === 'Users') {
-
-        console.log("entro en users");
-        // Asegurarse de que 'orders' sea un arreglo no vacío
+  
+        if (this.isEditing) {
+          this.carService.updateCar(formData).subscribe();
+        } else {
+          this.carService.addCar(formData).subscribe();
+        }
+        break;
+  
+      case 'Users':
         formData.orders = Array.isArray(formData.orders) ? formData.orders.filter((order: any) => order) : [];
         formData.reviews = Array.isArray(formData.reviews) ? formData.reviews.filter((review: any) => review) : [];
         formData.cart = formData.cart && typeof formData.cart === 'object' && Object.keys(formData.cart).length > 0 ? formData.cart : null;
-
-        this.userService.addUser(formData).subscribe();      
-
-      }else if (this.entity === 'Orders') {
-        // Asegurarse de que 'orders' sea un arreglo no vacío
+  
+        if (this.isEditing) {
+          this.userService.updateUser(formData).subscribe();
+        } else {
+          this.userService.addUser(formData).subscribe();
+        }
+        break;
+  
+      case 'Orders':
         console.log("Procesando orders...");
-        const formData = { ...this.createForm.value };
-
-                // Asegurar que solo se envían los IDs
-                formData.userId = formData.user?.id;
-                formData.carIds = Array.isArray(formData.cars) ? formData.cars.map((car: any) => car.id) : [];
-                
-                // Eliminar los objetos completos del envío
-                delete formData.user;
-                delete formData.cars;
-                
-                console.log("Datos a enviar:", JSON.stringify(formData, null, 2));
-
-        //formData.cars = Array.isArray(formData.cars) ? formData.cars.filter((car: any) => car) : [];
-
-        this.orderService.addOrder(formData).subscribe();      
-
-      }else if (this.entity === 'Reviews') {
-        // Asegurarse de que 'orders' sea un arreglo no vacío
-        /*formData.user = formData.user && typeof formData.user === 'object' && Object.keys(formData.user).length > 0 ? formData.user : null;
-        formData.car = formData.car && typeof formData.car === 'object' && Object.keys(formData.car).length > 0 ? formData.car : null;*/
-
-        console.log("Procesando reviews...");
-        const formData = { ...this.createForm.value };
-
-        // Asegurar que solo se envían los IDs
         formData.userId = formData.user?.id;
-        formData.carId = formData.car?.id;
-        
-        // Eliminar los objetos completos del envío
+        formData.carIds = Array.isArray(formData.cars) ? formData.cars.map((car: any) => car.id) : [];
+  
+        delete formData.user;
+        delete formData.cars;
+  
+        console.log("Datos a enviar:", JSON.stringify(formData, null, 2));
+  
+        if (this.isEditing) {
+          this.orderService.updateOrder(formData).subscribe();
+        } else {
+          this.orderService.addOrder(formData).subscribe();
+        }
+        break;
+  
+      case 'Reviews':
+        console.log("Procesando reviews...");
+        formData.userId = formData.user;
+        formData.carId = formData.car;
+  
         delete formData.user;
         delete formData.car;
-        
-        console.log("Datos a enviar:", JSON.stringify(formData, null, 2));
-        
-
+  
         if (!formData.userId || !formData.carId) {
           console.error("Error: ID de usuario o coche es null", formData);
-          return; // Evita enviar la solicitud si falta un ID
-      }
-    
-        console.log("Form a enviar:", formData);
-        this.reviewService.addReview(formData).subscribe();
-
-      }else if (this.entity === 'Carts') {
-        // Asegurarse de que 'orders' sea un arreglo no vacío
+          return;
+        }
+  
+        console.log("Datos a enviar:", JSON.stringify(formData, null, 2));
+  
+        if (this.isEditing) {
+          this.reviewService.updateReview(formData).subscribe();
+        } else {
+          this.reviewService.addReview(formData).subscribe();
+        }
+        break;
+  
+      case 'Carts':
         formData.user = formData.user && typeof formData.user === 'object' && Object.keys(formData.user).length > 0 ? formData.user : null;
         formData.cars = Array.isArray(formData.cars) ? formData.cars.filter((car: any) => car) : [];
-
-        this.cartService.addCart(formData).subscribe();      
-      }
-
-      // Verificar el formato y los datos de 'orders' antes de hacer el envío
-      console.log('Datos antes de enviar:', JSON.stringify(formData, null, 2));
-
-      this.formSubmit.emit(formData); // Emitimos los datos del formulario
-      this.createForm.reset(); // Limpiamos el formulario después de enviar
-      this.isEditing = false;
-      this.itemToEdit  = null;
-  }else {
-    console.warn("Formulario inválido.");
+  
+        if (this.isEditing) {
+          this.cartService.updateCart(formData).subscribe();
+        } else {
+          this.cartService.addCart(formData).subscribe();
+        }
+        break;
+  
+      default:
+        console.error("Entidad desconocida:", this.entity);
+        return;
+    }
+  
+    console.log("Enviando datos...");
+    this.formSubmit.emit(formData);  // Emitir datos del formulario
+    this.createForm.reset();  // Resetear formulario
+    this.isEditing = false;
+    this.itemToEdit = null;
   }
-
-  }
+  
 
 
   onClose(): void {

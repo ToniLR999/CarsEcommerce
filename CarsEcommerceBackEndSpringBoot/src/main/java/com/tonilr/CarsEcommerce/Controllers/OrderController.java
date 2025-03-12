@@ -57,7 +57,7 @@ public class OrderController {
     }
 
 	@PutMapping("/update")
-	public ResponseEntity<Order> updateAccount(@RequestBody Order order) {
+	public ResponseEntity<Order> updateOrder(@RequestBody Order order) {
 		Order updateOrder = orderService.updateOrder(order);
 		return new ResponseEntity<>(updateOrder, HttpStatus.OK);
 	}
