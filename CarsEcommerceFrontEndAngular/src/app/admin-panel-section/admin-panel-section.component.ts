@@ -228,8 +228,17 @@ export class AdminPanelSectionComponent implements OnInit{
   
       case 'Orders':
         console.log("Procesando orders...");
-        formData.userId = formData.user;
-        formData.carIds = Array.isArray(formData.cars) ? formData.cars.map((car: any) => car) : [];
+        console.log("Antes de asignar:");
+        console.log("user:", formData.user);
+        console.log("cars:", formData.cars);
+        
+        formData.userId = formData.user ?? null;
+        formData.carIds = Array.isArray(formData.cars) 
+        ? formData.cars.map((car: number) => Number(car) || null) 
+        : [];        
+        console.log("Después de asignar:");
+        console.log("userId:", formData.userId);
+        console.log("carIds:", formData.carIds);
   
         delete formData.user;
         delete formData.cars;

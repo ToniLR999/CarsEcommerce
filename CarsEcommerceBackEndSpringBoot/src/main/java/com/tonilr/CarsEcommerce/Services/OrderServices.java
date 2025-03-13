@@ -62,7 +62,22 @@ public class OrderServices {
 		return orderRepo.findAll();
 	}
 
-	public Order updateOrder(Order order) {
+	public Order updateOrder(OrderDTO orderDTO) {
+        User user = userRepository.findById(orderDTO.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<Car> cars = new ArrayList<>(carRepository.findAllById(orderDTO.getcarIds()));
+        if (cars.isEmpty()) {
+            throw new RuntimeException("No cars found for the given IDs");
+        }
+		
+        Order order = orderRepo.findById(orderDTO.getId())
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+        order.setUser(user);
+        order.setCars(cars);
+        order.setTotalPrice(orderDTO.getTotalPrice() != null ? orderDTO.getTotalPrice() :  order.getTotalPrice());
+        order.setStatus(orderDTO.getStatus() != "" ? OrderStatus.valueOf(orderDTO.getStatus()) : order.getStatus());
+
 		return orderRepo.save(order);
 	}
 

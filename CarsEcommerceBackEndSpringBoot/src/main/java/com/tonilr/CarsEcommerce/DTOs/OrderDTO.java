@@ -3,6 +3,8 @@ package com.tonilr.CarsEcommerce.DTOs;
 import java.util.List;
 
 public class OrderDTO {
+	
+    private Long order_id;
     private Long userId;
     private List<Long> carIds;
     private Double totalPrice;
@@ -11,11 +13,20 @@ public class OrderDTO {
     
     public OrderDTO() {}
 
-    public OrderDTO(Long userId, List<Long> carIds, Double totalPrice , String status) {
-        this.userId = userId;
+    public OrderDTO(Long order_id, Long userId, List<Long> carIds, Double totalPrice , String status) {
+        this.order_id = order_id;
         this.carIds = carIds;
         this.status = status;
     }
+    
+    public Long getId() {
+        return order_id;
+    }
+
+    public void setId(Long order_id) {
+        this.order_id = order_id;
+    }
+    
     
     public Long getUserId() {
         return userId;
