@@ -32,8 +32,27 @@ public class CartServices {
 	public CartServices(CartRepo cartRepo) {
 		this.cartRepo = cartRepo;
 	}
+	
+	public Cart addCartForUser(Cart cart) {
+		return cartRepo.save(cart);
+	}	
 
-	public Cart addCart(Cart cart) {
+
+	public Cart addCart(CartDTO cartDTO) {
+		User user = userRepository.findById(cartDTO.getUser())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<Car> cars = new ArrayList<>(carRepository.findAllById(cartDTO.getCars()));
+
+        if (cars.isEmpty()) {
+            throw new RuntimeException("No cars found for the given IDs");
+        }
+
+        Cart cart = new Cart();
+
+        cart.setUser(user);
+        cart.setCars(cars);
+		
 		return cartRepo.save(cart);
 	}	
 
@@ -43,10 +62,30 @@ public class CartServices {
 	
 	@Transactional
     public Cart updateCart(CartDTO cartDTO) {
-        User user = userRepository.findById(cartDTO.getUserId())
+		User user = userRepository.findById(cartDTO.getUser())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        List<Car> cars = new ArrayList<>(carRepository.findAllById(cartDTO.getCarIds()));
+        List<Car> cars = new ArrayList<>(carRepository.findAllById(cartDTO.getCars()));
+
+        if (cars.isEmpty()) {
+            throw new RuntimeException("No cars found for the given IDs");
+        }
+
+        Cart cart = cartRepo.findById(cartDTO.getId())
+                .orElseThrow(() -> new RuntimeException("Review not found"));
+        
+        cart.setUser(user);
+        cart.setCars(cars);
+
+        return cartRepo.save(cart);
+    }
+	
+	@Transactional
+    public Cart updateCartForUser(CartDTO cartDTO) {
+        User user = userRepository.findById(cartDTO.getUser())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<Car> cars = new ArrayList<>(carRepository.findAllById(cartDTO.getCars()));
 
         if (cars.isEmpty()) {
             throw new RuntimeException("No cars found for the given IDs");

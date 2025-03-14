@@ -38,45 +38,9 @@ public class UserServices {
 	public UserServices(UserRepo userRepo) {
 		this.userRepo = userRepo;
 	}
-
-	/*public User addUser(User usuario) {
-        String encodedPassword = passwordEncoder.encode(usuario.getPassword());
-
-		usuario.setPassword(encodedPassword);
-		usuario.setIsActive(true);
-		usuario.setRegisterDate(new Date());
-		if(usuario.getRole() == null) {
-			usuario.setRole(Role.USER);
-		}
-		
-	    usuario = userRepo.save(usuario);
-		 if (usuario.getCart() == null || usuario.getCart().getId() == null) {
-	            Cart newCart = new Cart();
-	            newCart.setUser(usuario);
-	            newCart = cartServices.addCart(newCart);  // Guardar el carrito en la base de datos
-	            usuario.setCart(newCart); // Asignar el carrito al usuario
-	            	            
-
-	            updateUser(usuario);
-	        }else {
-	        	System.out.println("¿Carrito nulo? " + (usuario.getCart() == null));
-
-	            Cart existentCart = cartServices.findCartById(usuario.getCart().getId());  // Guardar el carrito en la base de datos
-	            usuario.setCart(existentCart); // Asignar el carrito al usuario
-	            
-	            usuario = userRepo.save(usuario);  
-	            
-	            existentCart.setUser(usuario);
-
-	            cartServices.updateCart(existentCart);
-	        }
-		
-		//return userRepo.save(usuario);
-		 return usuario;
-	}*/
 	
 	@Transactional																						
-    public UserDTO createUser(UserDTO userDTO) {
+    public User createUser(UserDTO userDTO) {
         User user = new User();
         user.setUsername(userDTO.getUsername());
         user.setEmail(userDTO.getEmail());
@@ -87,15 +51,12 @@ public class UserServices {
         
         user.setRole(userDTO.getRole() != null ? Role.valueOf(userDTO.getRole()) : Role.USER);
 
-		/*if(userDTO.getRole() == null) {
-			userDTO.setRole(Role.USER);
-		}*/
 		
 		user = userRepo.save(user);
 		 if (userDTO.getCartId() == null) {
 	            Cart newCart = new Cart();
 	            newCart.setUser(user);
-	            newCart = cartServices.addCart(newCart);  // Guardar el carrito en la base de datos
+	            newCart = cartServices.addCartForUser(newCart);  // Guardar el carrito en la base de datos
 	            user.setCart(newCart); // Asignar el carrito al usuario
 	            	            
 
@@ -110,28 +71,10 @@ public class UserServices {
 	            CartDTO existingCartDTO = new CartDTO(existentCart.getId(), existentCart.getUser().getId(),
 	            		existentCart.getCars().stream().map(Car::getId).collect(Collectors.toList()));
 
-	            cartServices.updateCart(existingCartDTO);
+	            cartServices.updateCartForUser(existingCartDTO);
 	            }
 		
-	        return convertToDTO(user);
-    }
-	
-	private UserDTO convertToDTO(User user) {
-        Set<Long> orderIds = user.getOrders().stream().map(order -> order.getId()).collect(Collectors.toSet());
-        Set<Long> reviewIds = user.getReviews().stream().map(review -> review.getId()).collect(Collectors.toSet());
-        Long cartId = (user.getCart() != null) ? user.getCart().getId() : null;
-
-        return new UserDTO(
-                user.getId(),
-                user.getUsername(),
-                user.getEmail(),
-                user.getPhoneNumber(),
-                user.getIsActive(),
-                user.getRole().name(),
-                orderIds,
-                reviewIds,
-                cartId
-        );
+	        return userRepo.save(user);
     }
 	
     public boolean verifyPassword(String rawPassword, String encodedPassword) {

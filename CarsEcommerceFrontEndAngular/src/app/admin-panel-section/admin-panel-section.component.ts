@@ -217,7 +217,7 @@ export class AdminPanelSectionComponent implements OnInit{
       case 'Users':
         formData.orders = Array.isArray(formData.orders) ? formData.orders.filter((order: any) => order) : [];
         formData.reviews = Array.isArray(formData.reviews) ? formData.reviews.filter((review: any) => review) : [];
-        formData.cart = formData.cart && typeof formData.cart === 'object' && Object.keys(formData.cart).length > 0 ? formData.cart : null;
+        //formData.cart = formData.cart && typeof formData.cart === 'object' && Object.keys(formData.cart).length > 0 ? formData.cart : null;
   
         if (this.isEditing) {
           this.userService.updateUser(formData).subscribe();
@@ -275,7 +275,7 @@ export class AdminPanelSectionComponent implements OnInit{
         break;
   
       case 'Carts':
-        formData.user = formData.user && typeof formData.user === 'object' && Object.keys(formData.user).length > 0 ? formData.user : null;
+        //formData.user = formData.user && typeof formData.user === 'object' && Object.keys(formData.user).length > 0 ? formData.user : null;
         formData.cars = Array.isArray(formData.cars) ? formData.cars.filter((car: any) => car) : [];
   
         if (this.isEditing) {

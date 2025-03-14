@@ -3,39 +3,39 @@ package com.tonilr.CarsEcommerce.DTOs;
 import java.util.List;
 
 public class CartDTO {
-    private Long cartId;
-    private Long userId;
-    private List<Long> carIds;
+    private Long id;
+    private Long user;
+    private List<Long> cars;
 
     public CartDTO() {}
 
-    public CartDTO(Long cartId, Long userId, List<Long> carIds) {
-        this.cartId = cartId;
-        this.userId = userId;
-        this.carIds = carIds;
+    public CartDTO(Long id, Long user, List<Long> cars) {
+        this.id = id;
+        this.user = user;
+        this.cars = cars;
     }
 
-    public Long getCartId() {
-        return cartId;
+    public Long getId() {
+        return id;
     }
 
-    public void setCartId(Long cartId) {
-        this.cartId = cartId;
+    public void setId(Long id) {
+        this.id = id;
     }
     
-    public Long getUserId() {
-        return userId;
+    public Long getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(Long user) {
+        this.user = user;
     }
 
-    public List<Long> getCarIds() {
-        return carIds;
+    public List<Long> getCars() {
+        return cars;
     }
 
-    public void setCarIds(List<Long> carIds) {
-        this.carIds = carIds;
+    public void setCars(List<Long> cars) {
+        this.cars = cars;
     }
 }

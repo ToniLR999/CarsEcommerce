@@ -54,16 +54,14 @@ public class CartController {
 
 	@PostMapping("/add")
 	public ResponseEntity<Cart> addCart(@RequestBody CartDTO cartDTO) {
-		/*User user = userRepository.findById(cart.getUser().getId())
-		        .orElseThrow(() -> new NotFoundException("User not found with id: " + cart.getUser().getId()));
-	        cart.setUser(user);
-*/
-		Cart newCart = cartService.updateCart(cartDTO);
+
+		Cart newCart = cartService.addCart(cartDTO);
 		return new ResponseEntity<>(newCart, HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/update")
     public ResponseEntity<Cart> updateCart(@RequestBody CartDTO cartDTO) {
+		System.out.println("Cart recibido: "+cartDTO.getId() + " - "+cartDTO.getUser()+ " - "+cartDTO.getCars());
         Cart updatedCart = cartService.updateCart(cartDTO);
         return ResponseEntity.ok(updatedCart);
     }

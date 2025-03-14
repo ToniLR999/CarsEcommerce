@@ -90,6 +90,7 @@ export class AdminPanelComponent implements OnInit{
 }
 
 openCreateForm(entity: string) {
+  this.editingData = null;
   this.currentEntity = entity; // Almacenar la entidad
   this.isCreateFormVisible = true; // Mostrar el formulario
 }
