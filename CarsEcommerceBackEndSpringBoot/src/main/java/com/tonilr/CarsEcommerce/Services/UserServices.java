@@ -60,7 +60,7 @@ public class UserServices {
 	            user.setCart(newCart); // Asignar el carrito al usuario
 	            	            
 
-	            updateUser(user);	
+	            userRepo.save(user);	
 	        }else {
 
 	            Cart existentCart = cartServices.findCartById(userDTO.getCartId());  // Guardar el carrito en la base de datos
@@ -86,8 +86,11 @@ public class UserServices {
 		return userRepo.findAll();
 	}
 
-	public User updateUser(User usuario) {
-		return userRepo.save(usuario);
+	public User updateUser(UserDTO userDTO) {
+        User user = userRepo.findById(userDTO.getId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+		
+		return userRepo.save(user);
 	}
 
 	public User findUserById(Long id) {
@@ -96,11 +99,9 @@ public class UserServices {
 		
 	}
 	
-    public UserDTO getUserById(Long id) {
-        User user = userRepo.findById(id)
+    public User getUserById(Long id) {
+    	return userRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-
-        return convertToDTO(user);
     }
 	
 	public User findUserByUsername(String username) {
