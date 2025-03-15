@@ -48,6 +48,8 @@ public class ReviewServices {
 	        review.setRating(reviewDTO.getRating());
 	        review.setComment(reviewDTO.getComment());
 	        review.setCreatedAt(new Date());
+	        
+	        user.addReview(review);  // Método que añade el order a la colección 'orders' del user y establece la relación bidireccional
 
 	        return reviewRepo.save(review);
 	    }

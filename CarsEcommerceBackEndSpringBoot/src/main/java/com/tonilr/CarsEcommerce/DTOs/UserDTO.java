@@ -2,6 +2,8 @@ package com.tonilr.CarsEcommerce.DTOs;
 
 
 import com.tonilr.CarsEcommerce.Entities.Role;
+import com.tonilr.CarsEcommerce.Entities.User;
+
 import java.util.Date;
 import java.util.Set;
 public class UserDTO {
@@ -9,25 +11,27 @@ public class UserDTO {
     private String username;
     private String password;
     private String email;
+	private Date register_date;
     private String phoneNumber;
     private Boolean isActive;
     private String role;
-    private Set<Long> orderIds;
-    private Set<Long> reviewIds;
-    private Long cartId;
+    private Set<Long> orders;
+    private Set<Long> reviews;
+    private Long cart;
 
     public UserDTO() {}
 
-    public UserDTO(Long id, String username, String email, String phoneNumber, Boolean isActive, String role, Set<Long> orderIds, Set<Long> reviewIds, Long cartId) {
+    public UserDTO(Long id, String username, String email, Date register_date, String phoneNumber, Boolean isActive, String role, Set<Long> orders, Set<Long> reviews, Long cart) {
         this.id = id;
         this.username = username;
         this.email = email;
+        this.register_date = register_date;
         this.phoneNumber = phoneNumber;
         this.isActive = isActive;
         this.role = role;
-        this.orderIds = orderIds;
-        this.reviewIds = reviewIds;
-        this.cartId = cartId;
+        this.orders = orders;
+        this.reviews = reviews;
+        this.cart = cart;
     }
 
     public Long getId() {
@@ -61,6 +65,14 @@ public class UserDTO {
     public void setEmail(String email) {
         this.email = email;
     }
+    
+    public Date getRegisterDate() {
+        return register_date;
+    }
+
+    public void setRegisterDate(Date register_date) {
+        this.register_date = register_date;
+    }
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -86,27 +98,27 @@ public class UserDTO {
         this.role = role;
     }
 
-    public Set<Long> getOrderIds() {
-        return orderIds;
+    public Set<Long> getOrders() {
+        return orders;
     }
 
-    public void setOrderIds(Set<Long> orderIds) {
-        this.orderIds = orderIds;
+    public void setOrders(Set<Long> orders) {
+        this.orders = orders;
     }
 
-    public Set<Long> getReviewIds() {
-        return reviewIds;
+    public Set<Long> getReviews() {
+        return reviews;
     }
 
-    public void setReviewIds(Set<Long> reviewIds) {
-        this.reviewIds = reviewIds;
+    public void setReviews(Set<Long> reviews) {
+        this.reviews = reviews;
     }
 
-    public Long getCartId() {
-        return cartId;
+    public Long getCart() {
+        return cart;
     }
 
-    public void setCartId(Long cartId) {
-        this.cartId = cartId;
+    public void setCart(Long cart) {
+        this.cart = cart;
     }
 }

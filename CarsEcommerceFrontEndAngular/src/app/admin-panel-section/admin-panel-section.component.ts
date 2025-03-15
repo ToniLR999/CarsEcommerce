@@ -124,9 +124,9 @@ export class AdminPanelSectionComponent implements OnInit{
         phoneNumber: [defaults.phoneNumber || '', [Validators.pattern('[0-9]{9}')]],
         password: [defaults.password || '', Validators.required],
         role: [defaults?.role || '', Validators.required],
-        orders: [defaults.orderIds ? defaultValues.orderIds.map((c: Order) => c.id) :  []],
-        reviews: [defaults.reviewIds ? defaultValues.reviewIds.map((c: Review) => c.id) : []],
-        cart: [defaults?.cartId || null]
+        orders: [defaults.orders ? defaultValues.orders.map((c: Order) => c) :  []],
+        reviews: [defaults.reviews ? defaultValues.reviews.map((c: Review) => c) : []],
+        cart: [defaults?.cart || null]
       });
 
     }

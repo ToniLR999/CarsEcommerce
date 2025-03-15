@@ -54,6 +54,9 @@ public class OrderServices {
 	        order.setTotalPrice(orderDTO.getTotalPrice() != null ? orderDTO.getTotalPrice() :  totalPrice);
 	        order.setStatus(orderDTO.getStatus() != "" ? OrderStatus.valueOf(orderDTO.getStatus()) :  OrderStatus.PENDING);
 	        order.setCreatedAt(new Date());
+	        
+	        user.addOrder(order);  // Método que añade el order a la colección 'orders' del user y establece la relación bidireccional
+
 
 	        return orderRepo.save(order);
 	    }

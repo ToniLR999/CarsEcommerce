@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -47,14 +49,16 @@ public class User {
 	@Column(nullable = false, updatable = true)
     private Role role;  // Example: ADMIN, USER
 	
+    @JsonIgnore // El dueño de la relación que sí se serializa
     @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<Order> orders  = new HashSet<Order>();
     
+    @JsonIgnore // El dueño de la relación que sí se serializa
     @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<Review> reviews = new HashSet<Review>();
     
-    @JsonIgnore // Evita referencias cíclicas
-    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JsonIgnore // El dueño de la relación que sí se serializa
+    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "cart_id", nullable = true)
     private Cart cart;
 
@@ -132,6 +136,14 @@ public class User {
         this.orders = order;
     }
     
+    public void addOrder(Order order) {
+        if (this.orders == null) {
+            this.orders = new HashSet<>();
+        }
+        this.orders.add(order);  // Añade el order al set de orders
+        order.setUser(this);  // Establece el user en el order para mantener la relación bidireccional
+    }
+    
 
     public Set<Review> getReviews() {
         return reviews;
@@ -139,6 +151,14 @@ public class User {
 
     public void setReviews(Set<Review> reviews) {
         this.reviews = reviews;
+    }
+    
+    public void addReview(Review review) {
+        if (this.reviews == null) {
+            this.reviews = new HashSet<>();
+        }
+        this.reviews.add(review);  // Añade el order al set de orders
+        review.setUser(this);  // Establece el user en el order para mantener la relación bidireccional
     }
     
 

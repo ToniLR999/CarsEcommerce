@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.tonilr.CarsEcommerce.DTOs.UserDTO;
 import com.tonilr.CarsEcommerce.Entities.User;
+import com.tonilr.CarsEcommerce.Mappers.UserMapper;
 import com.tonilr.CarsEcommerce.Services.UserServices;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,9 +39,13 @@ public class UserController {
 	}
 
 	@GetMapping("/all")
-	public ResponseEntity<List<User>> getAllUsers() {
+	public ResponseEntity<List<UserDTO>> getAllUsers() {
 		List<User> users = userService.findAllUsers();
-		return new ResponseEntity<>(users, HttpStatus.OK);
+		
+	    List<UserDTO> usersDTO = UserMapper.toUserDTO(users);
+	    
+	    // Retornamos el UserDTO envuelto en un ResponseEntity con código de estado 200 (OK)
+		return new ResponseEntity<>(usersDTO, HttpStatus.OK);
 	}
 	
 	 @PostMapping("/login")
@@ -61,9 +66,13 @@ public class UserController {
 	    }
 
 	@GetMapping("/find/{id}")
-	public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(userService.getUserById(id));
-	}
+	public ResponseEntity<UserDTO> getUserById(@PathVariable("id") Long id) {
+	    User user = userService.getUserById(id);
+	    // Convertimos el User a UserDTO usando el mapeador
+	    UserDTO userDTO = UserMapper.toUserDTO(user);
+	    
+	    // Retornamos el UserDTO envuelto en un ResponseEntity con código de estado 200 (OK)
+	    return ResponseEntity.ok(userDTO);	}
 	
 	@GetMapping("/findByUsername/{username}")
 	public ResponseEntity<User> getUserByUsername(@PathVariable("username") String username) {
