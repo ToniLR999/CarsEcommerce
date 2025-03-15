@@ -88,6 +88,18 @@ public class ReviewServices {
 	}
 
 	public void deleteReview(Long id) {
+		  Review review = reviewRepo.findById(id)
+		            .orElseThrow(() -> new RuntimeException("Review not found"));
+		    
+		    // Desvincular la review del coche
+		    // Desvincula la review de car y user
+		    review.getCar().getReviews().remove(review);
+		    review.getUser().getReviews().remove(review);
+
+		    carRepository.save(review.getCar());
+		    userRepository.save(review.getUser());
+		
+		
 		reviewRepo.deleteById(id);
 	}
 }

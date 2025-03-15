@@ -181,6 +181,38 @@ public class UserServices {
 	}
 
 	public void deleteUser(Long id) {
+	    User user = userRepo.findById(id)
+	            .orElseThrow(() -> new RuntimeException("User not found"));
+
+
+	    // Primero, eliminamos las relaciones de los carritos con los carros (tabla intermedia cars_carts)
+	    if (user.getCart() != null) {
+	        Cart cart = user.getCart();
+	        
+	        // Eliminamos las relaciones en cars_carts
+	        for (Car car : cart.getCars()) {
+	            car.getCarts().remove(cart);
+	        }
+	    }
+
+	    // Luego, eliminamos las órdenes del usuario
+	    for (Order order : user.getOrders()) {
+	        for (Car car : order.getCars()) {
+	            car.getOrders().remove(order);
+	        }
+	        orderRepo.delete(order);
+	    }
+
+	    // Eliminamos las reseñas del usuario
+	    for (Review review : user.getReviews()) {
+	        reviewRepo.delete(review);
+	    }
+
+	    // Finalmente, eliminamos el carrito del usuario si existe
+	    if (user.getCart() != null) {
+	        cartRepo.delete(user.getCart());
+	    }
+
 		userRepo.deleteById(id);
 	}
 }

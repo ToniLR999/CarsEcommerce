@@ -137,6 +137,29 @@ public class CarServices {
 	}
 
 	public void deleteCar(Long id) {
+	    Car car = carRepo.findById(id)
+	            .orElseThrow(() -> new RuntimeException("Car not found"));
+
+	    // Eliminar las relaciones con los carritos (Tabla intermedia car_carts)
+	    for (Cart cart : car.getCarts()) {
+	        cart.getCars().remove(car);
+	        
+	    }
+	    
+        // Eliminamos las relaciones en cars_carts
+
+    
+
+	    // Eliminar las relaciones con las órdenes (Tabla intermedia cars_orders)
+	    for (Order order : car.getOrders()) {
+	        order.getCars().remove(car);
+	    }
+
+	    // Eliminar las reseñas asociadas al carro
+	    for (Review review : car.getReviews()) {
+	        reviewRepo.delete(review);
+	    }
+	    
 		carRepo.deleteById(id);
 	}
 }

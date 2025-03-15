@@ -11,6 +11,7 @@ import com.tonilr.CarsEcommerce.DTOs.OrderDTO;
 import com.tonilr.CarsEcommerce.Entities.Car;
 import com.tonilr.CarsEcommerce.Entities.Order;
 import com.tonilr.CarsEcommerce.Entities.OrderStatus;
+import com.tonilr.CarsEcommerce.Entities.Review;
 import com.tonilr.CarsEcommerce.Entities.Role;
 import com.tonilr.CarsEcommerce.Entities.User;
 import com.tonilr.CarsEcommerce.Exceptions.NotFoundException;
@@ -98,6 +99,19 @@ public class OrderServices {
 	}
 
 	public void deleteOrder(Long id) {
+		  Order order = orderRepo.findById(id)
+		            .orElseThrow(() -> new RuntimeException("Order not found"));
+		  
+		    // Desvincula la orden de los coches
+		    for (Car car : order.getCars()) {
+		        car.getOrders().remove(order);
+		        carRepository.save(car);
+		    }
+
+		    // Desvincula la orden del usuario
+		    order.getUser().getOrders().remove(order);
+		    userRepository.save(order.getUser());
+		
 		orderRepo.deleteById(id);
 	}
 	

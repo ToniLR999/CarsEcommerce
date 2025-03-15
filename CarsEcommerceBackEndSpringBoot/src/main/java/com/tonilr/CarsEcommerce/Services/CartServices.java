@@ -125,6 +125,19 @@ public class CartServices {
 	}
 
 	public void deleteCart(Long id) {
+	    Cart cart = cartRepo.findById(id)
+	            .orElseThrow(() -> new RuntimeException("Cart not found"));
+	    
+		   // Desvincula la relación con los coches
+	    for (Car car : cart.getCars()) {
+	        car.getCarts().remove(cart);
+	        carRepository.save(car);
+	    }
+
+	    // Desvincula la relación con el usuario
+	    cart.getUser().setCart(null);
+	    userRepository.save(cart.getUser());
+		
 		cartRepo.deleteById(id);
 	}
 }

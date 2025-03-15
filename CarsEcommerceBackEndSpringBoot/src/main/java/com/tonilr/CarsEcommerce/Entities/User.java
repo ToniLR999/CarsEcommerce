@@ -50,11 +50,11 @@ public class User {
     private Role role;  // Example: ADMIN, USER
 	
     @JsonIgnore // El dueño de la relación que sí se serializa
-    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<Order> orders  = new HashSet<Order>();
     
     @JsonIgnore // El dueño de la relación que sí se serializa
-    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<Review> reviews = new HashSet<Review>();
     
     @JsonIgnore // El dueño de la relación que sí se serializa
