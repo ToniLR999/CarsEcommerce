@@ -134,10 +134,12 @@ public class UserServices {
             if (orders.size() != userDTO.getOrders().size()) {
                 throw new RuntimeException("Some orders could not be found");
             }
-            user.setOrders(orders);
+            // Limpiamos las órdenes actuales y agregamos las nuevas
+            user.getOrders().clear();  
+            user.getOrders().addAll(orders);
         } else {
             // Si orderIds es nulo o vacío, puedes establecer un conjunto vacío
-            user.setOrders(new HashSet<>());
+            user.getOrders().clear();
         }
         
 
@@ -149,11 +151,12 @@ public class UserServices {
             throw new RuntimeException("Some reviews could not be found");
         }
         
-        
-        user.setReviews(reviews);
+        user.getReviews().clear();
+        user.getReviews().addAll(reviews);
         }else {
             // Si reviewIds es nulo o vacío, puedes establecer un conjunto vacío
-            user.setReviews(new HashSet<>());
+            user.getReviews().clear();
+
         }
         
         

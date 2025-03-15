@@ -59,5 +59,20 @@ public class Cart {
     public void setCars(List<Car> cars) {
         this.cars = cars;
     }
+    
+    public void addCar(Car car) {
+        if (this.cars == null) {
+            this.cars = new ArrayList<>();
+        }
+    	
+        if (!this.cars.contains(car)) {
+            this.cars.add(car);
+            car.getCarts().add(this);  // Solo esta línea actualiza la otra entidad
+        }
+    }
+    
+
+    
+    
 
 }

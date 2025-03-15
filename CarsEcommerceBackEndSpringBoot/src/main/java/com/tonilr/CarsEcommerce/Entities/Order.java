@@ -2,6 +2,7 @@ package com.tonilr.CarsEcommerce.Entities;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -72,6 +73,19 @@ public class Order {
     public void setCars(List<Car> cars) {
         this.cars = cars;
     }
+    
+    
+    public void addCar(Car car) {
+        if (this.cars == null) {
+            this.cars = new ArrayList<>();
+        }
+    	
+        if (!this.cars.contains(car)) {
+            this.cars.add(car);
+            car.getOrders().add(this);  // Solo esta línea actualiza la otra entidad
+        }
+    }
+    
 
     public Double getTotalPrice() {
         return totalPrice;

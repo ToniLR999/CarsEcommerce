@@ -49,7 +49,9 @@ public class ReviewServices {
 	        review.setComment(reviewDTO.getComment());
 	        review.setCreatedAt(new Date());
 	        
-	        user.addReview(review);  // Método que añade el order a la colección 'orders' del user y establece la relación bidireccional
+	        //updatear foreign keys
+	        user.addReview(review);
+	        car.addReview(review);// Método que añade el order a la colección 'orders' del user y establece la relación bidireccional
 
 	        return reviewRepo.save(review);
 	    }
@@ -72,6 +74,9 @@ public class ReviewServices {
         review.setCar(car);
         review.setRating(reviewDTO.getRating());
         review.setComment(reviewDTO.getComment());
+        
+        user.addReview(review);
+        car.addReview(review);
 
 		return reviewRepo.save(review);
 	}

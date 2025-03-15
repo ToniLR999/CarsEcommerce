@@ -52,6 +52,11 @@ public class CartServices {
 
         cart.setUser(user);
         cart.setCars(cars);
+        
+        //updatear foreign keys
+        user.setCart(cart);
+        cars.forEach(car -> car.addCart(cart));
+
 		
 		return cartRepo.save(cart);
 	}	
@@ -76,6 +81,11 @@ public class CartServices {
         
         cart.setUser(user);
         cart.setCars(cars);
+        
+        user.setCart(cart);
+        cars.forEach(car -> car.addCart(cart));
+
+        
 
         return cartRepo.save(cart);
     }

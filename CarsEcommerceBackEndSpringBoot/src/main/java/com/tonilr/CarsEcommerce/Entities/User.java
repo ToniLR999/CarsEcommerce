@@ -140,8 +140,12 @@ public class User {
         if (this.orders == null) {
             this.orders = new HashSet<>();
         }
+        
+        if (!this.orders.contains(order)) {
+
         this.orders.add(order);  // Añade el order al set de orders
         order.setUser(this);  // Establece el user en el order para mantener la relación bidireccional
+        }
     }
     
 
@@ -157,9 +161,13 @@ public class User {
         if (this.reviews == null) {
             this.reviews = new HashSet<>();
         }
+        
+        if (!this.reviews.contains(review)) {
+
         this.reviews.add(review);  // Añade el order al set de orders
         review.setUser(this);  // Establece el user en el order para mantener la relación bidireccional
-    }
+        }
+   }
     
 
     public Cart getCart() {

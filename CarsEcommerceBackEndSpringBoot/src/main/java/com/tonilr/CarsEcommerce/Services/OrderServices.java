@@ -55,7 +55,10 @@ public class OrderServices {
 	        order.setStatus(orderDTO.getStatus() != "" ? OrderStatus.valueOf(orderDTO.getStatus()) :  OrderStatus.PENDING);
 	        order.setCreatedAt(new Date());
 	        
+	        
+	        //updatear foreign keys
 	        user.addOrder(order);  // Método que añade el order a la colección 'orders' del user y establece la relación bidireccional
+	        cars.forEach(car -> car.addOrder(order));
 
 
 	        return orderRepo.save(order);
@@ -81,6 +84,10 @@ public class OrderServices {
         order.setTotalPrice(orderDTO.getTotalPrice() != null ? orderDTO.getTotalPrice() :  order.getTotalPrice());
         order.setStatus(orderDTO.getStatus() != "" ? OrderStatus.valueOf(orderDTO.getStatus()) : order.getStatus());
 
+        user.addOrder(order);
+        cars.forEach(car -> car.addOrder(order));
+
+        
 		return orderRepo.save(order);
 	}
 

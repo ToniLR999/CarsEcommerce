@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -43,12 +45,15 @@ public class Car {
     @ElementCollection
     private List<String> images; 
     
+    @JsonIgnore // El dueño de la relación que sí se serializa
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Order> orders = new HashSet<Order>();  
     
+    @JsonIgnore // El dueño de la relación que sí se serializa
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<Review> reviews = new HashSet<Review>();
     
+    @JsonIgnore // El dueño de la relación que sí se serializa
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Cart> carts = new HashSet<Cart>();
     
@@ -118,6 +123,19 @@ public class Car {
         this.orders = orders;
     }
     
+    
+    public void addOrder(Order order) {
+    	
+        if (this.orders == null) {
+            this.orders = new HashSet<>();
+        }
+        
+        if (!this.orders.contains(order)) {
+            this.orders.add(order);
+        }
+    }
+    
+    
     public Set<Review> getReviews() {
         return reviews;
     }
@@ -126,6 +144,19 @@ public class Car {
         this.reviews = reviews;
     }
     
+    public void addReview(Review review) {
+        if (this.reviews == null) {
+            this.reviews = new HashSet<>();
+        }
+        
+        if (!this.reviews.contains(review)) {
+        
+        this.reviews.add(review);  // Añade el order al set de orders
+        review.setCar(this);// Establece el user en el order para mantener la relación bidireccional
+        }
+      }
+    
+    
     public Set<Cart> getCarts() {
         return carts;
     }
@@ -133,5 +164,18 @@ public class Car {
     public void setCarts(Set<Cart> carts) {
         this.carts = carts;
     }
+    
+    public void addCart(Cart cart) {
+    	
+        if (this.carts == null) {
+            this.carts = new HashSet<>();
+        }
+        
+        if (!this.carts.contains(cart)) {
+            this.carts.add(cart);
+        }
+    }
 
+    
+    
 }

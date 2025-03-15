@@ -97,9 +97,9 @@ export class AdminPanelSectionComponent implements OnInit{
       stock: [defaultValues.stock || '', Validators.required],
       category: [defaultValues?.category || '', Validators.required],
       images: [defaultValues.images || []],
-      orders: [defaultValues.orders ? defaultValues.orders.map((c: Order) => c.id) : []],
-      reviews: [defaultValues.reviews ? defaultValues.reviews.map((c: Review) => c.id) : []],
-      carts: [defaultValues.carts ? defaultValues.carts.map((c: Cart) => c.id) : []]
+      orders: [defaultValues.orders ? defaultValues.orders.map((c: Order) => c) : []],
+      reviews: [defaultValues.reviews ? defaultValues.reviews.map((c: Review) => c) : []],
+      carts: [defaultValues.carts ? defaultValues.carts.map((c: Cart) => c) : []]
     });
 
 

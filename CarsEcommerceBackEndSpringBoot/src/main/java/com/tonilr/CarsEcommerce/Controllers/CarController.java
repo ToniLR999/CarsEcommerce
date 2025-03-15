@@ -17,7 +17,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.tonilr.CarsEcommerce.DTOs.CarDTO;
+import com.tonilr.CarsEcommerce.DTOs.UserDTO;
 import com.tonilr.CarsEcommerce.Entities.Car;
+import com.tonilr.CarsEcommerce.Mappers.CarMapper;
+import com.tonilr.CarsEcommerce.Mappers.UserMapper;
 import com.tonilr.CarsEcommerce.Services.CarServices;
 
 @Controller
@@ -36,30 +40,38 @@ public class CarController {
 	}
 
 	@GetMapping("/all")
-	public ResponseEntity<List<Car>> getAllCars() {
+	public ResponseEntity<List<CarDTO>> getAllCars() {
 		List<Car> cars = carService.findAllCars();
-		return new ResponseEntity<>(cars, HttpStatus.OK);
+		
+	    List<CarDTO> carsDTO = CarMapper.toCarDTO(cars);
+	    
+	    // Retornamos el UserDTO envuelto en un ResponseEntity con código de estado 200 (OK)
+		return new ResponseEntity<>(carsDTO, HttpStatus.OK);
 	}
 
 	@GetMapping("/find/{id}")
-	public ResponseEntity<Car> getCarById(@PathVariable("id") Long id) {
+	public ResponseEntity<CarDTO> getCarById(@PathVariable("id") Long id) {
 		Car car = carService.findCarById(id);
-		return new ResponseEntity<>(car, HttpStatus.OK);
+		
+	    CarDTO carDTO = CarMapper.toCarDTO(car);
+	    
+	    // Retornamos el UserDTO envuelto en un ResponseEntity con código de estado 200 (OK)
+	    return ResponseEntity.ok(carDTO);	
 	}
 
 	@PostMapping("/add")
-	public ResponseEntity<Car> addCar(@RequestBody Car car) {
+	public ResponseEntity<Car> addCar(@RequestBody CarDTO carDTO) {
 		
 		logger.warn("Iniciando tarea...");
 
-		logger.warn("CarOrders : "+car.getOrders());
-		Car newCar = carService.addCar(car);
+		logger.warn("CarOrders : "+carDTO.getOrders());
+		Car newCar = carService.addCar(carDTO);
 		return new ResponseEntity<>(newCar, HttpStatus.CREATED);
 	}
 
 	@PutMapping("/update")
-	public ResponseEntity<Car> updateCar(@RequestBody Car car) {
-		Car updateCar = carService.updateCar(car);
+	public ResponseEntity<Car> updateCar(@RequestBody CarDTO carDTO) {
+		Car updateCar = carService.updateCar(carDTO);
 		return new ResponseEntity<>(updateCar, HttpStatus.OK);
 	}
 
