@@ -122,7 +122,6 @@ public class UserServices {
         
         user.setUsername(userDTO.getUsername());
         user.setEmail(userDTO.getEmail());
-        user.setPassword(passwordEncoder.encode(userDTO.getPassword())); // Encriptamos la contraseña
         user.setPhoneNumber(userDTO.getPhoneNumber());        
         user.setRole(userDTO.getRole() != null ? Role.valueOf(userDTO.getRole()) : user.getRole());
         user.setCart(cart);
