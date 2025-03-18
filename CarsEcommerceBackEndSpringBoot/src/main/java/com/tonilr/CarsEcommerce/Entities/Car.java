@@ -1,8 +1,15 @@
 package com.tonilr.CarsEcommerce.Entities;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -19,6 +26,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "cars")
@@ -41,6 +50,31 @@ public class Car {
     
     @Enumerated(EnumType.STRING)
     private CarCategory category;
+    
+	@CreatedDate
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
+    
+	@CreatedBy
+    @Column(nullable = false)
+    private String createdBy;
+    
+	@LastModifiedDate
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column
+    private LocalDateTime updatedAt;
+    
+	@LastModifiedBy
+    @Column
+    private String updatedBy;
+    
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column
+    private Date deletedAt;
+    
+    @Column
+    private String deletedBy;
     
     @ElementCollection
     private List<String> images; 
@@ -74,6 +108,15 @@ public class Car {
     public void setName(String name) {
         this.name = name;
     }
+    
+    
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public Double getPrice() {
         return price;
@@ -83,13 +126,6 @@ public class Car {
         this.price = price;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     public Integer getStock() {
         return stock;
@@ -107,6 +143,55 @@ public class Car {
         this.category = category;
     }
 
+    
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+    
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+    
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+    
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+    
+    public Date getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Date deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
+    public String getDeletedBy() {
+        return deletedBy;
+    }
+
+    public void DeletedBy(String deletedBy) {
+        this.deletedBy = deletedBy;
+    }
+    
     public List<String> getImages() {
         return images;
     }

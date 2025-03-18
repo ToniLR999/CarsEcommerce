@@ -1,9 +1,16 @@
 package com.tonilr.CarsEcommerce.Entities;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -36,9 +43,30 @@ public class Order {
     @Column(nullable = false)
     private Double totalPrice;
     
+	@CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
-    private Date createdAt;
+    private LocalDateTime createdAt;
+    
+    @CreatedBy
+    @Column(nullable = false)
+    private String createdBy;
+    
+    @LastModifiedDate
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column
+    private LocalDateTime updatedAt;
+    
+    @LastModifiedBy
+    @Column
+    private String updatedBy;
+    
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column
+    private Date deletedAt;
+    
+    @Column
+    private String deletedBy;
         
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     private List<Car> cars = new ArrayList<Car>();
@@ -103,11 +131,52 @@ public class Order {
         this.status = status;
     }
 
-    public Date getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date localDateTime) {
+    public void setCreatedAt(LocalDateTime localDateTime) {
         this.createdAt = localDateTime;
     }
+    
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+    
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+    
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+    
+    public Date getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Date deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
+    public String getDeletedBy() {
+        return deletedBy;
+    }
+
+    public void DeletedBy(String deletedBy) {
+        this.deletedBy = deletedBy;
+    }
+  
 }
