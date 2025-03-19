@@ -1,5 +1,6 @@
 package com.tonilr.CarsEcommerce.Services;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -54,7 +55,6 @@ public class OrderServices {
 	        order.setCars(cars);
 	        order.setTotalPrice(orderDTO.getTotalPrice() != null ? orderDTO.getTotalPrice() :  totalPrice);
 	        order.setStatus(orderDTO.getStatus() != "" ? OrderStatus.valueOf(orderDTO.getStatus()) :  OrderStatus.PENDING);
-	        order.setCreatedAt(new Date());
 	        
 	        
 	        //updatear foreign keys
@@ -84,7 +84,7 @@ public class OrderServices {
         order.setCars(cars);
         order.setTotalPrice(orderDTO.getTotalPrice() != null ? orderDTO.getTotalPrice() :  order.getTotalPrice());
         order.setStatus(orderDTO.getStatus() != "" ? OrderStatus.valueOf(orderDTO.getStatus()) : order.getStatus());
-
+        
         user.addOrder(order);
         cars.forEach(car -> car.addOrder(order));
 

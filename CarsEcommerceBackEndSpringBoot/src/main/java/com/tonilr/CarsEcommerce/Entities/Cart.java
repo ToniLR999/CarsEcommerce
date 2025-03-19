@@ -14,6 +14,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -25,12 +26,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "carts")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) // Ignora propiedades de Hibernate
 public class Cart {
 	
     @Id
@@ -45,24 +48,21 @@ public class Cart {
 	private List<Car> cars = new ArrayList<Car>();
 	
 	@CreatedDate
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false)
+    @Column(nullable = true, updatable = false)
     private LocalDateTime createdAt;
     
     @CreatedBy
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String createdBy;
     
     @LastModifiedDate
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column
+    @Column(nullable = true, updatable = true)
     private LocalDateTime updatedAt;
     
     @LastModifiedBy
-    @Column
+    @Column(nullable = true)
     private String updatedBy;
     
-    @Temporal(TemporalType.TIMESTAMP)
     @Column
     private Date deletedAt;
     
@@ -70,6 +70,17 @@ public class Cart {
     private String deletedBy;
     
     // Getters and Setters
+    
+    @PrePersist
+    public void prePersist() {
+        if (this.createdAt == null) {
+            this.createdAt = LocalDateTime.now(); // Establecer la fecha y hora de creación
+        }
+        
+        if (this.createdBy == null) {
+            this.createdBy = "System"; // Establecer el creador (esto puede depender del contexto de tu aplicación)
+        }
+    }
 
     public Long getId() {
         return cart_id;

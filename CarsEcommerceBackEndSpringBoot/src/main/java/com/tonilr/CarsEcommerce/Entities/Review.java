@@ -8,6 +8,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import jakarta.persistence.CascadeType;
@@ -26,6 +27,7 @@ import jakarta.persistence.TemporalType;
 @Entity
 @Table(name = "reviews")
 @JsonPropertyOrder({ "id", "rating", "comment", "createdAt", "user", "car" }) // Especificar el orden
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) // Ignora propiedades de Hibernate
 public class Review {
 	
 	  	@Id
@@ -39,35 +41,32 @@ public class Review {
 	    private String comment;
 
 		@CreatedDate
-	    @Temporal(TemporalType.TIMESTAMP)
-	    @Column(nullable = false)
+	    @Column(nullable = true, updatable = false)
 	    private LocalDateTime createdAt;
 	    
 	    @CreatedBy
-	    @Column(nullable = false)
+	    @Column(nullable = true)
 	    private String createdBy;
 	    
 	    @LastModifiedDate
-	    @Temporal(TemporalType.TIMESTAMP)
-	    @Column
+	    @Column(nullable = true, updatable = true)
 	    private LocalDateTime updatedAt;
 	    
 	    @LastModifiedBy
-	    @Column
+	    @Column(nullable = true)
 	    private String updatedBy;
 	    
-	    @Temporal(TemporalType.TIMESTAMP)
 	    @Column
 	    private Date deletedAt;
 	    
 	    @Column
 	    private String deletedBy;
 
-	    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, optional = false)
+	    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, optional = false)
 	    @JoinColumn(name = "user_id", nullable = false)
 	    private User user;
 	    
-	    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, optional = false)
+	    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, optional = false)
 	    @JoinColumn(name = "car_id")
 	    private Car car;
 	    

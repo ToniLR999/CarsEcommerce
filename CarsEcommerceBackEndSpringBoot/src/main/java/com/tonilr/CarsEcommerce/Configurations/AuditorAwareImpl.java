@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 
 public class AuditorAwareImpl implements AuditorAware<String> {
 
@@ -15,8 +16,9 @@ public class AuditorAwareImpl implements AuditorAware<String> {
 
         // Si no hay autenticación o el usuario no está autenticado, devolvemos Optional vacío
         if (authentication == null || !authentication.isAuthenticated()) {
-            return Optional.empty();
+            return Optional.of("SYSTEM");  // Default value si no hay usuario autenticado
         }
+        System.out.println("Auditor: " + authentication.getName());
 
         // Retornamos el nombre del usuario autenticado
         return Optional.of(authentication.getName());

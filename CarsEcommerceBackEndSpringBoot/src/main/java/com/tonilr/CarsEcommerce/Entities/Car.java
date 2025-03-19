@@ -52,24 +52,21 @@ public class Car {
     private CarCategory category;
     
 	@CreatedDate
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false)
+    @Column(nullable = true, updatable = false)
     private LocalDateTime createdAt;
     
-	@CreatedBy
-    @Column(nullable = false)
+    @CreatedBy
+    @Column(nullable = true)
     private String createdBy;
     
-	@LastModifiedDate
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column
+    @LastModifiedDate
+    @Column(nullable = true, updatable = true)
     private LocalDateTime updatedAt;
     
-	@LastModifiedBy
-    @Column
+    @LastModifiedBy
+    @Column(nullable = true)
     private String updatedBy;
     
-    @Temporal(TemporalType.TIMESTAMP)
     @Column
     private Date deletedAt;
     

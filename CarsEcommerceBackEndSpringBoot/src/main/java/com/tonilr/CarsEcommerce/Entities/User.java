@@ -9,13 +9,17 @@ import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,11 +28,11 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class) // Asegura que la auditoría escuche esta entidad
 @Table(name = "users")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) // Ignora propiedades de Hibernate
 public class User {
 	
     @Id
@@ -58,24 +62,21 @@ public class User {
     private Role role;  // Example: ADMIN, USER
     
 	@CreatedDate
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false)
+    @Column(nullable = true, updatable = false)
     private LocalDateTime createdAt;
     
     @CreatedBy
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String createdBy;
     
     @LastModifiedDate
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column
+    @Column(nullable = true, updatable = true)
     private LocalDateTime updatedAt;
     
     @LastModifiedBy
-    @Column
+    @Column(nullable = true)
     private String updatedBy;
     
-    @Temporal(TemporalType.TIMESTAMP)
     @Column
     private Date deletedAt;
     

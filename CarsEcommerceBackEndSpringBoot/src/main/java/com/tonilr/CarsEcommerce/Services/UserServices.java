@@ -63,6 +63,7 @@ public class UserServices {
         user.setRegisterDate(new Date());
         user.setPhoneNumber(userDTO.getPhoneNumber());
         user.setIsActive(true);
+
         
         user.setRole(userDTO.getRole() != null ? Role.valueOf(userDTO.getRole()) : Role.USER);
 
@@ -71,7 +72,8 @@ public class UserServices {
 		 if (userDTO.getCart() == null) {
 	            Cart newCart = new Cart();
 	            newCart.setUser(user);
-	            newCart = cartServices.addCartForUser(newCart);  // Guardar el carrito en la base de datos
+	            newCart = cartRepo.save(newCart);
+	            //newCart = cartServices.addCartForUser(newCart);  // Guardar el carrito en la base de datos
 	            user.setCart(newCart); // Asignar el carrito al usuario
 	            	            
 
@@ -125,6 +127,7 @@ public class UserServices {
         user.setPhoneNumber(userDTO.getPhoneNumber());        
         user.setRole(userDTO.getRole() != null ? Role.valueOf(userDTO.getRole()) : user.getRole());
         user.setCart(cart);
+
         
         if (userDTO.getOrders() != null && !userDTO.getOrders().isEmpty() ) {      	
             Set<Order> orders = new HashSet<>(orderRepo.findAllById(userDTO.getOrders()));

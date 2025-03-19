@@ -47,7 +47,6 @@ public class ReviewServices {
 	        review.setCar(car);
 	        review.setRating(reviewDTO.getRating());
 	        review.setComment(reviewDTO.getComment());
-	        review.setCreatedAt(new Date());
 	        
 	        //updatear foreign keys
 	        user.addReview(review);
@@ -74,6 +73,7 @@ public class ReviewServices {
         review.setCar(car);
         review.setRating(reviewDTO.getRating());
         review.setComment(reviewDTO.getComment());
+
         
         user.addReview(review);
         car.addReview(review);
