@@ -110,7 +110,18 @@ export class HomeComponent implements OnInit{
     this.isUserLoggedIn = false;
   }
 
+  scrollToSection(section: string) {
+    this.router.navigate([], { queryParams: { section } });
+  }
+
   ngAfterViewInit(): void {
+    this.route.queryParams.subscribe((params) => {
+      const section = params['section'];
+      if (section) {
+        const element = document.getElementById(section);
+        if (element) element.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
     // Menu button toggle
     this.renderer.listen(this.menuBtn.nativeElement, 'click', () => {
       this.menuBtn.nativeElement.classList.toggle('fa-times');
