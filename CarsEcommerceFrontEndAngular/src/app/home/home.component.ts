@@ -99,6 +99,15 @@ export class HomeComponent implements OnInit{
       confirmPassword: this.fb.control(null,[Validators.required])
     });
 
+    const storedUsername = sessionStorage.getItem('username');
+    if (storedUsername) {
+      console.log("Usuario logueado:", storedUsername);
+      this.isUserLoggedIn = true;  // O lo que necesites para cambiar el estado de tu app
+    } else {
+      console.log("No hay sesión activa");
+      this.isUserLoggedIn = false;
+    }
+
     this.loginService.isLoggedIn.subscribe((loggedIn) => {
       this.isUserLoggedIn = loggedIn;
       console.log("OnInit isUserLoggedIn: "+this.isUserLoggedIn);
@@ -108,6 +117,12 @@ export class HomeComponent implements OnInit{
   SignOut() {
     this.loginService.logOut();
     this.isUserLoggedIn = false;
+    console.log(sessionStorage.getItem('username'));
+
+    sessionStorage.removeItem('username');
+    sessionStorage.removeItem('userRole');
+
+
   }
 
   scrollToSection(section: string) {
@@ -193,16 +208,26 @@ export class HomeComponent implements OnInit{
       this.userService.loginUser(this.user).subscribe({
         next: (response) => {
           console.log('LogIn Successful:', response);
+
+          // Almacenar el nombre de usuario en sessionStorage
+          sessionStorage.setItem('username', this.user.username);  // Aquí se guarda el nombre de usuario
+
+
+
           // Cerrar el formulario o redirigir
           this.loginFormContainer.nativeElement.classList.remove('active');
           this.userService.getUserByUsername(this.user.username).subscribe(
+            
             (user: User) => {  
+              sessionStorage.setItem('userRole', user.role);  // Aquí se guarda el nombre de usuario
               // Comprobar el rol del usuario
               console.log("User role:", user.role);
               console.log("Role.ADMIN value:", Role.ADMIN);
               if (user.role === Role.ADMIN) {
                 this.router.navigate(['/', 'admin']);
               console.log("Soy admin");
+              } else {
+                console.log("No soy admin soy:"+ user.role);
               }
             },
             (error) => {
@@ -226,18 +251,6 @@ export class HomeComponent implements OnInit{
           }
           }
         });
-      /*for (let user of this.users) {
-        if(user.username == this.signinForm.controls['username'].value){
-          console.log(user);
-              this.KnownUser = true;
-
-            if(user.password == this.signinForm.controls['password'].value){
-              console.log("LogIn Successful");
-              this.loginFormContainer.nativeElement.classList.remove('active');        
-              this.passwordKnown = true;
-            }
-        }
-      }*/
     }
 
 

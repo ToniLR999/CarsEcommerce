@@ -8,6 +8,7 @@ import { BehaviorSubject } from 'rxjs';
 export class AuthenticationService {
 
   private isLoggedInSubject = new BehaviorSubject<boolean>(this.isUserLoggedIn());
+  private userRoleSubject = new BehaviorSubject<string>(this.getUserRole()); // Guardamos el rol aquí
 
 
     // Getter para obtener el estado del usuario logueado
@@ -22,11 +23,14 @@ export class AuthenticationService {
 
     if (username === user.username && password === user.password) {
       sessionStorage.setItem('username', username)
+      sessionStorage.setItem('userRole', user.role); // Guardamos el rol en sessionStorage
       this.isLoggedInSubject.next(true);  // Notificar que el usuario está logueado
+      this.userRoleSubject.next(user.role); // Establecemos el rol del usuario
       this.result = true;
       return this.result;
     } else {
       this.isLoggedInSubject.next(false); // Notificar que el login falló
+      this.userRoleSubject.next(''); // Reseteamos el rol
       this.result = false;
       return this.result;
     }
@@ -40,9 +44,16 @@ export class AuthenticationService {
     return !(user === null)
   }
 
+    // Obtenemos el rol del usuario desde sessionStorage
+    getUserRole(): string {
+      return sessionStorage.getItem('userRole') || ''; // Traemos el rol guardado en sessionStorage
+    }
+
   logOut() {
     console.log("LogOut: "+sessionStorage.getItem('username'));
-    sessionStorage.removeItem('username')
+    sessionStorage.removeItem('username');
+    sessionStorage.removeItem('userRole'); // Limpiamos el rol también
+    this.userRoleSubject.next(''); // Reseteamos el rol
   }
 
   getUserName(): string {
