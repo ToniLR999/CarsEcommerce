@@ -1,6 +1,7 @@
 package com.tonilr.CarsEcommerce.Entities;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -74,7 +75,7 @@ public class Car {
     private String deletedBy;
     
     @ElementCollection
-    private List<String> images; 
+    private List<String> images  = new ArrayList<>(); 
     
     @JsonIgnore // El dueño de la relación que sí se serializa
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -187,6 +188,15 @@ public class Car {
 
     public void DeletedBy(String deletedBy) {
         this.deletedBy = deletedBy;
+    }
+    
+    // Método para agregar una imagen a la lista
+    public void addImage(String imageUrl) {
+        this.images.add(imageUrl);
+    }
+    
+    public void removeImage(String imageUrl) {
+        this.images.remove(imageUrl);
     }
     
     public List<String> getImages() {

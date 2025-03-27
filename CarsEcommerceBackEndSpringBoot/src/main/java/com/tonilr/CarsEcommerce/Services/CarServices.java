@@ -37,6 +37,10 @@ public class CarServices {
 	public CarServices(CarRepo carRepo) {
 		this.carRepo = carRepo;
 	}
+	
+    public Car saveCar(Car car) {
+        return carRepo.save(car);
+    }
 
 	public Car addCar(CarDTO carDTO) {
 		Car car = new Car();

@@ -1,6 +1,11 @@
 package com.tonilr.CarsEcommerce.Controllers;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +21,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.tonilr.CarsEcommerce.DTOs.CarDTO;
 import com.tonilr.CarsEcommerce.DTOs.UserDTO;
@@ -31,7 +38,8 @@ public class CarController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-	
+
+    
 	@Autowired
 	private final CarServices carService;
 	
@@ -80,4 +88,64 @@ public class CarController {
 		carService.deleteCar(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
+	
+	@PostMapping("/uploadImage/{carId}")
+	public ResponseEntity<String> uploadCarImage(@PathVariable Long carId, @RequestParam("file") MultipartFile file) {
+	    try {
+	        Car car = carService.findCarById(carId);
+	        if (car == null) {
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Coche no encontrado");
+	        }
+
+	        // Generar un nombre único para el archivo
+	        String fileName = UUID.randomUUID().toString() + "-" + file.getOriginalFilename();
+	        
+	        // Definir la ruta donde se guardará la imagen
+	        Path path = Paths.get("src/main/resources/CarImages/" + fileName);
+	        
+	        // Crear el directorio si no existe
+	        Files.createDirectories(path.getParent());
+	        
+	        // Escribir la imagen en el servidor
+	        Files.write(path, file.getBytes());
+	        
+	        // Agregar la imagen al coche
+	        car.addImage("/CarImages/" + fileName);
+	        
+	        // Guardar el coche en la base de datos
+	        carService.saveCar(car);
+
+	        return ResponseEntity.ok("Imagen subida correctamente");
+	    } catch (IOException e) {
+	        e.printStackTrace();  // Esto te ayudará a ver el error en la consola
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al subir la imagen");
+	    }
+	}
+	
+    @DeleteMapping("/deleteImage/{carId}")
+    public ResponseEntity<String> deleteCarImage(@PathVariable Long carId, @RequestParam("imageUrl") String imageUrl) {
+        try {
+            Car car = carService.findCarById(carId);
+            if (car == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Coche no encontrado");
+            }
+
+            String fileName = imageUrl.replace("/images/", "");
+            Path path = Paths.get("src/main/resources/static/images/" + fileName);
+
+            if (Files.exists(path)) {
+                Files.delete(path);
+            }
+
+            car.removeImage(imageUrl);
+            carService.saveCar(car); // 🔥 Aquí se guardan los cambios
+
+            return ResponseEntity.ok("Imagen eliminada correctamente");
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar la imagen");
+        }
+
+    }
+    
 }
+
