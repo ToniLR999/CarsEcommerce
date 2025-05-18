@@ -48,7 +48,7 @@ public class OrderServices {
 	            throw new RuntimeException("No cars found for the given IDs");
 	        }
 
-	        double totalPrice = cars.stream().mapToDouble(Car::getPrice).sum();
+	        double totalPrice = cars.stream().mapToDouble(Car::getPrecio).sum();
 
 	        Order order = new Order();
 	        order.setUser(user);

@@ -44,12 +44,18 @@ public class CarServices {
 
 	public Car addCar(CarDTO carDTO) {
 		Car car = new Car();
-		car.setName(carDTO.getName());
-		car.setDescription(carDTO.getDescription());
-		car.setPrice(carDTO.getPrice());
-		car.setStock(carDTO.getStock());
+		car.setMarca(carDTO.getMarca());
+		car.setModelo(carDTO.getModelo());
+		car.setPrecio(carDTO.getPrecio());
+		car.setAño(carDTO.getAño());
+		car.setCategoria(carDTO.getCategoria());
+		car.setCombustible(carDTO.getCombustible());
+		car.setTransmision(carDTO.getTransmision());
+		car.setKilometraje(carDTO.getKilometraje());
+		car.setDisponible(carDTO.getDisponible());
+		car.setDescripcion(carDTO.getDescripcion());
+		car.setImagenUrl(carDTO.getImagenUrl());
 		car.setImages(carDTO.getImages());
-		car.setCategory(CarCategory.valueOf(carDTO.getCategory()));
 		
         Set<Cart> carts = new HashSet<>(cartRepo.findAllById(carDTO.getCarts()));
 		car.setCarts(carts);
@@ -78,13 +84,18 @@ public class CarServices {
 	    Car car = carRepo.findById(carDTO.getId())
 	              .orElseThrow(() -> new RuntimeException("Car not found"));
 	       
-		car.setName(carDTO.getName());
-		car.setDescription(carDTO.getDescription());
-		car.setPrice(carDTO.getPrice());
-		car.setStock(carDTO.getStock());
+		car.setMarca(carDTO.getMarca());
+		car.setModelo(carDTO.getModelo());
+		car.setPrecio(carDTO.getPrecio());
+		car.setAño(carDTO.getAño());
+		car.setCategoria(carDTO.getCategoria());
+		car.setCombustible(carDTO.getCombustible());
+		car.setTransmision(carDTO.getTransmision());
+		car.setKilometraje(carDTO.getKilometraje());
+		car.setDisponible(carDTO.getDisponible());
+		car.setDescripcion(carDTO.getDescripcion());
+		car.setImagenUrl(carDTO.getImagenUrl());
 		car.setImages(carDTO.getImages());
-		car.setCategory(carDTO.getCategory() != null ? CarCategory.valueOf(carDTO.getCategory()) : car.getCategory());
-
 		
         if (carDTO.getOrders() != null && !carDTO.getOrders().isEmpty() ) {      	
             Set<Order> orders = new HashSet<>(orderRepo.findAllById(carDTO.getOrders()));

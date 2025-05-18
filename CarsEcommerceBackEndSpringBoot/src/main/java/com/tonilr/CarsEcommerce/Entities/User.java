@@ -1,8 +1,10 @@
 package com.tonilr.CarsEcommerce.Entities;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.data.annotation.CreatedBy;
@@ -10,6 +12,9 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -28,12 +33,17 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.EnumType;
 
+import lombok.Data;
+
+@Data
 @Entity
 @EntityListeners(AuditingEntityListener.class) // Asegura que la auditoría escuche esta entidad
 @Table(name = "users")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) // Ignora propiedades de Hibernate
-public class User {
+public class User implements UserDetails {
 	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -96,6 +106,36 @@ public class User {
     @JoinColumn(name = "cart_id", nullable = true)
     private Cart cart;
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
     // Getters and Setters
 
     public Long getId() {
@@ -106,20 +146,20 @@ public class User {
         this.user_id = user_id;
     }
 
-    public String getUsername() {
+    public String getFirstName() {
         return username;
     }
 
-    public void setUsername(String username) {
+    public void setFirstName(String username) {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
+    public String getLastName() {
+        return username;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setLastName(String username) {
+        this.username = username;
     }
 
     public String getEmail() {

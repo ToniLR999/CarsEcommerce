@@ -30,6 +30,7 @@ import com.tonilr.CarsEcommerce.Entities.Car;
 import com.tonilr.CarsEcommerce.Mappers.CarMapper;
 import com.tonilr.CarsEcommerce.Mappers.UserMapper;
 import com.tonilr.CarsEcommerce.Services.CarServices;
+import com.tonilr.CarsEcommerce.Services.CacheService;
 
 @Controller
 @CrossOrigin(origins = "http://localhost:4200")
@@ -42,9 +43,11 @@ public class CarController {
     
 	@Autowired
 	private final CarServices carService;
+	private final CacheService cacheService;
 	
-	public CarController(CarServices carService) {
+	public CarController(CarServices carService, CacheService cacheService) {
 		this.carService = carService;
+		this.cacheService = cacheService;
 	}
 
 	@GetMapping("/all")
@@ -59,10 +62,13 @@ public class CarController {
 
 	@GetMapping("/find/{id}")
 	public ResponseEntity<CarDTO> getCarById(@PathVariable("id") Long id) {
-		Car car = carService.findCarById(id);
+		Car car = (Car) cacheService.getProduct(id);
+		if (car == null) {
+			car = carService.findCarById(id);
+			cacheService.saveProduct(id, car);
+		}
+		CarDTO carDTO = CarMapper.toCarDTO(car);
 		
-	    CarDTO carDTO = CarMapper.toCarDTO(car);
-	    
 	    // Retornamos el UserDTO envuelto en un ResponseEntity con código de estado 200 (OK)
 	    return ResponseEntity.ok(carDTO);	
 	}
@@ -74,18 +80,21 @@ public class CarController {
 
 		logger.warn("CarOrders : "+carDTO.getOrders());
 		Car newCar = carService.addCar(carDTO);
+		cacheService.saveProduct(newCar.getId(), newCar);
 		return new ResponseEntity<>(newCar, HttpStatus.CREATED);
 	}
 
 	@PutMapping("/update")
 	public ResponseEntity<Car> updateCar(@RequestBody CarDTO carDTO) {
 		Car updateCar = carService.updateCar(carDTO);
+		cacheService.saveProduct(updateCar.getId(), updateCar);
 		return new ResponseEntity<>(updateCar, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<?> deleteCar(@PathVariable("id") Long id) {
 		carService.deleteCar(id);
+		cacheService.removeProduct(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
@@ -114,6 +123,7 @@ public class CarController {
 	        
 	        // Guardar el coche en la base de datos
 	        carService.saveCar(car);
+	        cacheService.saveProduct(carId, car);
 
 	        return ResponseEntity.ok("Imagen subida correctamente");
 	    } catch (IOException e) {
@@ -139,6 +149,7 @@ public class CarController {
 
             car.removeImage(imageUrl);
             carService.saveCar(car); // 🔥 Aquí se guardan los cambios
+            cacheService.saveProduct(carId, car);
 
             return ResponseEntity.ok("Imagen eliminada correctamente");
         } catch (IOException e) {

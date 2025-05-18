@@ -29,30 +29,51 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import lombok.Data;
 
+@Data
 @Entity
 @Table(name = "cars")
 public class Car {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long car_id;
+    private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String marca;
 
     @Column(nullable = false)
-    private String description;
-    
-    @Column(nullable = false)
-    private Double price;
+    private String modelo;
 
-    private Integer stock;
-    
-    @Enumerated(EnumType.STRING)
-    private CarCategory category;
-    
-	@CreatedDate
+    @Column(nullable = false)
+    private Double precio;
+
+    @Column(nullable = false)
+    private Integer año;
+
+    @Column(nullable = false)
+    private String categoria;
+
+    @Column(nullable = false)
+    private String combustible;
+
+    @Column(nullable = false)
+    private String transmision;
+
+    @Column(nullable = false)
+    private Integer kilometraje;
+
+    @Column(nullable = false)
+    private Boolean disponible;
+
+    @Column(length = 1000)
+    private String descripcion;
+
+    @Column
+    private String imagenUrl;
+
+    @CreatedDate
     @Column(nullable = true, updatable = false)
     private LocalDateTime createdAt;
     
@@ -92,56 +113,103 @@ public class Car {
     // Getters and Setters
 
     public Long getId() {
-        return car_id;
+        return id;
     }
 
-    public void setId(Long car_id) {
-        this.car_id = car_id;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getMarca() {
+        return marca;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setMarca(String marca) {
+        this.marca = marca;
     }
     
     
-    public String getDescription() {
-        return description;
+    public String getModelo() {
+        return modelo;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
     }
 
-    public Double getPrice() {
-        return price;
+    public Double getPrecio() {
+        return precio;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
+    public void setPrecio(Double precio) {
+        this.precio = precio;
     }
 
 
-    public Integer getStock() {
-        return stock;
+    public Integer getAño() {
+        return año;
     }
 
-    public void setStock(Integer stock) {
-        this.stock = stock;
-    }
-    
-    public CarCategory getCategory() {
-        return category;
+    public void setAño(Integer año) {
+        this.año = año;
     }
 
-    public void setCategory(CarCategory category) {
-        this.category = category;
+    public String getCategoria() {
+        return categoria;
     }
 
-    
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
+    public String getCombustible() {
+        return combustible;
+    }
+
+    public void setCombustible(String combustible) {
+        this.combustible = combustible;
+    }
+
+    public String getTransmision() {
+        return transmision;
+    }
+
+    public void setTransmision(String transmision) {
+        this.transmision = transmision;
+    }
+
+    public Integer getKilometraje() {
+        return kilometraje;
+    }
+
+    public void setKilometraje(Integer kilometraje) {
+        this.kilometraje = kilometraje;
+    }
+
+    public Boolean getDisponible() {
+        return disponible;
+    }
+
+    public void setDisponible(Boolean disponible) {
+        this.disponible = disponible;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public String getImagenUrl() {
+        return imagenUrl;
+    }
+
+    public void setImagenUrl(String imagenUrl) {
+        this.imagenUrl = imagenUrl;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
