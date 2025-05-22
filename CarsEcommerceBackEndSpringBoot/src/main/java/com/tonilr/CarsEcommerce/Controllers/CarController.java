@@ -9,7 +9,6 @@ import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -25,10 +24,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.tonilr.CarsEcommerce.DTOs.CarDTO;
-import com.tonilr.CarsEcommerce.DTOs.UserDTO;
 import com.tonilr.CarsEcommerce.Entities.Car;
 import com.tonilr.CarsEcommerce.Mappers.CarMapper;
-import com.tonilr.CarsEcommerce.Mappers.UserMapper;
 import com.tonilr.CarsEcommerce.Services.CarServices;
 import com.tonilr.CarsEcommerce.Services.CacheService;
 
@@ -38,17 +35,14 @@ import com.tonilr.CarsEcommerce.Services.CacheService;
 public class CarController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
-
-
     
-	@Autowired
-	private final CarServices carService;
-	private final CacheService cacheService;
-	
-	public CarController(CarServices carService, CacheService cacheService) {
-		this.carService = carService;
-		this.cacheService = cacheService;
-	}
+    private final CarServices carService;
+    private final CacheService cacheService;
+
+    public CarController(CarServices carService, CacheService cacheService) {
+        this.carService = carService;
+        this.cacheService = cacheService;
+    }
 
 	@GetMapping("/all")
 	public ResponseEntity<List<CarDTO>> getAllCars() {

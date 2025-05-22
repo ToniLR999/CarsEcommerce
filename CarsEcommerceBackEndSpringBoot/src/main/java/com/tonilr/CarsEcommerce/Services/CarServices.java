@@ -4,12 +4,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tonilr.CarsEcommerce.DTOs.CarDTO;
 import com.tonilr.CarsEcommerce.Entities.Car;
-import com.tonilr.CarsEcommerce.Entities.CarCategory;
 import com.tonilr.CarsEcommerce.Entities.Cart;
 import com.tonilr.CarsEcommerce.Entities.Order;
 import com.tonilr.CarsEcommerce.Entities.Review;
@@ -22,20 +20,21 @@ import com.tonilr.CarsEcommerce.Repos.ReviewRepo;
 @Service
 public class CarServices {
 
-	@Autowired
 	private final CarRepo carRepo;
-	
-	@Autowired
-	private CartRepo cartRepo;
-	
-	@Autowired
-	private ReviewRepo reviewRepo;
-	
-	@Autowired
-	private OrderRepo orderRepo;
+	private final CartRepo cartRepo;
+	private final ReviewRepo reviewRepo;
+	private final OrderRepo orderRepo;
 
-	public CarServices(CarRepo carRepo) {
+	public CarServices(
+		CarRepo carRepo,
+		CartRepo cartRepo,
+		ReviewRepo reviewRepo,
+		OrderRepo orderRepo
+	) {
 		this.carRepo = carRepo;
+		this.cartRepo = cartRepo;
+		this.reviewRepo = reviewRepo;
+		this.orderRepo = orderRepo;
 	}
 	
     public Car saveCar(Car car) {

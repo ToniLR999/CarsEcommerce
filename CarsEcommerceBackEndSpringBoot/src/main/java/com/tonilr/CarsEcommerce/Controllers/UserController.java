@@ -20,16 +20,11 @@ import com.tonilr.CarsEcommerce.DTOs.UserDTO;
 import com.tonilr.CarsEcommerce.Entities.User;
 import com.tonilr.CarsEcommerce.Mappers.UserMapper;
 import com.tonilr.CarsEcommerce.Services.UserServices;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Controller
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/user")
 public class UserController {
-
-    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
-
 	
 	@Autowired
 	private final UserServices userService;

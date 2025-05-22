@@ -1,8 +1,6 @@
 package com.tonilr.CarsEcommerce.Services;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +10,6 @@ import com.tonilr.CarsEcommerce.DTOs.OrderDTO;
 import com.tonilr.CarsEcommerce.Entities.Car;
 import com.tonilr.CarsEcommerce.Entities.Order;
 import com.tonilr.CarsEcommerce.Entities.OrderStatus;
-import com.tonilr.CarsEcommerce.Entities.Review;
-import com.tonilr.CarsEcommerce.Entities.Role;
 import com.tonilr.CarsEcommerce.Entities.User;
 import com.tonilr.CarsEcommerce.Exceptions.NotFoundException;
 import com.tonilr.CarsEcommerce.Repos.CarRepo;

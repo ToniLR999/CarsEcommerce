@@ -1,9 +1,5 @@
 package com.tonilr.CarsEcommerce.DTOs;
 
-
-import com.tonilr.CarsEcommerce.Entities.Role;
-import com.tonilr.CarsEcommerce.Entities.User;
-
 import java.util.Date;
 import java.util.Set;
 public class UserDTO {

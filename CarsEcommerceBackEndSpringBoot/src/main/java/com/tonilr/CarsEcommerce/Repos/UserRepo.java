@@ -12,4 +12,7 @@ public interface UserRepo extends JpaRepository<User,Long>{
 
     // Método para buscar un usuario por nombre de usuario
     Optional<User> findByUsername(String username);
+
+    // Método para buscar un usuario por email
+    Optional<User> findByEmail(String email);
 }

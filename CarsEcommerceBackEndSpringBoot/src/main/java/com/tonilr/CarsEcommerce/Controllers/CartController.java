@@ -1,7 +1,6 @@
 package com.tonilr.CarsEcommerce.Controllers;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,9 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.tonilr.CarsEcommerce.DTOs.CartDTO;
 import com.tonilr.CarsEcommerce.Entities.Cart;
-import com.tonilr.CarsEcommerce.Entities.User;
-import com.tonilr.CarsEcommerce.Exceptions.NotFoundException;
-import com.tonilr.CarsEcommerce.Repos.UserRepo;
 import com.tonilr.CarsEcommerce.Services.CartServices;
 
 @Controller
@@ -30,10 +26,6 @@ public class CartController {
 
 	@Autowired
 	private final CartServices cartService;
-	
-	@Autowired
-	private UserRepo userRepository;
-
 	
 	public CartController(CartServices cartService) {
 		this.cartService = cartService;
