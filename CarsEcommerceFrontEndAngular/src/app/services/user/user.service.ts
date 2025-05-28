@@ -24,11 +24,10 @@ export class UserService {
     return this.http.get<string[]>(`${this.apiServerUrl}/role/all`);
   }
 
-  public  loginUser(user: User): Observable<User> {
-    return this.http.post<User>(`${this.apiServerUrl}/user/login`,user);
-	}
+  public loginUser(loginData: {username: string, password: string}): Observable<any> {
+    return this.http.post<any>(`${this.apiServerUrl}/user/login`, loginData);
+  }
 
-  
   public getUserbyId(id: number): Observable<User>{
     return this.http.get<User>(`${this.apiServerUrl}/user/find/${id}`);
 

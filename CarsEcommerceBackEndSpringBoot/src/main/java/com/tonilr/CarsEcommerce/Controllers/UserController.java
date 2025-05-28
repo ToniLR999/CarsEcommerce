@@ -6,7 +6,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,54 +14,61 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.tonilr.CarsEcommerce.DTOs.UserDTO;
 import com.tonilr.CarsEcommerce.Entities.User;
 import com.tonilr.CarsEcommerce.Mappers.UserMapper;
-import com.tonilr.CarsEcommerce.Services.UserServices;
+import com.tonilr.CarsEcommerce.Services.UserService;
 
-@Controller
-@CrossOrigin(origins = "http://localhost:4200")
+@RestController
+@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 @RequestMapping("/user")
 public class UserController {
 	
 	@Autowired
-	private final UserServices userService;
+	private final UserService userService;
 	
-	public UserController(UserServices userService) {
+	public UserController(UserService userService) {
 		this.userService = userService;
 	}
 
-	@GetMapping("/all")
-	public ResponseEntity<List<UserDTO>> getAllUsers() {
-		List<User> users = userService.findAllUsers();
-		
-	    List<UserDTO> usersDTO = UserMapper.toUserDTO(users);
-	    
-	    // Retornamos el UserDTO envuelto en un ResponseEntity con código de estado 200 (OK)
-		return new ResponseEntity<>(usersDTO, HttpStatus.OK);
-	}
+    @GetMapping("/all")
+    public ResponseEntity<List<User>> getAllUsers() {
+        try {
+            List<User> users = userService.findAllUsers();
+            return ResponseEntity.ok(users);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 	
-	 @PostMapping("/login")
-	  public ResponseEntity<?> loginUser(@RequestBody User user) {
-	        User existingUser = userService.findUserByUsername(user.getUsername());
-	        if (existingUser != null) {
-	            // Verificamos la contraseña con bcrypt
-	            boolean passwordMatches = userService.verifyPassword(user.getPassword(), existingUser.getPassword());
-	            if (passwordMatches) {
-	                // Si la contraseña es correcta, podrías generar un token JWT o enviar una respuesta positiva
-	                return ResponseEntity.ok(Map.of("message", "Login successful")); // Envía una respuesta JSON
-	            } else {
-	                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid password");
-	            }
-	        } else {
-	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
-	        }
-	    }
+	@PostMapping("/login")
+	public ResponseEntity<?> loginUser(@RequestBody Map<String, String> loginRequest) {
+		String username = loginRequest.get("username");
+		String password = loginRequest.get("password");
+	
+		if (username == null || password == null) {
+			return ResponseEntity.badRequest().body("Username and password are required");
+		}
+	
+		User existingUser = userService.findUserByUsername(username);
+		if (existingUser != null) {
+			boolean passwordMatches = userService.verifyPassword(password, existingUser.getPassword());
+			if (passwordMatches) {
+				return ResponseEntity.ok(Map.of("message", "Login successful"));
+			} else {
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid password");
+			}
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+		}
+	}
 
 	@GetMapping("/find/{id}")
 	public ResponseEntity<UserDTO> getUserById(@PathVariable("id") Long id) {
-	    User user = userService.getUserById(id);
+	    User user = userService.findUserById(id);
 	    // Convertimos el User a UserDTO usando el mapeador
 	    UserDTO userDTO = UserMapper.toUserDTO(user);
 	    

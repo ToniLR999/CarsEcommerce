@@ -17,6 +17,7 @@ export class HomeComponent implements OnInit{
 
   isUserLoggedIn: boolean = false;
 
+  sessionStorage = sessionStorage;
   
   @ViewChild('menuBtn') menuBtn!: ElementRef;
   @ViewChild('navbar') navbar!: ElementRef;
@@ -115,14 +116,18 @@ export class HomeComponent implements OnInit{
   }
 
   SignOut() {
-    this.loginService.logOut();
+    // Limpiar el estado de login
     this.isUserLoggedIn = false;
-    console.log(sessionStorage.getItem('username'));
-
-    sessionStorage.removeItem('username');
-    sessionStorage.removeItem('userRole');
-
-
+    this.loginService.isLoggedIn.next(false);
+    
+    // Limpiar todo el sessionStorage
+    sessionStorage.clear();
+    
+    // Limpiar el localStorage si existe
+    localStorage.clear();
+    
+    // Opcional: Redirigir a la página principal
+    this.router.navigate(['/']);
   }
 
   scrollToSection(section: string) {
@@ -186,74 +191,51 @@ export class HomeComponent implements OnInit{
     this.initSwiper();
   }
 
-  SignIn(){
+  SignIn() {
     this.usernameEmpty = false;
     this.passwordEmpty = false;
     this.passwordKnown = false;
     this.KnownUser = false;
 
-    if(this.signinForm.controls['username'].value == null || this.signinForm.controls['username'].value == ""){
-      this.usernameEmpty = true;
-
+    if(this.signinForm.controls['username'].value == null || this.signinForm.controls['username'].value == "") {
+        this.usernameEmpty = true;
     }
 
-    if(this.signinForm.controls['password'].value == null || this.signinForm.controls['password'].value == ""){
-      this.passwordEmpty = true;
-
+    if(this.signinForm.controls['password'].value == null || this.signinForm.controls['password'].value == "") {
+        this.passwordEmpty = true;
     }
 
-    if(this.usernameEmpty == false && this.passwordEmpty == false){
+    if(this.usernameEmpty == false && this.passwordEmpty == false) {
+        const loginData = {
+            username: this.signinForm.controls['username'].value,
+            password: this.signinForm.controls['password'].value
+        };
 
-      // Llamar al servicio que realiza la solicitud al backend
-      this.userService.loginUser(this.user).subscribe({
-        next: (response) => {
-          console.log('LogIn Successful:', response);
-
-          // Almacenar el nombre de usuario en sessionStorage
-          sessionStorage.setItem('username', this.user.username);  // Aquí se guarda el nombre de usuario
-
-
-
-          // Cerrar el formulario o redirigir
-          this.loginFormContainer.nativeElement.classList.remove('active');
-          this.userService.getUserByUsername(this.user.username).subscribe(
-            
-            (user: User) => {  
-              sessionStorage.setItem('userRole', user.role);  // Aquí se guarda el nombre de usuario
-              // Comprobar el rol del usuario
-              console.log("User role:", user.role);
-              console.log("Role.ADMIN value:", Role.ADMIN);
-              if (user.role === Role.ADMIN) {
-                this.router.navigate(['/', 'admin']);
-              console.log("Soy admin");
-              } else {
-                console.log("No soy admin soy:"+ user.role);
-              }
+        this.userService.loginUser(loginData).subscribe({
+            next: (response) => {
+                console.log('LogIn Successful:', response);
+                sessionStorage.setItem('username', loginData.username);
+                
+                // Cerrar el popup de login
+                this.loginFormContainer.nativeElement.classList.remove('active');
+                
+                // Actualizar el estado de login
+                this.isUserLoggedIn = true;
+                this.loginService.isLoggedIn.next(true);
+                
+                // Limpiar el formulario
+                this.signinForm.reset();
             },
-            (error) => {
-              console.error('Error fetching user details:', error);
-              // Manejo de errores si no se puede obtener el usuario
+            error: (error) => {
+                console.error('Error en login:', error);
+                if (error.status === 401) {
+                    this.passwordKnown = false;
+                } else if (error.status === 404) {
+                    this.KnownUser = false;
+                }
             }
-          );          
-
-          this.passwordKnown = true;
-          this.isUserLoggedIn=true;
-        },
-        error: (error) => {
-          if (error.status === 401) {
-            console.log('Invalid password');
-            this.passwordKnown = false;
-          } else if (error.status === 404) {
-            console.log('User not found');
-            this.KnownUser = false;
-          } else {
-            console.log('An error occurred:', error);
-          }
-          }
         });
     }
-
-
   }
 
   SignUp(){
@@ -457,6 +439,10 @@ export class HomeComponent implements OnInit{
     console.log(this.signUpForm.controls['email'].value);
     return this.signUpForm.controls['email'].value;
 
+  }
+
+  getUsername(): string {
+    return sessionStorage.getItem('username') || '';
   }
 
 }

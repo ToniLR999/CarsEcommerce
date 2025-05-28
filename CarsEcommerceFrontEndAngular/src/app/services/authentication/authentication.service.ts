@@ -7,13 +7,13 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class AuthenticationService {
 
-  private isLoggedInSubject = new BehaviorSubject<boolean>(this.isUserLoggedIn());
+  public isLoggedIn = new BehaviorSubject<boolean>(this.isUserLoggedIn());
   private userRoleSubject = new BehaviorSubject<string>(this.getUserRole()); // Guardamos el rol aquí
 
 
     // Getter para obtener el estado del usuario logueado
-    get isLoggedIn() {
-      return this.isLoggedInSubject.asObservable();
+    get isLoggedIn$() {
+      return this.isLoggedIn.asObservable();
     }
 
   result: boolean = false;
@@ -24,12 +24,12 @@ export class AuthenticationService {
     if (username === user.username && password === user.password) {
       sessionStorage.setItem('username', username)
       sessionStorage.setItem('userRole', user.role); // Guardamos el rol en sessionStorage
-      this.isLoggedInSubject.next(true);  // Notificar que el usuario está logueado
+      this.isLoggedIn.next(true);  // Notificar que el usuario está logueado
       this.userRoleSubject.next(user.role); // Establecemos el rol del usuario
       this.result = true;
       return this.result;
     } else {
-      this.isLoggedInSubject.next(false); // Notificar que el login falló
+      this.isLoggedIn.next(false); // Notificar que el login falló
       this.userRoleSubject.next(''); // Reseteamos el rol
       this.result = false;
       return this.result;

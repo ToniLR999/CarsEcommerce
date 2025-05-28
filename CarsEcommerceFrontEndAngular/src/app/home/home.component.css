@@ -97,9 +97,11 @@ section{
 }
 
 .header .navbar a{
-    margin:0 1rem;
-    font-size: 1.2rem;
+    margin:0 15px;
+    font-size: 1.1rem;
     color:var(--black);
+    text-transform: capitalize;
+    transition: .2s linear;
 }
 
 .header .navbar a:hover{
@@ -711,4 +713,80 @@ section{
     color: red;
     font-size: 1.2rem;
   }
+
+.user-icon {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 0 15px;
+    color: var(--black);
+    font-size: 1.1rem;
+    text-transform: capitalize;
+    transition: .2s linear;
+}
+
+.user-icon:hover {
+    color: var(--main-color);
+}
+
+.user-icon.logged-in {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-icon.logged-in i {
+    font-size: 1.2rem;
+    color: var(--main-color);
+}
+
+.user-icon.logged-in span {
+    font-weight: 500;
+}
+
+.user-icon.logged-in button {
+    padding: 8px 15px;
+    background-color: var(--main-color);
+    color: var(--white);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: .2s linear;
+}
+
+.user-icon.logged-in button:hover {
+    background-color: var(--light-red);
+    transform: scale(1.05);
+}
+
+/* Ajustar el espaciado en el nav */
+.navbar a {
+    margin: 0 15px;
+    font-size: 1.1rem;
+    color: var(--black);
+    text-transform: capitalize;
+    transition: .2s linear;
+}
+
+/* Asegurar que el contenedor del usuario tenga el mismo espaciado */
+.navbar .user-icon {
+    margin: 0 15px;
+}
+
+.user-icon .btn {
+    padding: 8px 15px;
+    background-color: var(--light-red);
+    color: var(--white);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: .2s linear;
+}
+
+.user-icon .btn:hover {
+    background-color: var(--light-red);
+    transform: scale(1.05);
+}
   
