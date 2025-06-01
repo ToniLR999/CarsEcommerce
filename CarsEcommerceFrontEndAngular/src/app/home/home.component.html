@@ -767,6 +767,28 @@
         
         <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
         <script src="js/script.js"></script>
+
+        <!-- Añade esta sección después del header -->
+        <section class="popular-vehicles">
+          <h2>Popular Vehicles</h2>
+          <div *ngIf="loading">Cargando coches...</div>
+          <div *ngIf="error">{{ error }}</div>
+          <div class="cars-list" *ngIf="!loading && !error">
+            <div class="car-card" *ngFor="let car of cars">
+              <div class="car-image">
+                <img [src]="car.images[0] || 'assets/images/default-car.jpg'" [alt]="car.name">
+              </div>
+              <div class="car-info">
+                <h3>{{ car.name }}</h3>
+                <p class="car-price">Precio: <span>{{ car.price | currency:'EUR' }}</span></p>
+                <p *ngIf="car.category">Categoría: {{ car.category }}</p>
+                <p *ngIf="car.description">{{ car.description }}</p>
+                <p *ngIf="car.stock !== undefined">Stock: {{ car.stock }}</p>
+                <button class="btn-details">Check Out</button>
+              </div>
+            </div>
+          </div>
+        </section>
     </body>
 
 </html>

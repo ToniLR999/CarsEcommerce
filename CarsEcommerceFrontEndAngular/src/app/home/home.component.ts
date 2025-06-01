@@ -6,6 +6,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../services/user/user.service';
 import { AuthenticationService } from '../services/authentication/authentication.service';
 import { Role } from '../services/role/role';
+import { CarService } from '../services/car/car.service';
+import { Car } from '../services/car/car';
 
 @Component({
   selector: 'app-home',
@@ -58,9 +60,11 @@ export class HomeComponent implements OnInit{
 
   }
 
+  cars: Car[] = [];
+  loading: boolean = true;
+  error: string | null = null;
 
-
-  constructor(private renderer: Renderer2,private router: Router,private route: ActivatedRoute,private fb: UntypedFormBuilder,private userService: UserService, public loginService: AuthenticationService) {
+  constructor(private renderer: Renderer2,private router: Router,private route: ActivatedRoute,private fb: UntypedFormBuilder,private userService: UserService, public loginService: AuthenticationService, private carService: CarService) {
     this.user = new User();
 
     this.signinForm= this.fb.group({
@@ -113,6 +117,10 @@ export class HomeComponent implements OnInit{
       this.isUserLoggedIn = loggedIn;
       console.log("OnInit isUserLoggedIn: "+this.isUserLoggedIn);
     });
+
+    this.loadCars();
+
+    console.log(this.cars); 
   }
 
   SignOut() {
@@ -443,6 +451,26 @@ export class HomeComponent implements OnInit{
 
   getUsername(): string {
     return sessionStorage.getItem('username') || '';
+  }
+
+  loadCars() {
+    this.loading = true;
+    this.carService.getCars().subscribe(
+      (cars) => {
+        this.cars = cars;
+        console.log('Coches recibidos:', cars);
+        this.loading = false;
+      },
+      (error) => {
+        this.error = 'Error al cargar los coches';
+        this.loading = false;
+        console.error('Error:', error);
+      }
+    );
+  }
+
+  viewCarDetails(carId: number) {
+    this.router.navigate(['/car', carId]);
   }
 
 }

@@ -15,9 +15,8 @@ export class CarService {
   constructor(private http: HttpClient) { }
 
   
-  public getCars(): Observable<Car[]>{
+  public getCars(): Observable<Car[]> {
     return this.http.get<Car[]>(`${this.apiServerUrl}/car/all`);
-
   }
 
   public getCategories(): Observable<string[]> {
