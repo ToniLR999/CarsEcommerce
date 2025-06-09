@@ -6,11 +6,17 @@ import { Review } from "../review/review";
 export class Car {
 
     id!: number;
-    name: string|undefined;
-    description: string|undefined;
-    price!: number;
-    stock!: number;
-    category!: carCategory;
+    marca: string|undefined;
+    modelo: string|undefined;
+    precio: number|undefined;
+    año: number|undefined;
+    categoria: string|undefined;
+    combustible: string|undefined;
+    transmision: string|undefined;
+    kilometraje: number|undefined;
+    disponible: boolean|undefined;
+    descripcion: string|undefined;
+    imagenUrl: string|undefined;
     images: string[] = [];
     orders: Order[] = [];
     reviews: Review[] = [];

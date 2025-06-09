@@ -64,7 +64,9 @@ export class HomeComponent implements OnInit{
   loading: boolean = true;
   error: string | null = null;
 
-  constructor(private renderer: Renderer2,private router: Router,private route: ActivatedRoute,private fb: UntypedFormBuilder,private userService: UserService, public loginService: AuthenticationService, private carService: CarService) {
+  private readonly API_URL = 'http://localhost:8081';
+
+  constructor(private renderer: Renderer2,private router: Router,private route: ActivatedRoute,private fb: UntypedFormBuilder,private userService: UserService, public loginService: AuthenticationService, public carService: CarService) {
     this.user = new User();
 
     this.signinForm= this.fb.group({
@@ -454,23 +456,72 @@ export class HomeComponent implements OnInit{
   }
 
   loadCars() {
-    this.loading = true;
-    this.carService.getCars().subscribe(
-      (cars) => {
-        this.cars = cars;
-        console.log('Coches recibidos:', cars);
-        this.loading = false;
-      },
-      (error) => {
-        this.error = 'Error al cargar los coches';
-        this.loading = false;
-        console.error('Error:', error);
-      }
-    );
+    this.carService.getCars().subscribe({
+        next: (data) => {
+            this.cars = data;
+            this.loading = false;
+        },
+        error: (error) => {
+            this.error = 'Error al cargar los coches';
+            this.loading = false;
+            console.error('Error:', error);
+        }
+    });
   }
 
   viewCarDetails(carId: number) {
     this.router.navigate(['/car', carId]);
+  }
+
+  formatImageUrl(imageUrl: string | undefined): string {
+    if (!imageUrl) return '';
+    
+    // Si la URL ya es completa, la devolvemos tal cual
+    if (imageUrl.startsWith('http')) {
+        return imageUrl;
+    }
+    
+    // Si es una URL relativa, la construimos con la URL base
+    // Eliminamos 'assets/img/' de la ruta si existe
+    const cleanPath = imageUrl.replace('assets/img/', '');
+    return `${this.API_URL}/car-images/${cleanPath}`;
+  }
+
+  handleImageError(event: any) {
+    const imgElement = event.target;
+    const parentElement = imgElement.parentElement;
+    
+    // Ocultar la imagen
+    imgElement.style.display = 'none';
+    
+    // Buscar o crear el div de fallback
+    let fallbackDiv = parentElement.querySelector('.no-image');
+    if (!fallbackDiv) {
+        fallbackDiv = document.createElement('div');
+        fallbackDiv.className = 'no-image';
+        fallbackDiv.innerHTML = '<i class="fas fa-car"></i>';
+        parentElement.appendChild(fallbackDiv);
+    }
+    
+    // Mostrar el div de fallback
+    fallbackDiv.style.display = 'flex';
+    
+    // Log para debugging
+    console.log('Error al cargar la imagen:', imgElement.src);
+  }
+
+  needsSmallerImage(car: Car): boolean {
+    const largeImageModels = [
+        'Formentor VZ5',
+        'Macan GTS',
+        'Taycan',
+        'Model 3',
+        'Model S',
+        'Model Y',
+        'Model X',
+        'RS3'
+    ];
+    return car.modelo ? largeImageModels.includes(car.modelo) : false;
   }
 
 }

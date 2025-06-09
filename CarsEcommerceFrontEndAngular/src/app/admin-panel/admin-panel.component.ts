@@ -121,11 +121,11 @@ getTableData(seccion: string): string[][] {
           // Mapear los datos del servicio para adaptarlos a la tabla
           this.rows = data.map(car => [
             String(car.id ?? '-'),   // Ajusta según las propiedades de `Car`
-            car.name ?? 'N/A',
-            car.description ?? 'N/A',
-            String(car.category ?? ''),
-            String(car.price ?? ''),
-            String(car.stock ?? '')
+            car.marca ?? 'N/A',
+            car.descripcion ?? 'N/A',
+            String(car.categoria ?? ''),
+            String(car.precio ?? ''),
+            String(car.disponible ?? '')
           ]);
           this.tableHeaders = ['ID', 'Name', 'Description','Category', 'Price', 'Stock', ' '];
           this.calculatePages();

@@ -100,28 +100,19 @@ public class CarController {
 	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Coche no encontrado");
 	        }
 
-	        // Generar un nombre único para el archivo
 	        String fileName = UUID.randomUUID().toString() + "-" + file.getOriginalFilename();
-	        
-	        // Definir la ruta donde se guardará la imagen
 	        Path path = Paths.get("src/main/resources/CarImages/" + fileName);
-	        
-	        // Crear el directorio si no existe
 	        Files.createDirectories(path.getParent());
-	        
-	        // Escribir la imagen en el servidor
 	        Files.write(path, file.getBytes());
 	        
-	        // Agregar la imagen al coche
-	        car.addImage("/CarImages/" + fileName);
+	        // Guardar solo el nombre del archivo, sin la ruta
+	        car.addImage(fileName);
 	        
-	        // Guardar el coche en la base de datos
 	        carService.saveCar(car);
 	        cacheService.saveProduct(carId, car);
 
 	        return ResponseEntity.ok("Imagen subida correctamente");
 	    } catch (IOException e) {
-	        e.printStackTrace();  // Esto te ayudará a ver el error en la consola
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al subir la imagen");
 	    }
 	}

@@ -168,211 +168,33 @@
         </section>
         
         <section class="vehicles" id="vehicles">
-
-            <h1 class="heading"> popular <span>vehicles</span> </h1>
-        
+            <h1 class="heading">popular <span>vehicles</span></h1>
             <div class="swiper vehicles-slider">
-        
                 <div class="swiper-wrapper">
-        
-                    <div class="swiper-slide box">
-                        <img src="../assets/img/audiRS3.png" alt="">
+                    <div class="swiper-slide box" *ngFor="let car of cars">
+                        <div class="car-image" [ngClass]="{'car-image-small': needsSmallerImage(car)}">
+                            <img [src]="formatImageUrl(car.imagenUrl)" alt="Car image" 
+                                 (error)="handleImageError($event)">
+                            <div class="no-image" [ngClass]="{'no-image-small': needsSmallerImage(car)}" style="display: none;">
+                                <i class="fas fa-car"></i>
+                            </div>
+                        </div>
                         <div class="content">
-                            <h3>RS3</h3>
-                            <div class="price"> <span>price : </span> $62,000/- </div>
+                            <h3>{{car.marca}} {{car.modelo}}</h3>
+                            <div class="price"><span>price : </span>{{car.precio | currency}}</div>
                             <p>
-                                new
-                                <span class="fas fa-circle"></span> 2021
-                                <span class="fas fa-circle"></span> automatic
-                                <span class="fas fa-circle"></span> petrol
-                                <span class="fas fa-circle"></span> 183mph
+                                <span class="fas fa-circle"></span> {{car.categoria}}
+                                <span class="fas fa-circle"></span> Stock: {{car.disponible ? 'Disponible' : 'No disponible'}}
                             </p>
-                            <a href="#" class="btn">check out</a>
+                            <p *ngIf="car.descripcion" class="description">
+                                {{car.descripcion}}
+                            </p>
+                            <a [routerLink]="['/car', car.id]" class="btn">check out</a>
                         </div>
                     </div>
-
-                    <div class="swiper-slide box">
-                        <img src="../assets/img/BMWM2.png" alt="">
-                        <div class="content">
-                            <h3>M2</h3>
-                            <div class="price"> <span>price : </span> $62,000/- </div>
-                            <p>
-                                new
-                                <span class="fas fa-circle"></span> 2021
-                                <span class="fas fa-circle"></span> automatic
-                                <span class="fas fa-circle"></span> petrol
-                                <span class="fas fa-circle"></span> 183mph
-                            </p>
-                            <a href="#" class="btn">check out</a>
-                        </div>
-                    </div>
-
-                    <div class="swiper-slide box">
-                        <img src="../assets/img/bmwM4CSLCoupe.png" alt="">
-                        <div class="content">
-                            <h3>M4 CSL Coupe</h3>
-                            <div class="price"> <span>price : </span> $62,000/- </div>
-                            <p>
-                                new
-                                <span class="fas fa-circle"></span> 2021
-                                <span class="fas fa-circle"></span> automatic
-                                <span class="fas fa-circle"></span> petrol
-                                <span class="fas fa-circle"></span> 183mph
-                            </p>
-                            <a href="#" class="btn">check out</a>
-                        </div>
-                    </div>
-
-                    <div class="swiper-slide box">
-                        <img src="../assets/img/CupraFormentorVZ5.png" alt="">
-                        <div class="content">
-                            <h3>Formentor VZ5</h3>
-                            <div class="price"> <span>price : </span> $62,000/- </div>
-                            <p>
-                                new
-                                <span class="fas fa-circle"></span> 2021
-                                <span class="fas fa-circle"></span> automatic
-                                <span class="fas fa-circle"></span> petrol
-                                <span class="fas fa-circle"></span> 183mph
-                            </p>
-                            <a href="#" class="btn">check out</a>
-                        </div>
-                    </div>
-
-                    <div class="swiper-slide box">
-                        <img src="../assets/img/golfR.png" alt="">
-                        <div class="content">
-                            <h3>Golf R</h3>
-                            <div class="price"> <span>price : </span> $62,000/- </div>
-                            <p>
-                                new
-                                <span class="fas fa-circle"></span> 2021
-                                <span class="fas fa-circle"></span> automatic
-                                <span class="fas fa-circle"></span> petrol
-                                <span class="fas fa-circle"></span> 183mph
-                            </p>
-                            <a href="#" class="btn">check out</a>
-                        </div>
-                    </div>
-
-                    <div class="swiper-slide box">
-                        <img src="../assets/img/porscheMacanGTS.png" alt="">
-                        <div class="content">
-                            <h3>Macan GTS</h3>
-                            <div class="price"> <span>price : </span> $62,000/- </div>
-                            <p>
-                                new
-                                <span class="fas fa-circle"></span> 2021
-                                <span class="fas fa-circle"></span> automatic
-                                <span class="fas fa-circle"></span> petrol
-                                <span class="fas fa-circle"></span> 183mph
-                            </p>
-                            <a href="#" class="btn">check out</a>
-                        </div>
-                    </div>
-
-                    <div class="swiper-slide box">
-                        <img src="../assets/img/porscheTaycan.png" alt="">
-                        <div class="content">
-                            <h3>Taycan</h3>
-                            <div class="price"> <span>price : </span> $62,000/- </div>
-                            <p>
-                                new
-                                <span class="fas fa-circle"></span> 2021
-                                <span class="fas fa-circle"></span> automatic
-                                <span class="fas fa-circle"></span> petrol
-                                <span class="fas fa-circle"></span> 183mph
-                            </p>
-                            <a href="#" class="btn">check out</a>
-                        </div>
-                    </div>
-        
-                    <div class="swiper-slide box">
-                        <img src="../assets/img/TiguanR.png" alt="">
-                        <div class="content">
-                            <h3>Tiguan R</h3>
-                            <div class="price"> <span>price : </span> $62,000/- </div>
-                            <p>
-                                new
-                                <span class="fas fa-circle"></span> 2021
-                                <span class="fas fa-circle"></span> automatic
-                                <span class="fas fa-circle"></span> petrol
-                                <span class="fas fa-circle"></span> 183mph
-                            </p>
-                            <a href="#" class="btn">check out</a>
-                        </div>
-                    </div>
-
-                    <div class="swiper-slide box">
-                        <img src="../assets/img/Model3.png" alt="">
-                        <div class="content">
-                            <h3>Model 3 </h3>
-                            <div class="price"> <span>price : </span> $62,000/- </div>
-                            <p>
-                                new
-                                <span class="fas fa-circle"></span> 2021
-                                <span class="fas fa-circle"></span> automatic
-                                <span class="fas fa-circle"></span> petrol
-                                <span class="fas fa-circle"></span> 183mph
-                            </p>
-                            <a href="#" class="btn">check out</a>
-                        </div>
-                    </div>
-
-                    <div class="swiper-slide box">
-                        <img src="../assets/img/ModelS.png" alt="">
-                        <div class="content">
-                            <h3>model S</h3>
-                            <div class="price"> <span>price : </span> $62,000/- </div>
-                            <p>
-                                new
-                                <span class="fas fa-circle"></span> 2021
-                                <span class="fas fa-circle"></span> automatic
-                                <span class="fas fa-circle"></span> petrol
-                                <span class="fas fa-circle"></span> 183mph
-                            </p>
-                            <a href="#" class="btn">check out</a>
-                        </div>
-                    </div>
-        
-                    <div class="swiper-slide box">
-                        <img src="../assets/img/ModelX.png" alt="">
-                        <div class="content">
-                            <h3>model X</h3>
-                            <div class="price"> <span>price : </span> $62,000/- </div>
-                            <p>
-                                new
-                                <span class="fas fa-circle"></span> 2021
-                                <span class="fas fa-circle"></span> automatic
-                                <span class="fas fa-circle"></span> petrol
-                                <span class="fas fa-circle"></span> 183mph
-                            </p>
-                            <a href="#" class="btn">check out</a>
-                        </div>
-                    </div>
-        
-                    <div class="swiper-slide box">
-                        <img src="../assets/img/modelYLongRange.png" alt="">
-                        <div class="content">
-                            <h3>model Y</h3>
-                            <div class="price"> <span>price : </span> $62,000/- </div>
-                            <p>
-                                new
-                                <span class="fas fa-circle"></span> 2021
-                                <span class="fas fa-circle"></span> automatic
-                                <span class="fas fa-circle"></span> petrol
-                                <span class="fas fa-circle"></span> 183mph
-                            </p>
-                            <a href="#" class="btn">check out</a>
-                        </div>
-                    </div>
-        
                 </div>
-        
                 <div class="swiper-pagination"></div>
-        
             </div>
-        
         </section>
         
         <section class="services" id="services">
@@ -428,91 +250,19 @@
         </section>
     
         <section class="featured" id="featured">
-
-            <h1 class="heading"> <span>featured</span> cars </h1>
-
+            <h1 class="heading"><span>featured</span> cars</h1>
             <div class="swiper featured-slider">
-
-            <div class="swiper-wrapper">
-
-                    <div class="swiper-slide box">
-                        <img src="../assets/img/audiRS3.png" alt="">
-                        <div class="content">
-                            <h3>new model</h3>
-                            <div class="stars">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
-                            </div>
-                            <div class="price">$55,000/-</div>
-                            <a href="#" class="btn">check out</a>
-                        </div>
-                    </div>
-
-                    <div class="swiper-slide box">
-                        <img src="../assets/img/CupraFormentorVZ5.png" alt="">
-                        <div class="content">
-                            <h3>new model</h3>
-                            <div class="stars">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
-                            </div>
-                            <div class="price">$55,000/-</div>
-                            <a href="#" class="btn">check out</a>
-                        </div>
-                    </div>
-
-                    <div class="swiper-slide box">
-                        <img src="../assets/img/golfR.png" alt="">
-                        <div class="content">
-                            <h3>new model</h3>
-                            <div class="stars">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
-                            </div>
-                            <div class="price">$55,000/-</div>
-                            <a href="#" class="btn">check out</a>
-                        </div>
-                    </div>
-
-                    <div class="swiper-slide box">
-                        <img src="../assets/img/porscheMacanGTS.png" alt="">
-                        <div class="content">
-                            <h3>new model</h3>
-                            <div class="stars">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
-                            </div>
-                            <div class="price">$55,000/-</div>
-                            <a href="#" class="btn">check out</a>
-                        </div>
-                    </div>
-
-            </div>
-
-            <div class="swiper-pagination"></div>
-
-            </div>
-
-            <div class="swiper featured-slider">
-
                 <div class="swiper-wrapper">
-        
-                    <div class="swiper-slide box">
-                        <img src="../assets/img/ModelYPerfomance.png" alt="">
+                    <div class="swiper-slide box" *ngFor="let car of cars">
+                        <div class="car-image" [ngClass]="{'car-image-small': needsSmallerImage(car)}">
+                            <img [src]="formatImageUrl(car.imagenUrl)" alt="Car image" 
+                                 (error)="handleImageError($event)">
+                            <div class="no-image" [ngClass]="{'no-image-small': needsSmallerImage(car)}" style="display: none;">
+                                <i class="fas fa-car"></i>
+                            </div>
+                        </div>
                         <div class="content">
-                            <h3>new model</h3>
+                            <h3>{{car.marca}} {{car.modelo}}</h3>
                             <div class="stars">
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
@@ -520,65 +270,13 @@
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star-half-alt"></i>
                             </div>
-                            <div class="price">$55,000/-</div>
-                            <a href="#" class="btn">check out</a>
+                            <div class="price">{{car.precio | currency}}</div>
+                            <a [routerLink]="['/car', car.id]" class="btn">check out</a>
                         </div>
                     </div>
-        
-                    <div class="swiper-slide box">
-                        <img src="../assets/img/TiguanR.png" alt="">
-                        <div class="content">
-                            <h3>new model</h3>
-                            <div class="stars">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
-                            </div>
-                            <div class="price">$55,000/-</div>
-                            <a href="#" class="btn">check out</a>
-                        </div>
-                    </div>
-        
-                    <div class="swiper-slide box">
-                        <img src="../assets/img/porscheTaycan.png" alt="">
-                        <div class="content">
-                            <h3>new model</h3>
-                            <div class="stars">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
-                            </div>
-                            <div class="price">$55,000/-</div>
-                            <a href="#" class="btn">check out</a>
-                        </div>
-                    </div>
-        
-                    <div class="swiper-slide box">
-                        <img src="../assets/img/ModelS.png" alt="">
-                        <div class="content">
-                            <h3>new model</h3>
-                            <div class="stars">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
-                            </div>
-                            <div class="price">$55,000/-</div>
-                            <a href="#" class="btn">check out</a>
-                        </div>
-                    </div>
-        
                 </div>
-        
                 <div class="swiper-pagination"></div>
-        
             </div>
-
         </section>
         <section class="newsletter">
         
@@ -775,16 +473,20 @@
           <div *ngIf="error">{{ error }}</div>
           <div class="cars-list" *ngIf="!loading && !error">
             <div class="car-card" *ngFor="let car of cars">
-              <div class="car-image">
-                <img [src]="car.images[0] || 'assets/images/default-car.jpg'" [alt]="car.name">
+              <div class="car-image" [ngClass]="{'car-image-small': needsSmallerImage(car)}">
+                <img [src]="formatImageUrl(car.imagenUrl)" alt="Car image" 
+                     (error)="handleImageError($event)">
+                <div class="no-image" [ngClass]="{'no-image-small': needsSmallerImage(car)}" style="display: none;">
+                    <i class="fas fa-car"></i>
+                </div>
               </div>
               <div class="car-info">
-                <h3>{{ car.name }}</h3>
-                <p class="car-price">Precio: <span>{{ car.price | currency:'EUR' }}</span></p>
-                <p *ngIf="car.category">Categoría: {{ car.category }}</p>
-                <p *ngIf="car.description">{{ car.description }}</p>
-                <p *ngIf="car.stock !== undefined">Stock: {{ car.stock }}</p>
-                <button class="btn-details">Check Out</button>
+                <h3>{{ car.marca }} {{ car.modelo }}</h3>
+                <p class="car-price">Precio: <span>{{ car.precio | currency:'EUR' }}</span></p>
+                <p *ngIf="car.categoria">Categoría: {{ car.categoria }}</p>
+                <p *ngIf="car.descripcion">{{ car.descripcion }}</p>
+                <p *ngIf="car.disponible !== undefined">Stock: {{ car.disponible ? 'Disponible' : 'No disponible' }}</p>
+                <button class="btn-details" (click)="viewCarDetails(car.id)">Check Out</button>
               </div>
             </div>
           </div>
